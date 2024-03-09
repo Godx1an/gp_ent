@@ -3,10 +3,10 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/Godx1an/gp_ent/common"
+	"github.com/Godx1an/gp_ent/internal/db"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 	"github.com/sirupsen/logrus"
-	"graduation_project_ent/common"
-	"graduation_project_ent/internal/db"
-	"graduation_project_ent/pkg/ent_work/user"
 )
 
 func main() {

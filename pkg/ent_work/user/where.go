@@ -3,10 +3,10 @@
 package user
 
 import (
-	"graduation_project_ent/pkg/ent_work/predicate"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/predicate"
 )
 
 // ID filters vertices based on their ID field.

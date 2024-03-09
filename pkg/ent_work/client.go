@@ -9,13 +9,12 @@ import (
 	"log"
 	"reflect"
 
-	"graduation_project_ent/pkg/ent_work/migrate"
-
-	"graduation_project_ent/pkg/ent_work/user"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/migrate"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 )
 
 // Client is the client that holds all ent builders.

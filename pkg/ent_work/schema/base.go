@@ -6,7 +6,7 @@ import (
 	"entgo.io/ent/schema"
 	"entgo.io/ent/schema/field"
 	"entgo.io/ent/schema/mixin"
-	"graduation_project_ent/common"
+	"github.com/Godx1an/gp_ent/common"
 	"time"
 )
 

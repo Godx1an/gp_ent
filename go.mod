@@ -1,4 +1,4 @@
-module graduation_project_ent
+module github.com/Godx1an/gp_ent
 
 go 1.21
 

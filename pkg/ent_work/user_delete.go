@@ -4,12 +4,12 @@ package ent_work
 
 import (
 	"context"
-	"graduation_project_ent/pkg/ent_work/predicate"
-	"graduation_project_ent/pkg/ent_work/user"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/predicate"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 )
 
 // UserDelete is the builder for deleting a User entity.

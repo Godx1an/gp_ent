@@ -5,7 +5,8 @@ package hook
 import (
 	"context"
 	"fmt"
-	"graduation_project_ent/pkg/ent_work"
+
+	"github.com/Godx1an/gp_ent/pkg/ent_work"
 )
 
 // The UserFunc type is an adapter to allow the use of ordinary

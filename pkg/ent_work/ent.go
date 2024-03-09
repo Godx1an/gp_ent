@@ -6,13 +6,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"graduation_project_ent/pkg/ent_work/user"
 	"reflect"
 	"sync"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 )
 
 // ent aliases to avoid import conflicts in user's code.

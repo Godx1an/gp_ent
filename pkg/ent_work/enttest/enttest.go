@@ -4,13 +4,13 @@ package enttest
 
 import (
 	"context"
-	"graduation_project_ent/pkg/ent_work"
-	// required by schema hooks.
-	_ "graduation_project_ent/pkg/ent_work/runtime"
 
-	"graduation_project_ent/pkg/ent_work/migrate"
+	"github.com/Godx1an/gp_ent/pkg/ent_work"
+	// required by schema hooks.
+	_ "github.com/Godx1an/gp_ent/pkg/ent_work/runtime"
 
 	"entgo.io/ent/dialect/sql/schema"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/migrate"
 )
 
 type (

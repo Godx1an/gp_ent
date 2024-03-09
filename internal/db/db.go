@@ -6,14 +6,14 @@ import (
 	entsql "entgo.io/ent/dialect/sql"
 	"errors"
 	"fmt"
+	"github.com/Godx1an/gp_ent/configs"
+	"github.com/Godx1an/gp_ent/pkg/ent_work"
 	"github.com/golang-migrate/migrate/v4"
 	_ "github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/jackc/pgx/v5/stdlib"
 	_ "github.com/lib/pq"
 	"github.com/sirupsen/logrus"
-	"graduation_project_ent/configs"
-	"graduation_project_ent/pkg/ent_work"
 	"time"
 )
 

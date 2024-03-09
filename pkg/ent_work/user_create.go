@@ -6,12 +6,12 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"graduation_project_ent/pkg/ent_work/user"
 	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 )
 
 // UserCreate is the builder for creating a User entity.
