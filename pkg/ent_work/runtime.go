@@ -3,6 +3,8 @@
 package ent_work
 
 import (
+	"time"
+
 	"github.com/Godx1an/gp_ent/pkg/ent_work/schema"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 )
@@ -11,8 +13,33 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	userMixin := schema.User{}.Mixin()
+	userMixinFields0 := userMixin[0].Fields()
+	_ = userMixinFields0
 	userFields := schema.User{}.Fields()
 	_ = userFields
+	// userDescCreatedBy is the schema descriptor for created_by field.
+	userDescCreatedBy := userMixinFields0[1].Descriptor()
+	// user.DefaultCreatedBy holds the default value on creation for the created_by field.
+	user.DefaultCreatedBy = userDescCreatedBy.Default.(int64)
+	// userDescUpdatedBy is the schema descriptor for updated_by field.
+	userDescUpdatedBy := userMixinFields0[2].Descriptor()
+	// user.DefaultUpdatedBy holds the default value on creation for the updated_by field.
+	user.DefaultUpdatedBy = userDescUpdatedBy.Default.(int64)
+	// userDescCreatedAt is the schema descriptor for created_at field.
+	userDescCreatedAt := userMixinFields0[3].Descriptor()
+	// user.DefaultCreatedAt holds the default value on creation for the created_at field.
+	user.DefaultCreatedAt = userDescCreatedAt.Default.(func() time.Time)
+	// userDescUpdatedAt is the schema descriptor for updated_at field.
+	userDescUpdatedAt := userMixinFields0[4].Descriptor()
+	// user.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(func() time.Time)
+	// user.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	user.UpdateDefaultUpdatedAt = userDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// userDescDeletedAt is the schema descriptor for deleted_at field.
+	userDescDeletedAt := userMixinFields0[5].Descriptor()
+	// user.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	user.DefaultDeletedAt = userDescDeletedAt.Default.(time.Time)
 	// userDescPhone is the schema descriptor for phone field.
 	userDescPhone := userFields[0].Descriptor()
 	// user.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
@@ -31,4 +58,8 @@ func init() {
 			return nil
 		}
 	}()
+	// userDescID is the schema descriptor for id field.
+	userDescID := userMixinFields0[0].Descriptor()
+	// user.DefaultID holds the default value on creation for the id field.
+	user.DefaultID = userDescID.Default.(func() int64)
 }

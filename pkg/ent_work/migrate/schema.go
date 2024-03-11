@@ -3,6 +3,7 @@
 package migrate
 
 import (
+	"entgo.io/ent/dialect/entsql"
 	"entgo.io/ent/dialect/sql/schema"
 	"entgo.io/ent/schema/field"
 )
@@ -10,7 +11,12 @@ import (
 var (
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
-		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "id", Type: field.TypeInt64, Comment: "19 位雪花 ID"},
+		{Name: "created_by", Type: field.TypeInt64, Comment: "创建者 ID", Default: 0},
+		{Name: "updated_by", Type: field.TypeInt64, Comment: "更新者 ID", Default: 0},
+		{Name: "created_at", Type: field.TypeTime, Comment: "创建时刻，带时区"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时刻，带时区"},
+		{Name: "deleted_at", Type: field.TypeTime, Comment: "软删除时刻，带时区"},
 		{Name: "phone", Type: field.TypeString, Unique: true, Size: 11},
 		{Name: "nickname", Type: field.TypeString},
 		{Name: "password", Type: field.TypeString},
@@ -28,4 +34,5 @@ var (
 )
 
 func init() {
+	UsersTable.Annotation = &entsql.Annotation{}
 }

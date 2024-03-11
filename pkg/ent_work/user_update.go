@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -25,6 +26,68 @@ type UserUpdate struct {
 // Where appends a list predicates to the UserUpdate builder.
 func (uu *UserUpdate) Where(ps ...predicate.User) *UserUpdate {
 	uu.mutation.Where(ps...)
+	return uu
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (uu *UserUpdate) SetCreatedBy(i int64) *UserUpdate {
+	uu.mutation.ResetCreatedBy()
+	uu.mutation.SetCreatedBy(i)
+	return uu
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableCreatedBy(i *int64) *UserUpdate {
+	if i != nil {
+		uu.SetCreatedBy(*i)
+	}
+	return uu
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (uu *UserUpdate) AddCreatedBy(i int64) *UserUpdate {
+	uu.mutation.AddCreatedBy(i)
+	return uu
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (uu *UserUpdate) SetUpdatedBy(i int64) *UserUpdate {
+	uu.mutation.ResetUpdatedBy()
+	uu.mutation.SetUpdatedBy(i)
+	return uu
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableUpdatedBy(i *int64) *UserUpdate {
+	if i != nil {
+		uu.SetUpdatedBy(*i)
+	}
+	return uu
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (uu *UserUpdate) AddUpdatedBy(i int64) *UserUpdate {
+	uu.mutation.AddUpdatedBy(i)
+	return uu
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (uu *UserUpdate) SetUpdatedAt(t time.Time) *UserUpdate {
+	uu.mutation.SetUpdatedAt(t)
+	return uu
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (uu *UserUpdate) SetDeletedAt(t time.Time) *UserUpdate {
+	uu.mutation.SetDeletedAt(t)
+	return uu
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableDeletedAt(t *time.Time) *UserUpdate {
+	if t != nil {
+		uu.SetDeletedAt(*t)
+	}
 	return uu
 }
 
@@ -77,6 +140,7 @@ func (uu *UserUpdate) Mutation() *UserMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (uu *UserUpdate) Save(ctx context.Context) (int, error) {
+	uu.defaults()
 	return withHooks(ctx, uu.sqlSave, uu.mutation, uu.hooks)
 }
 
@@ -102,6 +166,14 @@ func (uu *UserUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (uu *UserUpdate) defaults() {
+	if _, ok := uu.mutation.UpdatedAt(); !ok {
+		v := user.UpdateDefaultUpdatedAt()
+		uu.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (uu *UserUpdate) check() error {
 	if v, ok := uu.mutation.Phone(); ok {
@@ -122,13 +194,31 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := uu.check(); err != nil {
 		return n, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt64))
 	if ps := uu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := uu.mutation.CreatedBy(); ok {
+		_spec.SetField(user.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if value, ok := uu.mutation.AddedCreatedBy(); ok {
+		_spec.AddField(user.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if value, ok := uu.mutation.UpdatedBy(); ok {
+		_spec.SetField(user.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if value, ok := uu.mutation.AddedUpdatedBy(); ok {
+		_spec.AddField(user.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if value, ok := uu.mutation.UpdatedAt(); ok {
+		_spec.SetField(user.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if value, ok := uu.mutation.DeletedAt(); ok {
+		_spec.SetField(user.FieldDeletedAt, field.TypeTime, value)
 	}
 	if value, ok := uu.mutation.Phone(); ok {
 		_spec.SetField(user.FieldPhone, field.TypeString, value)
@@ -159,6 +249,68 @@ type UserUpdateOne struct {
 	hooks     []Hook
 	mutation  *UserMutation
 	modifiers []func(*sql.UpdateBuilder)
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (uuo *UserUpdateOne) SetCreatedBy(i int64) *UserUpdateOne {
+	uuo.mutation.ResetCreatedBy()
+	uuo.mutation.SetCreatedBy(i)
+	return uuo
+}
+
+// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableCreatedBy(i *int64) *UserUpdateOne {
+	if i != nil {
+		uuo.SetCreatedBy(*i)
+	}
+	return uuo
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (uuo *UserUpdateOne) AddCreatedBy(i int64) *UserUpdateOne {
+	uuo.mutation.AddCreatedBy(i)
+	return uuo
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (uuo *UserUpdateOne) SetUpdatedBy(i int64) *UserUpdateOne {
+	uuo.mutation.ResetUpdatedBy()
+	uuo.mutation.SetUpdatedBy(i)
+	return uuo
+}
+
+// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableUpdatedBy(i *int64) *UserUpdateOne {
+	if i != nil {
+		uuo.SetUpdatedBy(*i)
+	}
+	return uuo
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (uuo *UserUpdateOne) AddUpdatedBy(i int64) *UserUpdateOne {
+	uuo.mutation.AddUpdatedBy(i)
+	return uuo
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (uuo *UserUpdateOne) SetUpdatedAt(t time.Time) *UserUpdateOne {
+	uuo.mutation.SetUpdatedAt(t)
+	return uuo
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (uuo *UserUpdateOne) SetDeletedAt(t time.Time) *UserUpdateOne {
+	uuo.mutation.SetDeletedAt(t)
+	return uuo
+}
+
+// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableDeletedAt(t *time.Time) *UserUpdateOne {
+	if t != nil {
+		uuo.SetDeletedAt(*t)
+	}
+	return uuo
 }
 
 // SetPhone sets the "phone" field.
@@ -223,6 +375,7 @@ func (uuo *UserUpdateOne) Select(field string, fields ...string) *UserUpdateOne 
 
 // Save executes the query and returns the updated User entity.
 func (uuo *UserUpdateOne) Save(ctx context.Context) (*User, error) {
+	uuo.defaults()
 	return withHooks(ctx, uuo.sqlSave, uuo.mutation, uuo.hooks)
 }
 
@@ -248,6 +401,14 @@ func (uuo *UserUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (uuo *UserUpdateOne) defaults() {
+	if _, ok := uuo.mutation.UpdatedAt(); !ok {
+		v := user.UpdateDefaultUpdatedAt()
+		uuo.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (uuo *UserUpdateOne) check() error {
 	if v, ok := uuo.mutation.Phone(); ok {
@@ -268,7 +429,7 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if err := uuo.check(); err != nil {
 		return _node, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt))
+	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt64))
 	id, ok := uuo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent_work: missing "User.id" for update`)}
@@ -292,6 +453,24 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := uuo.mutation.CreatedBy(); ok {
+		_spec.SetField(user.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if value, ok := uuo.mutation.AddedCreatedBy(); ok {
+		_spec.AddField(user.FieldCreatedBy, field.TypeInt64, value)
+	}
+	if value, ok := uuo.mutation.UpdatedBy(); ok {
+		_spec.SetField(user.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if value, ok := uuo.mutation.AddedUpdatedBy(); ok {
+		_spec.AddField(user.FieldUpdatedBy, field.TypeInt64, value)
+	}
+	if value, ok := uuo.mutation.UpdatedAt(); ok {
+		_spec.SetField(user.FieldUpdatedAt, field.TypeTime, value)
+	}
+	if value, ok := uuo.mutation.DeletedAt(); ok {
+		_spec.SetField(user.FieldDeletedAt, field.TypeTime, value)
 	}
 	if value, ok := uuo.mutation.Phone(); ok {
 		_spec.SetField(user.FieldPhone, field.TypeString, value)

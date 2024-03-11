@@ -26,3 +26,9 @@ func (User) Fields() []ent.Field {
 func (User) Edges() []ent.Edge {
 	return nil
 }
+
+func (User) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		BaseMixin{},
+	}
+}

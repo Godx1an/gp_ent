@@ -5,6 +5,7 @@ package ent_work
 import (
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
@@ -15,7 +16,18 @@ import (
 type User struct {
 	config `json:"-"`
 	// ID of the ent.
-	ID int `json:"id,omitempty"`
+	// 19 位雪花 ID
+	ID int64 `json:"id,string"`
+	// 创建者 ID
+	CreatedBy int64 `json:"created_by"`
+	// 更新者 ID
+	UpdatedBy int64 `json:"updated_by"`
+	// 创建时刻，带时区
+	CreatedAt time.Time `json:"created_at"`
+	// 更新时刻，带时区
+	UpdatedAt time.Time `json:"updated_at"`
+	// 软删除时刻，带时区
+	DeletedAt time.Time `json:"deleted_at"`
 	// Phone holds the value of the "phone" field.
 	Phone string `json:"phone,omitempty"`
 	// Nickname holds the value of the "nickname" field.
@@ -30,10 +42,12 @@ func (*User) scanValues(columns []string) ([]any, error) {
 	values := make([]any, len(columns))
 	for i := range columns {
 		switch columns[i] {
-		case user.FieldID:
+		case user.FieldID, user.FieldCreatedBy, user.FieldUpdatedBy:
 			values[i] = new(sql.NullInt64)
 		case user.FieldPhone, user.FieldNickname, user.FieldPassword:
 			values[i] = new(sql.NullString)
+		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt:
+			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
 		}
@@ -54,7 +68,37 @@ func (u *User) assignValues(columns []string, values []any) error {
 			if !ok {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
-			u.ID = int(value.Int64)
+			u.ID = int64(value.Int64)
+		case user.FieldCreatedBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field created_by", values[i])
+			} else if value.Valid {
+				u.CreatedBy = value.Int64
+			}
+		case user.FieldUpdatedBy:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_by", values[i])
+			} else if value.Valid {
+				u.UpdatedBy = value.Int64
+			}
+		case user.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field created_at", values[i])
+			} else if value.Valid {
+				u.CreatedAt = value.Time
+			}
+		case user.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updated_at", values[i])
+			} else if value.Valid {
+				u.UpdatedAt = value.Time
+			}
+		case user.FieldDeletedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field deleted_at", values[i])
+			} else if value.Valid {
+				u.DeletedAt = value.Time
+			}
 		case user.FieldPhone:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field phone", values[i])
@@ -109,6 +153,21 @@ func (u *User) String() string {
 	var builder strings.Builder
 	builder.WriteString("User(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", u.ID))
+	builder.WriteString("created_by=")
+	builder.WriteString(fmt.Sprintf("%v", u.CreatedBy))
+	builder.WriteString(", ")
+	builder.WriteString("updated_by=")
+	builder.WriteString(fmt.Sprintf("%v", u.UpdatedBy))
+	builder.WriteString(", ")
+	builder.WriteString("created_at=")
+	builder.WriteString(u.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("updated_at=")
+	builder.WriteString(u.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("deleted_at=")
+	builder.WriteString(u.DeletedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
 	builder.WriteString("phone=")
 	builder.WriteString(u.Phone)
 	builder.WriteString(", ")
