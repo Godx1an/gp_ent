@@ -3,10 +3,7 @@
 package ent_work
 
 import (
-	"time"
-
 	"github.com/Godx1an/gp_ent/pkg/ent_work/schema"
-	"github.com/Godx1an/gp_ent/pkg/ent_work/student"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 )
 
@@ -14,122 +11,24 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
-	studentMixin := schema.Student{}.Mixin()
-	studentMixinFields0 := studentMixin[0].Fields()
-	_ = studentMixinFields0
-	studentFields := schema.Student{}.Fields()
-	_ = studentFields
-	// studentDescCreatedBy is the schema descriptor for created_by field.
-	studentDescCreatedBy := studentMixinFields0[1].Descriptor()
-	// student.DefaultCreatedBy holds the default value on creation for the created_by field.
-	student.DefaultCreatedBy = studentDescCreatedBy.Default.(int64)
-	// studentDescUpdatedBy is the schema descriptor for updated_by field.
-	studentDescUpdatedBy := studentMixinFields0[2].Descriptor()
-	// student.DefaultUpdatedBy holds the default value on creation for the updated_by field.
-	student.DefaultUpdatedBy = studentDescUpdatedBy.Default.(int64)
-	// studentDescCreatedAt is the schema descriptor for created_at field.
-	studentDescCreatedAt := studentMixinFields0[3].Descriptor()
-	// student.DefaultCreatedAt holds the default value on creation for the created_at field.
-	student.DefaultCreatedAt = studentDescCreatedAt.Default.(func() time.Time)
-	// studentDescUpdatedAt is the schema descriptor for updated_at field.
-	studentDescUpdatedAt := studentMixinFields0[4].Descriptor()
-	// student.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	student.DefaultUpdatedAt = studentDescUpdatedAt.Default.(func() time.Time)
-	// student.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	student.UpdateDefaultUpdatedAt = studentDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// studentDescDeletedAt is the schema descriptor for deleted_at field.
-	studentDescDeletedAt := studentMixinFields0[5].Descriptor()
-	// student.DefaultDeletedAt holds the default value on creation for the deleted_at field.
-	student.DefaultDeletedAt = studentDescDeletedAt.Default.(time.Time)
-	// studentDescName is the schema descriptor for name field.
-	studentDescName := studentFields[0].Descriptor()
-	// student.DefaultName holds the default value on creation for the name field.
-	student.DefaultName = studentDescName.Default.(string)
-	// studentDescNickName is the schema descriptor for nick_name field.
-	studentDescNickName := studentFields[1].Descriptor()
-	// student.DefaultNickName holds the default value on creation for the nick_name field.
-	student.DefaultNickName = studentDescNickName.Default.(string)
-	// studentDescJpgURL is the schema descriptor for jpg_url field.
-	studentDescJpgURL := studentFields[2].Descriptor()
-	// student.DefaultJpgURL holds the default value on creation for the jpg_url field.
-	student.DefaultJpgURL = studentDescJpgURL.Default.(string)
-	// studentDescID is the schema descriptor for id field.
-	studentDescID := studentMixinFields0[0].Descriptor()
-	// student.DefaultID holds the default value on creation for the id field.
-	student.DefaultID = studentDescID.Default.(func() int64)
-	userMixin := schema.User{}.Mixin()
-	userMixinFields0 := userMixin[0].Fields()
-	_ = userMixinFields0
 	userFields := schema.User{}.Fields()
 	_ = userFields
-	// userDescCreatedBy is the schema descriptor for created_by field.
-	userDescCreatedBy := userMixinFields0[1].Descriptor()
-	// user.DefaultCreatedBy holds the default value on creation for the created_by field.
-	user.DefaultCreatedBy = userDescCreatedBy.Default.(int64)
-	// userDescUpdatedBy is the schema descriptor for updated_by field.
-	userDescUpdatedBy := userMixinFields0[2].Descriptor()
-	// user.DefaultUpdatedBy holds the default value on creation for the updated_by field.
-	user.DefaultUpdatedBy = userDescUpdatedBy.Default.(int64)
-	// userDescCreatedAt is the schema descriptor for created_at field.
-	userDescCreatedAt := userMixinFields0[3].Descriptor()
-	// user.DefaultCreatedAt holds the default value on creation for the created_at field.
-	user.DefaultCreatedAt = userDescCreatedAt.Default.(func() time.Time)
-	// userDescUpdatedAt is the schema descriptor for updated_at field.
-	userDescUpdatedAt := userMixinFields0[4].Descriptor()
-	// user.DefaultUpdatedAt holds the default value on creation for the updated_at field.
-	user.DefaultUpdatedAt = userDescUpdatedAt.Default.(func() time.Time)
-	// user.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
-	user.UpdateDefaultUpdatedAt = userDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// userDescDeletedAt is the schema descriptor for deleted_at field.
-	userDescDeletedAt := userMixinFields0[5].Descriptor()
-	// user.DefaultDeletedAt holds the default value on creation for the deleted_at field.
-	user.DefaultDeletedAt = userDescDeletedAt.Default.(time.Time)
-	// userDescName is the schema descriptor for name field.
-	userDescName := userFields[0].Descriptor()
-	// user.DefaultName holds the default value on creation for the name field.
-	user.DefaultName = userDescName.Default.(string)
-	// userDescNickName is the schema descriptor for nick_name field.
-	userDescNickName := userFields[1].Descriptor()
-	// user.DefaultNickName holds the default value on creation for the nick_name field.
-	user.DefaultNickName = userDescNickName.Default.(string)
-	// userDescJpgURL is the schema descriptor for jpg_url field.
-	userDescJpgURL := userFields[2].Descriptor()
-	// user.DefaultJpgURL holds the default value on creation for the jpg_url field.
-	user.DefaultJpgURL = userDescJpgURL.Default.(string)
 	// userDescPhone is the schema descriptor for phone field.
-	userDescPhone := userFields[3].Descriptor()
-	// user.DefaultPhone holds the default value on creation for the phone field.
-	user.DefaultPhone = userDescPhone.Default.(string)
-	// userDescPassword is the schema descriptor for password field.
-	userDescPassword := userFields[4].Descriptor()
-	// user.DefaultPassword holds the default value on creation for the password field.
-	user.DefaultPassword = userDescPassword.Default.(string)
-	// userDescIsFrozen is the schema descriptor for is_frozen field.
-	userDescIsFrozen := userFields[5].Descriptor()
-	// user.DefaultIsFrozen holds the default value on creation for the is_frozen field.
-	user.DefaultIsFrozen = userDescIsFrozen.Default.(bool)
-	// userDescIsRecharge is the schema descriptor for is_recharge field.
-	userDescIsRecharge := userFields[6].Descriptor()
-	// user.DefaultIsRecharge holds the default value on creation for the is_recharge field.
-	user.DefaultIsRecharge = userDescIsRecharge.Default.(bool)
-	// userDescPopVersion is the schema descriptor for pop_version field.
-	userDescPopVersion := userFields[8].Descriptor()
-	// user.DefaultPopVersion holds the default value on creation for the pop_version field.
-	user.DefaultPopVersion = userDescPopVersion.Default.(string)
-	// userDescAreaCode is the schema descriptor for area_code field.
-	userDescAreaCode := userFields[9].Descriptor()
-	// user.DefaultAreaCode holds the default value on creation for the area_code field.
-	user.DefaultAreaCode = userDescAreaCode.Default.(string)
-	// userDescEmail is the schema descriptor for email field.
-	userDescEmail := userFields[10].Descriptor()
-	// user.DefaultEmail holds the default value on creation for the email field.
-	user.DefaultEmail = userDescEmail.Default.(string)
-	// userDescCloudSpace is the schema descriptor for cloud_space field.
-	userDescCloudSpace := userFields[11].Descriptor()
-	// user.DefaultCloudSpace holds the default value on creation for the cloud_space field.
-	user.DefaultCloudSpace = userDescCloudSpace.Default.(int64)
-	// userDescID is the schema descriptor for id field.
-	userDescID := userMixinFields0[0].Descriptor()
-	// user.DefaultID holds the default value on creation for the id field.
-	user.DefaultID = userDescID.Default.(func() int64)
+	userDescPhone := userFields[0].Descriptor()
+	// user.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	user.PhoneValidator = func() func(string) error {
+		validators := userDescPhone.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(phone string) error {
+			for _, fn := range fns {
+				if err := fn(phone); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 }

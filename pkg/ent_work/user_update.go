@@ -6,7 +6,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -29,110 +28,6 @@ func (uu *UserUpdate) Where(ps ...predicate.User) *UserUpdate {
 	return uu
 }
 
-// SetCreatedBy sets the "created_by" field.
-func (uu *UserUpdate) SetCreatedBy(i int64) *UserUpdate {
-	uu.mutation.ResetCreatedBy()
-	uu.mutation.SetCreatedBy(i)
-	return uu
-}
-
-// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableCreatedBy(i *int64) *UserUpdate {
-	if i != nil {
-		uu.SetCreatedBy(*i)
-	}
-	return uu
-}
-
-// AddCreatedBy adds i to the "created_by" field.
-func (uu *UserUpdate) AddCreatedBy(i int64) *UserUpdate {
-	uu.mutation.AddCreatedBy(i)
-	return uu
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (uu *UserUpdate) SetUpdatedBy(i int64) *UserUpdate {
-	uu.mutation.ResetUpdatedBy()
-	uu.mutation.SetUpdatedBy(i)
-	return uu
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableUpdatedBy(i *int64) *UserUpdate {
-	if i != nil {
-		uu.SetUpdatedBy(*i)
-	}
-	return uu
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (uu *UserUpdate) AddUpdatedBy(i int64) *UserUpdate {
-	uu.mutation.AddUpdatedBy(i)
-	return uu
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (uu *UserUpdate) SetUpdatedAt(t time.Time) *UserUpdate {
-	uu.mutation.SetUpdatedAt(t)
-	return uu
-}
-
-// SetDeletedAt sets the "deleted_at" field.
-func (uu *UserUpdate) SetDeletedAt(t time.Time) *UserUpdate {
-	uu.mutation.SetDeletedAt(t)
-	return uu
-}
-
-// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableDeletedAt(t *time.Time) *UserUpdate {
-	if t != nil {
-		uu.SetDeletedAt(*t)
-	}
-	return uu
-}
-
-// SetName sets the "name" field.
-func (uu *UserUpdate) SetName(s string) *UserUpdate {
-	uu.mutation.SetName(s)
-	return uu
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableName(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetName(*s)
-	}
-	return uu
-}
-
-// SetNickName sets the "nick_name" field.
-func (uu *UserUpdate) SetNickName(s string) *UserUpdate {
-	uu.mutation.SetNickName(s)
-	return uu
-}
-
-// SetNillableNickName sets the "nick_name" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableNickName(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetNickName(*s)
-	}
-	return uu
-}
-
-// SetJpgURL sets the "jpg_url" field.
-func (uu *UserUpdate) SetJpgURL(s string) *UserUpdate {
-	uu.mutation.SetJpgURL(s)
-	return uu
-}
-
-// SetNillableJpgURL sets the "jpg_url" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableJpgURL(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetJpgURL(*s)
-	}
-	return uu
-}
-
 // SetPhone sets the "phone" field.
 func (uu *UserUpdate) SetPhone(s string) *UserUpdate {
 	uu.mutation.SetPhone(s)
@@ -143,6 +38,20 @@ func (uu *UserUpdate) SetPhone(s string) *UserUpdate {
 func (uu *UserUpdate) SetNillablePhone(s *string) *UserUpdate {
 	if s != nil {
 		uu.SetPhone(*s)
+	}
+	return uu
+}
+
+// SetNickname sets the "nickname" field.
+func (uu *UserUpdate) SetNickname(s string) *UserUpdate {
+	uu.mutation.SetNickname(s)
+	return uu
+}
+
+// SetNillableNickname sets the "nickname" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableNickname(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetNickname(*s)
 	}
 	return uu
 }
@@ -161,111 +70,6 @@ func (uu *UserUpdate) SetNillablePassword(s *string) *UserUpdate {
 	return uu
 }
 
-// SetIsFrozen sets the "is_frozen" field.
-func (uu *UserUpdate) SetIsFrozen(b bool) *UserUpdate {
-	uu.mutation.SetIsFrozen(b)
-	return uu
-}
-
-// SetNillableIsFrozen sets the "is_frozen" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableIsFrozen(b *bool) *UserUpdate {
-	if b != nil {
-		uu.SetIsFrozen(*b)
-	}
-	return uu
-}
-
-// SetIsRecharge sets the "is_recharge" field.
-func (uu *UserUpdate) SetIsRecharge(b bool) *UserUpdate {
-	uu.mutation.SetIsRecharge(b)
-	return uu
-}
-
-// SetNillableIsRecharge sets the "is_recharge" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableIsRecharge(b *bool) *UserUpdate {
-	if b != nil {
-		uu.SetIsRecharge(*b)
-	}
-	return uu
-}
-
-// SetUserType sets the "user_type" field.
-func (uu *UserUpdate) SetUserType(ut user.UserType) *UserUpdate {
-	uu.mutation.SetUserType(ut)
-	return uu
-}
-
-// SetNillableUserType sets the "user_type" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableUserType(ut *user.UserType) *UserUpdate {
-	if ut != nil {
-		uu.SetUserType(*ut)
-	}
-	return uu
-}
-
-// SetPopVersion sets the "pop_version" field.
-func (uu *UserUpdate) SetPopVersion(s string) *UserUpdate {
-	uu.mutation.SetPopVersion(s)
-	return uu
-}
-
-// SetNillablePopVersion sets the "pop_version" field if the given value is not nil.
-func (uu *UserUpdate) SetNillablePopVersion(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetPopVersion(*s)
-	}
-	return uu
-}
-
-// SetAreaCode sets the "area_code" field.
-func (uu *UserUpdate) SetAreaCode(s string) *UserUpdate {
-	uu.mutation.SetAreaCode(s)
-	return uu
-}
-
-// SetNillableAreaCode sets the "area_code" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableAreaCode(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetAreaCode(*s)
-	}
-	return uu
-}
-
-// SetEmail sets the "email" field.
-func (uu *UserUpdate) SetEmail(s string) *UserUpdate {
-	uu.mutation.SetEmail(s)
-	return uu
-}
-
-// SetNillableEmail sets the "email" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableEmail(s *string) *UserUpdate {
-	if s != nil {
-		uu.SetEmail(*s)
-	}
-	return uu
-}
-
-// SetCloudSpace sets the "cloud_space" field.
-func (uu *UserUpdate) SetCloudSpace(i int64) *UserUpdate {
-	uu.mutation.ResetCloudSpace()
-	uu.mutation.SetCloudSpace(i)
-	return uu
-}
-
-// SetNillableCloudSpace sets the "cloud_space" field if the given value is not nil.
-func (uu *UserUpdate) SetNillableCloudSpace(i *int64) *UserUpdate {
-	if i != nil {
-		uu.SetCloudSpace(*i)
-	}
-	return uu
-}
-
-// AddCloudSpace adds i to the "cloud_space" field.
-func (uu *UserUpdate) AddCloudSpace(i int64) *UserUpdate {
-	uu.mutation.AddCloudSpace(i)
-	return uu
-}
-
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -273,7 +77,6 @@ func (uu *UserUpdate) Mutation() *UserMutation {
 
 // Save executes the query and returns the number of nodes affected by the update operation.
 func (uu *UserUpdate) Save(ctx context.Context) (int, error) {
-	uu.defaults()
 	return withHooks(ctx, uu.sqlSave, uu.mutation, uu.hooks)
 }
 
@@ -299,19 +102,11 @@ func (uu *UserUpdate) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (uu *UserUpdate) defaults() {
-	if _, ok := uu.mutation.UpdatedAt(); !ok {
-		v := user.UpdateDefaultUpdatedAt()
-		uu.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (uu *UserUpdate) check() error {
-	if v, ok := uu.mutation.UserType(); ok {
-		if err := user.UserTypeValidator(v); err != nil {
-			return &ValidationError{Name: "user_type", err: fmt.Errorf(`ent_work: validator failed for field "User.user_type": %w`, err)}
+	if v, ok := uu.mutation.Phone(); ok {
+		if err := user.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent_work: validator failed for field "User.phone": %w`, err)}
 		}
 	}
 	return nil
@@ -327,7 +122,7 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	if err := uu.check(); err != nil {
 		return n, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt64))
+	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt))
 	if ps := uu.mutation.predicates; len(ps) > 0 {
 		_spec.Predicate = func(selector *sql.Selector) {
 			for i := range ps {
@@ -335,62 +130,14 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
-	if value, ok := uu.mutation.CreatedBy(); ok {
-		_spec.SetField(user.FieldCreatedBy, field.TypeInt64, value)
-	}
-	if value, ok := uu.mutation.AddedCreatedBy(); ok {
-		_spec.AddField(user.FieldCreatedBy, field.TypeInt64, value)
-	}
-	if value, ok := uu.mutation.UpdatedBy(); ok {
-		_spec.SetField(user.FieldUpdatedBy, field.TypeInt64, value)
-	}
-	if value, ok := uu.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(user.FieldUpdatedBy, field.TypeInt64, value)
-	}
-	if value, ok := uu.mutation.UpdatedAt(); ok {
-		_spec.SetField(user.FieldUpdatedAt, field.TypeTime, value)
-	}
-	if value, ok := uu.mutation.DeletedAt(); ok {
-		_spec.SetField(user.FieldDeletedAt, field.TypeTime, value)
-	}
-	if value, ok := uu.mutation.Name(); ok {
-		_spec.SetField(user.FieldName, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.NickName(); ok {
-		_spec.SetField(user.FieldNickName, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.JpgURL(); ok {
-		_spec.SetField(user.FieldJpgURL, field.TypeString, value)
-	}
 	if value, ok := uu.mutation.Phone(); ok {
 		_spec.SetField(user.FieldPhone, field.TypeString, value)
 	}
+	if value, ok := uu.mutation.Nickname(); ok {
+		_spec.SetField(user.FieldNickname, field.TypeString, value)
+	}
 	if value, ok := uu.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.IsFrozen(); ok {
-		_spec.SetField(user.FieldIsFrozen, field.TypeBool, value)
-	}
-	if value, ok := uu.mutation.IsRecharge(); ok {
-		_spec.SetField(user.FieldIsRecharge, field.TypeBool, value)
-	}
-	if value, ok := uu.mutation.UserType(); ok {
-		_spec.SetField(user.FieldUserType, field.TypeEnum, value)
-	}
-	if value, ok := uu.mutation.PopVersion(); ok {
-		_spec.SetField(user.FieldPopVersion, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.AreaCode(); ok {
-		_spec.SetField(user.FieldAreaCode, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.Email(); ok {
-		_spec.SetField(user.FieldEmail, field.TypeString, value)
-	}
-	if value, ok := uu.mutation.CloudSpace(); ok {
-		_spec.SetField(user.FieldCloudSpace, field.TypeInt64, value)
-	}
-	if value, ok := uu.mutation.AddedCloudSpace(); ok {
-		_spec.AddField(user.FieldCloudSpace, field.TypeInt64, value)
 	}
 	_spec.AddModifiers(uu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
@@ -414,110 +161,6 @@ type UserUpdateOne struct {
 	modifiers []func(*sql.UpdateBuilder)
 }
 
-// SetCreatedBy sets the "created_by" field.
-func (uuo *UserUpdateOne) SetCreatedBy(i int64) *UserUpdateOne {
-	uuo.mutation.ResetCreatedBy()
-	uuo.mutation.SetCreatedBy(i)
-	return uuo
-}
-
-// SetNillableCreatedBy sets the "created_by" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableCreatedBy(i *int64) *UserUpdateOne {
-	if i != nil {
-		uuo.SetCreatedBy(*i)
-	}
-	return uuo
-}
-
-// AddCreatedBy adds i to the "created_by" field.
-func (uuo *UserUpdateOne) AddCreatedBy(i int64) *UserUpdateOne {
-	uuo.mutation.AddCreatedBy(i)
-	return uuo
-}
-
-// SetUpdatedBy sets the "updated_by" field.
-func (uuo *UserUpdateOne) SetUpdatedBy(i int64) *UserUpdateOne {
-	uuo.mutation.ResetUpdatedBy()
-	uuo.mutation.SetUpdatedBy(i)
-	return uuo
-}
-
-// SetNillableUpdatedBy sets the "updated_by" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableUpdatedBy(i *int64) *UserUpdateOne {
-	if i != nil {
-		uuo.SetUpdatedBy(*i)
-	}
-	return uuo
-}
-
-// AddUpdatedBy adds i to the "updated_by" field.
-func (uuo *UserUpdateOne) AddUpdatedBy(i int64) *UserUpdateOne {
-	uuo.mutation.AddUpdatedBy(i)
-	return uuo
-}
-
-// SetUpdatedAt sets the "updated_at" field.
-func (uuo *UserUpdateOne) SetUpdatedAt(t time.Time) *UserUpdateOne {
-	uuo.mutation.SetUpdatedAt(t)
-	return uuo
-}
-
-// SetDeletedAt sets the "deleted_at" field.
-func (uuo *UserUpdateOne) SetDeletedAt(t time.Time) *UserUpdateOne {
-	uuo.mutation.SetDeletedAt(t)
-	return uuo
-}
-
-// SetNillableDeletedAt sets the "deleted_at" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableDeletedAt(t *time.Time) *UserUpdateOne {
-	if t != nil {
-		uuo.SetDeletedAt(*t)
-	}
-	return uuo
-}
-
-// SetName sets the "name" field.
-func (uuo *UserUpdateOne) SetName(s string) *UserUpdateOne {
-	uuo.mutation.SetName(s)
-	return uuo
-}
-
-// SetNillableName sets the "name" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableName(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetName(*s)
-	}
-	return uuo
-}
-
-// SetNickName sets the "nick_name" field.
-func (uuo *UserUpdateOne) SetNickName(s string) *UserUpdateOne {
-	uuo.mutation.SetNickName(s)
-	return uuo
-}
-
-// SetNillableNickName sets the "nick_name" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableNickName(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetNickName(*s)
-	}
-	return uuo
-}
-
-// SetJpgURL sets the "jpg_url" field.
-func (uuo *UserUpdateOne) SetJpgURL(s string) *UserUpdateOne {
-	uuo.mutation.SetJpgURL(s)
-	return uuo
-}
-
-// SetNillableJpgURL sets the "jpg_url" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableJpgURL(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetJpgURL(*s)
-	}
-	return uuo
-}
-
 // SetPhone sets the "phone" field.
 func (uuo *UserUpdateOne) SetPhone(s string) *UserUpdateOne {
 	uuo.mutation.SetPhone(s)
@@ -528,6 +171,20 @@ func (uuo *UserUpdateOne) SetPhone(s string) *UserUpdateOne {
 func (uuo *UserUpdateOne) SetNillablePhone(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetPhone(*s)
+	}
+	return uuo
+}
+
+// SetNickname sets the "nickname" field.
+func (uuo *UserUpdateOne) SetNickname(s string) *UserUpdateOne {
+	uuo.mutation.SetNickname(s)
+	return uuo
+}
+
+// SetNillableNickname sets the "nickname" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableNickname(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetNickname(*s)
 	}
 	return uuo
 }
@@ -543,111 +200,6 @@ func (uuo *UserUpdateOne) SetNillablePassword(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetPassword(*s)
 	}
-	return uuo
-}
-
-// SetIsFrozen sets the "is_frozen" field.
-func (uuo *UserUpdateOne) SetIsFrozen(b bool) *UserUpdateOne {
-	uuo.mutation.SetIsFrozen(b)
-	return uuo
-}
-
-// SetNillableIsFrozen sets the "is_frozen" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableIsFrozen(b *bool) *UserUpdateOne {
-	if b != nil {
-		uuo.SetIsFrozen(*b)
-	}
-	return uuo
-}
-
-// SetIsRecharge sets the "is_recharge" field.
-func (uuo *UserUpdateOne) SetIsRecharge(b bool) *UserUpdateOne {
-	uuo.mutation.SetIsRecharge(b)
-	return uuo
-}
-
-// SetNillableIsRecharge sets the "is_recharge" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableIsRecharge(b *bool) *UserUpdateOne {
-	if b != nil {
-		uuo.SetIsRecharge(*b)
-	}
-	return uuo
-}
-
-// SetUserType sets the "user_type" field.
-func (uuo *UserUpdateOne) SetUserType(ut user.UserType) *UserUpdateOne {
-	uuo.mutation.SetUserType(ut)
-	return uuo
-}
-
-// SetNillableUserType sets the "user_type" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableUserType(ut *user.UserType) *UserUpdateOne {
-	if ut != nil {
-		uuo.SetUserType(*ut)
-	}
-	return uuo
-}
-
-// SetPopVersion sets the "pop_version" field.
-func (uuo *UserUpdateOne) SetPopVersion(s string) *UserUpdateOne {
-	uuo.mutation.SetPopVersion(s)
-	return uuo
-}
-
-// SetNillablePopVersion sets the "pop_version" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillablePopVersion(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetPopVersion(*s)
-	}
-	return uuo
-}
-
-// SetAreaCode sets the "area_code" field.
-func (uuo *UserUpdateOne) SetAreaCode(s string) *UserUpdateOne {
-	uuo.mutation.SetAreaCode(s)
-	return uuo
-}
-
-// SetNillableAreaCode sets the "area_code" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableAreaCode(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetAreaCode(*s)
-	}
-	return uuo
-}
-
-// SetEmail sets the "email" field.
-func (uuo *UserUpdateOne) SetEmail(s string) *UserUpdateOne {
-	uuo.mutation.SetEmail(s)
-	return uuo
-}
-
-// SetNillableEmail sets the "email" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableEmail(s *string) *UserUpdateOne {
-	if s != nil {
-		uuo.SetEmail(*s)
-	}
-	return uuo
-}
-
-// SetCloudSpace sets the "cloud_space" field.
-func (uuo *UserUpdateOne) SetCloudSpace(i int64) *UserUpdateOne {
-	uuo.mutation.ResetCloudSpace()
-	uuo.mutation.SetCloudSpace(i)
-	return uuo
-}
-
-// SetNillableCloudSpace sets the "cloud_space" field if the given value is not nil.
-func (uuo *UserUpdateOne) SetNillableCloudSpace(i *int64) *UserUpdateOne {
-	if i != nil {
-		uuo.SetCloudSpace(*i)
-	}
-	return uuo
-}
-
-// AddCloudSpace adds i to the "cloud_space" field.
-func (uuo *UserUpdateOne) AddCloudSpace(i int64) *UserUpdateOne {
-	uuo.mutation.AddCloudSpace(i)
 	return uuo
 }
 
@@ -671,7 +223,6 @@ func (uuo *UserUpdateOne) Select(field string, fields ...string) *UserUpdateOne 
 
 // Save executes the query and returns the updated User entity.
 func (uuo *UserUpdateOne) Save(ctx context.Context) (*User, error) {
-	uuo.defaults()
 	return withHooks(ctx, uuo.sqlSave, uuo.mutation, uuo.hooks)
 }
 
@@ -697,19 +248,11 @@ func (uuo *UserUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
-// defaults sets the default values of the builder before save.
-func (uuo *UserUpdateOne) defaults() {
-	if _, ok := uuo.mutation.UpdatedAt(); !ok {
-		v := user.UpdateDefaultUpdatedAt()
-		uuo.mutation.SetUpdatedAt(v)
-	}
-}
-
 // check runs all checks and user-defined validators on the builder.
 func (uuo *UserUpdateOne) check() error {
-	if v, ok := uuo.mutation.UserType(); ok {
-		if err := user.UserTypeValidator(v); err != nil {
-			return &ValidationError{Name: "user_type", err: fmt.Errorf(`ent_work: validator failed for field "User.user_type": %w`, err)}
+	if v, ok := uuo.mutation.Phone(); ok {
+		if err := user.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent_work: validator failed for field "User.phone": %w`, err)}
 		}
 	}
 	return nil
@@ -725,7 +268,7 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	if err := uuo.check(); err != nil {
 		return _node, err
 	}
-	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt64))
+	_spec := sqlgraph.NewUpdateSpec(user.Table, user.Columns, sqlgraph.NewFieldSpec(user.FieldID, field.TypeInt))
 	id, ok := uuo.mutation.ID()
 	if !ok {
 		return nil, &ValidationError{Name: "id", err: errors.New(`ent_work: missing "User.id" for update`)}
@@ -750,62 +293,14 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 			}
 		}
 	}
-	if value, ok := uuo.mutation.CreatedBy(); ok {
-		_spec.SetField(user.FieldCreatedBy, field.TypeInt64, value)
-	}
-	if value, ok := uuo.mutation.AddedCreatedBy(); ok {
-		_spec.AddField(user.FieldCreatedBy, field.TypeInt64, value)
-	}
-	if value, ok := uuo.mutation.UpdatedBy(); ok {
-		_spec.SetField(user.FieldUpdatedBy, field.TypeInt64, value)
-	}
-	if value, ok := uuo.mutation.AddedUpdatedBy(); ok {
-		_spec.AddField(user.FieldUpdatedBy, field.TypeInt64, value)
-	}
-	if value, ok := uuo.mutation.UpdatedAt(); ok {
-		_spec.SetField(user.FieldUpdatedAt, field.TypeTime, value)
-	}
-	if value, ok := uuo.mutation.DeletedAt(); ok {
-		_spec.SetField(user.FieldDeletedAt, field.TypeTime, value)
-	}
-	if value, ok := uuo.mutation.Name(); ok {
-		_spec.SetField(user.FieldName, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.NickName(); ok {
-		_spec.SetField(user.FieldNickName, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.JpgURL(); ok {
-		_spec.SetField(user.FieldJpgURL, field.TypeString, value)
-	}
 	if value, ok := uuo.mutation.Phone(); ok {
 		_spec.SetField(user.FieldPhone, field.TypeString, value)
 	}
+	if value, ok := uuo.mutation.Nickname(); ok {
+		_spec.SetField(user.FieldNickname, field.TypeString, value)
+	}
 	if value, ok := uuo.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.IsFrozen(); ok {
-		_spec.SetField(user.FieldIsFrozen, field.TypeBool, value)
-	}
-	if value, ok := uuo.mutation.IsRecharge(); ok {
-		_spec.SetField(user.FieldIsRecharge, field.TypeBool, value)
-	}
-	if value, ok := uuo.mutation.UserType(); ok {
-		_spec.SetField(user.FieldUserType, field.TypeEnum, value)
-	}
-	if value, ok := uuo.mutation.PopVersion(); ok {
-		_spec.SetField(user.FieldPopVersion, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.AreaCode(); ok {
-		_spec.SetField(user.FieldAreaCode, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.Email(); ok {
-		_spec.SetField(user.FieldEmail, field.TypeString, value)
-	}
-	if value, ok := uuo.mutation.CloudSpace(); ok {
-		_spec.SetField(user.FieldCloudSpace, field.TypeInt64, value)
-	}
-	if value, ok := uuo.mutation.AddedCloudSpace(); ok {
-		_spec.AddField(user.FieldCloudSpace, field.TypeInt64, value)
 	}
 	_spec.AddModifiers(uuo.modifiers...)
 	_node = &User{config: uuo.config}

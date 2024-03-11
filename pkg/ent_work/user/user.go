@@ -3,9 +3,6 @@
 package user
 
 import (
-	"fmt"
-	"time"
-
 	"entgo.io/ent/dialect/sql"
 )
 
@@ -14,40 +11,12 @@ const (
 	Label = "user"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
-	// FieldCreatedBy holds the string denoting the created_by field in the database.
-	FieldCreatedBy = "created_by"
-	// FieldUpdatedBy holds the string denoting the updated_by field in the database.
-	FieldUpdatedBy = "updated_by"
-	// FieldCreatedAt holds the string denoting the created_at field in the database.
-	FieldCreatedAt = "created_at"
-	// FieldUpdatedAt holds the string denoting the updated_at field in the database.
-	FieldUpdatedAt = "updated_at"
-	// FieldDeletedAt holds the string denoting the deleted_at field in the database.
-	FieldDeletedAt = "deleted_at"
-	// FieldName holds the string denoting the name field in the database.
-	FieldName = "name"
-	// FieldNickName holds the string denoting the nick_name field in the database.
-	FieldNickName = "nick_name"
-	// FieldJpgURL holds the string denoting the jpg_url field in the database.
-	FieldJpgURL = "jpg_url"
 	// FieldPhone holds the string denoting the phone field in the database.
 	FieldPhone = "phone"
+	// FieldNickname holds the string denoting the nickname field in the database.
+	FieldNickname = "nickname"
 	// FieldPassword holds the string denoting the password field in the database.
 	FieldPassword = "password"
-	// FieldIsFrozen holds the string denoting the is_frozen field in the database.
-	FieldIsFrozen = "is_frozen"
-	// FieldIsRecharge holds the string denoting the is_recharge field in the database.
-	FieldIsRecharge = "is_recharge"
-	// FieldUserType holds the string denoting the user_type field in the database.
-	FieldUserType = "user_type"
-	// FieldPopVersion holds the string denoting the pop_version field in the database.
-	FieldPopVersion = "pop_version"
-	// FieldAreaCode holds the string denoting the area_code field in the database.
-	FieldAreaCode = "area_code"
-	// FieldEmail holds the string denoting the email field in the database.
-	FieldEmail = "email"
-	// FieldCloudSpace holds the string denoting the cloud_space field in the database.
-	FieldCloudSpace = "cloud_space"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 )
@@ -55,23 +24,9 @@ const (
 // Columns holds all SQL columns for user fields.
 var Columns = []string{
 	FieldID,
-	FieldCreatedBy,
-	FieldUpdatedBy,
-	FieldCreatedAt,
-	FieldUpdatedAt,
-	FieldDeletedAt,
-	FieldName,
-	FieldNickName,
-	FieldJpgURL,
 	FieldPhone,
+	FieldNickname,
 	FieldPassword,
-	FieldIsFrozen,
-	FieldIsRecharge,
-	FieldUserType,
-	FieldPopVersion,
-	FieldAreaCode,
-	FieldEmail,
-	FieldCloudSpace,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -85,69 +40,9 @@ func ValidColumn(column string) bool {
 }
 
 var (
-	// DefaultCreatedBy holds the default value on creation for the "created_by" field.
-	DefaultCreatedBy int64
-	// DefaultUpdatedBy holds the default value on creation for the "updated_by" field.
-	DefaultUpdatedBy int64
-	// DefaultCreatedAt holds the default value on creation for the "created_at" field.
-	DefaultCreatedAt func() time.Time
-	// DefaultUpdatedAt holds the default value on creation for the "updated_at" field.
-	DefaultUpdatedAt func() time.Time
-	// UpdateDefaultUpdatedAt holds the default value on update for the "updated_at" field.
-	UpdateDefaultUpdatedAt func() time.Time
-	// DefaultDeletedAt holds the default value on creation for the "deleted_at" field.
-	DefaultDeletedAt time.Time
-	// DefaultName holds the default value on creation for the "name" field.
-	DefaultName string
-	// DefaultNickName holds the default value on creation for the "nick_name" field.
-	DefaultNickName string
-	// DefaultJpgURL holds the default value on creation for the "jpg_url" field.
-	DefaultJpgURL string
-	// DefaultPhone holds the default value on creation for the "phone" field.
-	DefaultPhone string
-	// DefaultPassword holds the default value on creation for the "password" field.
-	DefaultPassword string
-	// DefaultIsFrozen holds the default value on creation for the "is_frozen" field.
-	DefaultIsFrozen bool
-	// DefaultIsRecharge holds the default value on creation for the "is_recharge" field.
-	DefaultIsRecharge bool
-	// DefaultPopVersion holds the default value on creation for the "pop_version" field.
-	DefaultPopVersion string
-	// DefaultAreaCode holds the default value on creation for the "area_code" field.
-	DefaultAreaCode string
-	// DefaultEmail holds the default value on creation for the "email" field.
-	DefaultEmail string
-	// DefaultCloudSpace holds the default value on creation for the "cloud_space" field.
-	DefaultCloudSpace int64
-	// DefaultID holds the default value on creation for the "id" field.
-	DefaultID func() int64
+	// PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	PhoneValidator func(string) error
 )
-
-// UserType defines the type for the "user_type" enum field.
-type UserType string
-
-// UserTypePersonal is the default value of the UserType enum.
-const DefaultUserType = UserTypePersonal
-
-// UserType values.
-const (
-	UserTypePersonal   UserType = "personal"
-	UserTypeEnterprise UserType = "enterprise"
-)
-
-func (ut UserType) String() string {
-	return string(ut)
-}
-
-// UserTypeValidator is a validator for the "user_type" field enum values. It is called by the builders before save.
-func UserTypeValidator(ut UserType) error {
-	switch ut {
-	case UserTypePersonal, UserTypeEnterprise:
-		return nil
-	default:
-		return fmt.Errorf("user: invalid enum value for user_type field: %q", ut)
-	}
-}
 
 // OrderOption defines the ordering options for the User queries.
 type OrderOption func(*sql.Selector)
@@ -157,87 +52,17 @@ func ByID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldID, opts...).ToFunc()
 }
 
-// ByCreatedBy orders the results by the created_by field.
-func ByCreatedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreatedBy, opts...).ToFunc()
-}
-
-// ByUpdatedBy orders the results by the updated_by field.
-func ByUpdatedBy(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedBy, opts...).ToFunc()
-}
-
-// ByCreatedAt orders the results by the created_at field.
-func ByCreatedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCreatedAt, opts...).ToFunc()
-}
-
-// ByUpdatedAt orders the results by the updated_at field.
-func ByUpdatedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUpdatedAt, opts...).ToFunc()
-}
-
-// ByDeletedAt orders the results by the deleted_at field.
-func ByDeletedAt(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldDeletedAt, opts...).ToFunc()
-}
-
-// ByName orders the results by the name field.
-func ByName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldName, opts...).ToFunc()
-}
-
-// ByNickName orders the results by the nick_name field.
-func ByNickName(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldNickName, opts...).ToFunc()
-}
-
-// ByJpgURL orders the results by the jpg_url field.
-func ByJpgURL(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldJpgURL, opts...).ToFunc()
-}
-
 // ByPhone orders the results by the phone field.
 func ByPhone(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPhone, opts...).ToFunc()
 }
 
+// ByNickname orders the results by the nickname field.
+func ByNickname(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldNickname, opts...).ToFunc()
+}
+
 // ByPassword orders the results by the password field.
 func ByPassword(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldPassword, opts...).ToFunc()
-}
-
-// ByIsFrozen orders the results by the is_frozen field.
-func ByIsFrozen(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsFrozen, opts...).ToFunc()
-}
-
-// ByIsRecharge orders the results by the is_recharge field.
-func ByIsRecharge(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldIsRecharge, opts...).ToFunc()
-}
-
-// ByUserType orders the results by the user_type field.
-func ByUserType(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldUserType, opts...).ToFunc()
-}
-
-// ByPopVersion orders the results by the pop_version field.
-func ByPopVersion(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldPopVersion, opts...).ToFunc()
-}
-
-// ByAreaCode orders the results by the area_code field.
-func ByAreaCode(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldAreaCode, opts...).ToFunc()
-}
-
-// ByEmail orders the results by the email field.
-func ByEmail(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldEmail, opts...).ToFunc()
-}
-
-// ByCloudSpace orders the results by the cloud_space field.
-func ByCloudSpace(opts ...sql.OrderTermOption) OrderOption {
-	return sql.OrderByField(FieldCloudSpace, opts...).ToFunc()
 }
