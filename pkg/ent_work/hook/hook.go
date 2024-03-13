@@ -9,6 +9,18 @@ import (
 	"github.com/Godx1an/gp_ent/pkg/ent_work"
 )
 
+// The AdminFunc type is an adapter to allow the use of ordinary
+// function as Admin mutator.
+type AdminFunc func(context.Context, *ent_work.AdminMutation) (ent_work.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f AdminFunc) Mutate(ctx context.Context, m ent_work.Mutation) (ent_work.Value, error) {
+	if mv, ok := m.(*ent_work.AdminMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent_work.AdminMutation", m)
+}
+
 // The SchoolFunc type is an adapter to allow the use of ordinary
 // function as School mutator.
 type SchoolFunc func(context.Context, *ent_work.SchoolMutation) (ent_work.Value, error)

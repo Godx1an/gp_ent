@@ -5,6 +5,7 @@ package ent_work
 import (
 	"time"
 
+	"github.com/Godx1an/gp_ent/pkg/ent_work/admin"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/schema"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/school"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
@@ -14,6 +15,59 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	adminMixin := schema.Admin{}.Mixin()
+	adminMixinFields0 := adminMixin[0].Fields()
+	_ = adminMixinFields0
+	adminFields := schema.Admin{}.Fields()
+	_ = adminFields
+	// adminDescCreatedBy is the schema descriptor for created_by field.
+	adminDescCreatedBy := adminMixinFields0[1].Descriptor()
+	// admin.DefaultCreatedBy holds the default value on creation for the created_by field.
+	admin.DefaultCreatedBy = adminDescCreatedBy.Default.(int64)
+	// adminDescUpdatedBy is the schema descriptor for updated_by field.
+	adminDescUpdatedBy := adminMixinFields0[2].Descriptor()
+	// admin.DefaultUpdatedBy holds the default value on creation for the updated_by field.
+	admin.DefaultUpdatedBy = adminDescUpdatedBy.Default.(int64)
+	// adminDescCreatedAt is the schema descriptor for created_at field.
+	adminDescCreatedAt := adminMixinFields0[3].Descriptor()
+	// admin.DefaultCreatedAt holds the default value on creation for the created_at field.
+	admin.DefaultCreatedAt = adminDescCreatedAt.Default.(func() time.Time)
+	// adminDescUpdatedAt is the schema descriptor for updated_at field.
+	adminDescUpdatedAt := adminMixinFields0[4].Descriptor()
+	// admin.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	admin.DefaultUpdatedAt = adminDescUpdatedAt.Default.(func() time.Time)
+	// admin.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	admin.UpdateDefaultUpdatedAt = adminDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// adminDescDeletedAt is the schema descriptor for deleted_at field.
+	adminDescDeletedAt := adminMixinFields0[5].Descriptor()
+	// admin.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	admin.DefaultDeletedAt = adminDescDeletedAt.Default.(time.Time)
+	// adminDescPhone is the schema descriptor for phone field.
+	adminDescPhone := adminFields[0].Descriptor()
+	// admin.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	admin.PhoneValidator = func() func(string) error {
+		validators := adminDescPhone.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(phone string) error {
+			for _, fn := range fns {
+				if err := fn(phone); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// adminDescSchool is the schema descriptor for school field.
+	adminDescSchool := adminFields[3].Descriptor()
+	// admin.DefaultSchool holds the default value on creation for the school field.
+	admin.DefaultSchool = adminDescSchool.Default.(string)
+	// adminDescID is the schema descriptor for id field.
+	adminDescID := adminMixinFields0[0].Descriptor()
+	// admin.DefaultID holds the default value on creation for the id field.
+	admin.DefaultID = adminDescID.Default.(func() int64)
 	schoolMixin := schema.School{}.Mixin()
 	schoolMixinFields0 := schoolMixin[0].Fields()
 	_ = schoolMixinFields0
