@@ -33,8 +33,12 @@ type User struct {
 	// Nickname holds the value of the "nickname" field.
 	Nickname string `json:"nickname,omitempty"`
 	// Password holds the value of the "password" field.
-	Password     string `json:"password,omitempty"`
-	selectValues sql.SelectValues
+	Password string `json:"password,omitempty"`
+	// School holds the value of the "school" field.
+	School string `json:"school,omitempty"`
+	// NextUpdateTime holds the value of the "next_update_time" field.
+	NextUpdateTime time.Time `json:"next_update_time,omitempty"`
+	selectValues   sql.SelectValues
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -44,9 +48,9 @@ func (*User) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case user.FieldID, user.FieldCreatedBy, user.FieldUpdatedBy:
 			values[i] = new(sql.NullInt64)
-		case user.FieldPhone, user.FieldNickname, user.FieldPassword:
+		case user.FieldPhone, user.FieldNickname, user.FieldPassword, user.FieldSchool:
 			values[i] = new(sql.NullString)
-		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt:
+		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldNextUpdateTime:
 			values[i] = new(sql.NullTime)
 		default:
 			values[i] = new(sql.UnknownType)
@@ -117,6 +121,18 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.Password = value.String
 			}
+		case user.FieldSchool:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field school", values[i])
+			} else if value.Valid {
+				u.School = value.String
+			}
+		case user.FieldNextUpdateTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field next_update_time", values[i])
+			} else if value.Valid {
+				u.NextUpdateTime = value.Time
+			}
 		default:
 			u.selectValues.Set(columns[i], values[i])
 		}
@@ -176,6 +192,12 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("password=")
 	builder.WriteString(u.Password)
+	builder.WriteString(", ")
+	builder.WriteString("school=")
+	builder.WriteString(u.School)
+	builder.WriteString(", ")
+	builder.WriteString("next_update_time=")
+	builder.WriteString(u.NextUpdateTime.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

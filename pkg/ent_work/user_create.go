@@ -110,6 +110,34 @@ func (uc *UserCreate) SetPassword(s string) *UserCreate {
 	return uc
 }
 
+// SetSchool sets the "school" field.
+func (uc *UserCreate) SetSchool(s string) *UserCreate {
+	uc.mutation.SetSchool(s)
+	return uc
+}
+
+// SetNillableSchool sets the "school" field if the given value is not nil.
+func (uc *UserCreate) SetNillableSchool(s *string) *UserCreate {
+	if s != nil {
+		uc.SetSchool(*s)
+	}
+	return uc
+}
+
+// SetNextUpdateTime sets the "next_update_time" field.
+func (uc *UserCreate) SetNextUpdateTime(t time.Time) *UserCreate {
+	uc.mutation.SetNextUpdateTime(t)
+	return uc
+}
+
+// SetNillableNextUpdateTime sets the "next_update_time" field if the given value is not nil.
+func (uc *UserCreate) SetNillableNextUpdateTime(t *time.Time) *UserCreate {
+	if t != nil {
+		uc.SetNextUpdateTime(*t)
+	}
+	return uc
+}
+
 // SetID sets the "id" field.
 func (uc *UserCreate) SetID(i int64) *UserCreate {
 	uc.mutation.SetID(i)
@@ -179,6 +207,10 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultDeletedAt
 		uc.mutation.SetDeletedAt(v)
 	}
+	if _, ok := uc.mutation.School(); !ok {
+		v := user.DefaultSchool
+		uc.mutation.SetSchool(v)
+	}
 	if _, ok := uc.mutation.ID(); !ok {
 		v := user.DefaultID()
 		uc.mutation.SetID(v)
@@ -215,6 +247,9 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.Password(); !ok {
 		return &ValidationError{Name: "password", err: errors.New(`ent_work: missing required field "User.password"`)}
+	}
+	if _, ok := uc.mutation.School(); !ok {
+		return &ValidationError{Name: "school", err: errors.New(`ent_work: missing required field "User.school"`)}
 	}
 	return nil
 }
@@ -280,6 +315,14 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
 		_node.Password = value
+	}
+	if value, ok := uc.mutation.School(); ok {
+		_spec.SetField(user.FieldSchool, field.TypeString, value)
+		_node.School = value
+	}
+	if value, ok := uc.mutation.NextUpdateTime(); ok {
+		_spec.SetField(user.FieldNextUpdateTime, field.TypeTime, value)
+		_node.NextUpdateTime = value
 	}
 	return _node, _spec
 }
@@ -426,6 +469,36 @@ func (u *UserUpsert) SetPassword(v string) *UserUpsert {
 // UpdatePassword sets the "password" field to the value that was provided on create.
 func (u *UserUpsert) UpdatePassword() *UserUpsert {
 	u.SetExcluded(user.FieldPassword)
+	return u
+}
+
+// SetSchool sets the "school" field.
+func (u *UserUpsert) SetSchool(v string) *UserUpsert {
+	u.Set(user.FieldSchool, v)
+	return u
+}
+
+// UpdateSchool sets the "school" field to the value that was provided on create.
+func (u *UserUpsert) UpdateSchool() *UserUpsert {
+	u.SetExcluded(user.FieldSchool)
+	return u
+}
+
+// SetNextUpdateTime sets the "next_update_time" field.
+func (u *UserUpsert) SetNextUpdateTime(v time.Time) *UserUpsert {
+	u.Set(user.FieldNextUpdateTime, v)
+	return u
+}
+
+// UpdateNextUpdateTime sets the "next_update_time" field to the value that was provided on create.
+func (u *UserUpsert) UpdateNextUpdateTime() *UserUpsert {
+	u.SetExcluded(user.FieldNextUpdateTime)
+	return u
+}
+
+// ClearNextUpdateTime clears the value of the "next_update_time" field.
+func (u *UserUpsert) ClearNextUpdateTime() *UserUpsert {
+	u.SetNull(user.FieldNextUpdateTime)
 	return u
 }
 
@@ -589,6 +662,41 @@ func (u *UserUpsertOne) SetPassword(v string) *UserUpsertOne {
 func (u *UserUpsertOne) UpdatePassword() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdatePassword()
+	})
+}
+
+// SetSchool sets the "school" field.
+func (u *UserUpsertOne) SetSchool(v string) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetSchool(v)
+	})
+}
+
+// UpdateSchool sets the "school" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateSchool() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateSchool()
+	})
+}
+
+// SetNextUpdateTime sets the "next_update_time" field.
+func (u *UserUpsertOne) SetNextUpdateTime(v time.Time) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetNextUpdateTime(v)
+	})
+}
+
+// UpdateNextUpdateTime sets the "next_update_time" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateNextUpdateTime() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateNextUpdateTime()
+	})
+}
+
+// ClearNextUpdateTime clears the value of the "next_update_time" field.
+func (u *UserUpsertOne) ClearNextUpdateTime() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearNextUpdateTime()
 	})
 }
 
@@ -918,6 +1026,41 @@ func (u *UserUpsertBulk) SetPassword(v string) *UserUpsertBulk {
 func (u *UserUpsertBulk) UpdatePassword() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
 		s.UpdatePassword()
+	})
+}
+
+// SetSchool sets the "school" field.
+func (u *UserUpsertBulk) SetSchool(v string) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetSchool(v)
+	})
+}
+
+// UpdateSchool sets the "school" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateSchool() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateSchool()
+	})
+}
+
+// SetNextUpdateTime sets the "next_update_time" field.
+func (u *UserUpsertBulk) SetNextUpdateTime(v time.Time) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetNextUpdateTime(v)
+	})
+}
+
+// UpdateNextUpdateTime sets the "next_update_time" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateNextUpdateTime() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateNextUpdateTime()
+	})
+}
+
+// ClearNextUpdateTime clears the value of the "next_update_time" field.
+func (u *UserUpsertBulk) ClearNextUpdateTime() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.ClearNextUpdateTime()
 	})
 }
 

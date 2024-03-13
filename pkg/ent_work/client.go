@@ -14,6 +14,7 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/school"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 )
 
@@ -22,6 +23,8 @@ type Client struct {
 	config
 	// Schema is the client for creating, migrating and dropping schema.
 	Schema *migrate.Schema
+	// School is the client for interacting with the School builders.
+	School *SchoolClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 }
@@ -35,6 +38,7 @@ func NewClient(opts ...Option) *Client {
 
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
+	c.School = NewSchoolClient(c.config)
 	c.User = NewUserClient(c.config)
 }
 
@@ -128,6 +132,7 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	return &Tx{
 		ctx:    ctx,
 		config: cfg,
+		School: NewSchoolClient(cfg),
 		User:   NewUserClient(cfg),
 	}, nil
 }
@@ -148,6 +153,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	return &Tx{
 		ctx:    ctx,
 		config: cfg,
+		School: NewSchoolClient(cfg),
 		User:   NewUserClient(cfg),
 	}, nil
 }
@@ -155,7 +161,7 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 // Debug returns a new debug-client. It's used to get verbose logging on specific operations.
 //
 //	client.Debug().
-//		User.
+//		School.
 //		Query().
 //		Count(ctx)
 func (c *Client) Debug() *Client {
@@ -177,22 +183,159 @@ func (c *Client) Close() error {
 // Use adds the mutation hooks to all the entity clients.
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
+	c.School.Use(hooks...)
 	c.User.Use(hooks...)
 }
 
 // Intercept adds the query interceptors to all the entity clients.
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
+	c.School.Intercept(interceptors...)
 	c.User.Intercept(interceptors...)
 }
 
 // Mutate implements the ent.Mutator interface.
 func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
+	case *SchoolMutation:
+		return c.School.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
 	default:
 		return nil, fmt.Errorf("ent_work: unknown mutation type %T", m)
+	}
+}
+
+// SchoolClient is a client for the School schema.
+type SchoolClient struct {
+	config
+}
+
+// NewSchoolClient returns a client for the School from the given config.
+func NewSchoolClient(c config) *SchoolClient {
+	return &SchoolClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `school.Hooks(f(g(h())))`.
+func (c *SchoolClient) Use(hooks ...Hook) {
+	c.hooks.School = append(c.hooks.School, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `school.Intercept(f(g(h())))`.
+func (c *SchoolClient) Intercept(interceptors ...Interceptor) {
+	c.inters.School = append(c.inters.School, interceptors...)
+}
+
+// Create returns a builder for creating a School entity.
+func (c *SchoolClient) Create() *SchoolCreate {
+	mutation := newSchoolMutation(c.config, OpCreate)
+	return &SchoolCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of School entities.
+func (c *SchoolClient) CreateBulk(builders ...*SchoolCreate) *SchoolCreateBulk {
+	return &SchoolCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SchoolClient) MapCreateBulk(slice any, setFunc func(*SchoolCreate, int)) *SchoolCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SchoolCreateBulk{err: fmt.Errorf("calling to SchoolClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SchoolCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SchoolCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for School.
+func (c *SchoolClient) Update() *SchoolUpdate {
+	mutation := newSchoolMutation(c.config, OpUpdate)
+	return &SchoolUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SchoolClient) UpdateOne(s *School) *SchoolUpdateOne {
+	mutation := newSchoolMutation(c.config, OpUpdateOne, withSchool(s))
+	return &SchoolUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SchoolClient) UpdateOneID(id int64) *SchoolUpdateOne {
+	mutation := newSchoolMutation(c.config, OpUpdateOne, withSchoolID(id))
+	return &SchoolUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for School.
+func (c *SchoolClient) Delete() *SchoolDelete {
+	mutation := newSchoolMutation(c.config, OpDelete)
+	return &SchoolDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SchoolClient) DeleteOne(s *School) *SchoolDeleteOne {
+	return c.DeleteOneID(s.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SchoolClient) DeleteOneID(id int64) *SchoolDeleteOne {
+	builder := c.Delete().Where(school.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SchoolDeleteOne{builder}
+}
+
+// Query returns a query builder for School.
+func (c *SchoolClient) Query() *SchoolQuery {
+	return &SchoolQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSchool},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a School entity by its id.
+func (c *SchoolClient) Get(ctx context.Context, id int64) (*School, error) {
+	return c.Query().Where(school.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SchoolClient) GetX(ctx context.Context, id int64) *School {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SchoolClient) Hooks() []Hook {
+	return c.hooks.School
+}
+
+// Interceptors returns the client interceptors.
+func (c *SchoolClient) Interceptors() []Interceptor {
+	return c.inters.School
+}
+
+func (c *SchoolClient) mutate(ctx context.Context, m *SchoolMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SchoolCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SchoolUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SchoolUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SchoolDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent_work: unknown School mutation op: %q", m.Op())
 	}
 }
 
@@ -332,9 +475,9 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		User []ent.Hook
+		School, User []ent.Hook
 	}
 	inters struct {
-		User []ent.Interceptor
+		School, User []ent.Interceptor
 	}
 )

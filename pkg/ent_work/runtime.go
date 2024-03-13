@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/Godx1an/gp_ent/pkg/ent_work/schema"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/school"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 )
 
@@ -13,6 +14,37 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	schoolMixin := schema.School{}.Mixin()
+	schoolMixinFields0 := schoolMixin[0].Fields()
+	_ = schoolMixinFields0
+	schoolFields := schema.School{}.Fields()
+	_ = schoolFields
+	// schoolDescCreatedBy is the schema descriptor for created_by field.
+	schoolDescCreatedBy := schoolMixinFields0[1].Descriptor()
+	// school.DefaultCreatedBy holds the default value on creation for the created_by field.
+	school.DefaultCreatedBy = schoolDescCreatedBy.Default.(int64)
+	// schoolDescUpdatedBy is the schema descriptor for updated_by field.
+	schoolDescUpdatedBy := schoolMixinFields0[2].Descriptor()
+	// school.DefaultUpdatedBy holds the default value on creation for the updated_by field.
+	school.DefaultUpdatedBy = schoolDescUpdatedBy.Default.(int64)
+	// schoolDescCreatedAt is the schema descriptor for created_at field.
+	schoolDescCreatedAt := schoolMixinFields0[3].Descriptor()
+	// school.DefaultCreatedAt holds the default value on creation for the created_at field.
+	school.DefaultCreatedAt = schoolDescCreatedAt.Default.(func() time.Time)
+	// schoolDescUpdatedAt is the schema descriptor for updated_at field.
+	schoolDescUpdatedAt := schoolMixinFields0[4].Descriptor()
+	// school.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	school.DefaultUpdatedAt = schoolDescUpdatedAt.Default.(func() time.Time)
+	// school.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	school.UpdateDefaultUpdatedAt = schoolDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// schoolDescDeletedAt is the schema descriptor for deleted_at field.
+	schoolDescDeletedAt := schoolMixinFields0[5].Descriptor()
+	// school.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	school.DefaultDeletedAt = schoolDescDeletedAt.Default.(time.Time)
+	// schoolDescID is the schema descriptor for id field.
+	schoolDescID := schoolMixinFields0[0].Descriptor()
+	// school.DefaultID holds the default value on creation for the id field.
+	school.DefaultID = schoolDescID.Default.(func() int64)
 	userMixin := schema.User{}.Mixin()
 	userMixinFields0 := userMixin[0].Fields()
 	_ = userMixinFields0
@@ -58,6 +90,10 @@ func init() {
 			return nil
 		}
 	}()
+	// userDescSchool is the schema descriptor for school field.
+	userDescSchool := userFields[3].Descriptor()
+	// user.DefaultSchool holds the default value on creation for the school field.
+	user.DefaultSchool = userDescSchool.Default.(string)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userMixinFields0[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

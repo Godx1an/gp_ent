@@ -133,6 +133,40 @@ func (uu *UserUpdate) SetNillablePassword(s *string) *UserUpdate {
 	return uu
 }
 
+// SetSchool sets the "school" field.
+func (uu *UserUpdate) SetSchool(s string) *UserUpdate {
+	uu.mutation.SetSchool(s)
+	return uu
+}
+
+// SetNillableSchool sets the "school" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableSchool(s *string) *UserUpdate {
+	if s != nil {
+		uu.SetSchool(*s)
+	}
+	return uu
+}
+
+// SetNextUpdateTime sets the "next_update_time" field.
+func (uu *UserUpdate) SetNextUpdateTime(t time.Time) *UserUpdate {
+	uu.mutation.SetNextUpdateTime(t)
+	return uu
+}
+
+// SetNillableNextUpdateTime sets the "next_update_time" field if the given value is not nil.
+func (uu *UserUpdate) SetNillableNextUpdateTime(t *time.Time) *UserUpdate {
+	if t != nil {
+		uu.SetNextUpdateTime(*t)
+	}
+	return uu
+}
+
+// ClearNextUpdateTime clears the value of the "next_update_time" field.
+func (uu *UserUpdate) ClearNextUpdateTime() *UserUpdate {
+	uu.mutation.ClearNextUpdateTime()
+	return uu
+}
+
 // Mutation returns the UserMutation object of the builder.
 func (uu *UserUpdate) Mutation() *UserMutation {
 	return uu.mutation
@@ -228,6 +262,15 @@ func (uu *UserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := uu.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
+	}
+	if value, ok := uu.mutation.School(); ok {
+		_spec.SetField(user.FieldSchool, field.TypeString, value)
+	}
+	if value, ok := uu.mutation.NextUpdateTime(); ok {
+		_spec.SetField(user.FieldNextUpdateTime, field.TypeTime, value)
+	}
+	if uu.mutation.NextUpdateTimeCleared() {
+		_spec.ClearField(user.FieldNextUpdateTime, field.TypeTime)
 	}
 	_spec.AddModifiers(uu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, uu.driver, _spec); err != nil {
@@ -352,6 +395,40 @@ func (uuo *UserUpdateOne) SetNillablePassword(s *string) *UserUpdateOne {
 	if s != nil {
 		uuo.SetPassword(*s)
 	}
+	return uuo
+}
+
+// SetSchool sets the "school" field.
+func (uuo *UserUpdateOne) SetSchool(s string) *UserUpdateOne {
+	uuo.mutation.SetSchool(s)
+	return uuo
+}
+
+// SetNillableSchool sets the "school" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableSchool(s *string) *UserUpdateOne {
+	if s != nil {
+		uuo.SetSchool(*s)
+	}
+	return uuo
+}
+
+// SetNextUpdateTime sets the "next_update_time" field.
+func (uuo *UserUpdateOne) SetNextUpdateTime(t time.Time) *UserUpdateOne {
+	uuo.mutation.SetNextUpdateTime(t)
+	return uuo
+}
+
+// SetNillableNextUpdateTime sets the "next_update_time" field if the given value is not nil.
+func (uuo *UserUpdateOne) SetNillableNextUpdateTime(t *time.Time) *UserUpdateOne {
+	if t != nil {
+		uuo.SetNextUpdateTime(*t)
+	}
+	return uuo
+}
+
+// ClearNextUpdateTime clears the value of the "next_update_time" field.
+func (uuo *UserUpdateOne) ClearNextUpdateTime() *UserUpdateOne {
+	uuo.mutation.ClearNextUpdateTime()
 	return uuo
 }
 
@@ -480,6 +557,15 @@ func (uuo *UserUpdateOne) sqlSave(ctx context.Context) (_node *User, err error) 
 	}
 	if value, ok := uuo.mutation.Password(); ok {
 		_spec.SetField(user.FieldPassword, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.School(); ok {
+		_spec.SetField(user.FieldSchool, field.TypeString, value)
+	}
+	if value, ok := uuo.mutation.NextUpdateTime(); ok {
+		_spec.SetField(user.FieldNextUpdateTime, field.TypeTime, value)
+	}
+	if uuo.mutation.NextUpdateTimeCleared() {
+		_spec.ClearField(user.FieldNextUpdateTime, field.TypeTime)
 	}
 	_spec.AddModifiers(uuo.modifiers...)
 	_node = &User{config: uuo.config}

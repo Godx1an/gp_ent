@@ -9,6 +9,18 @@ import (
 	"github.com/Godx1an/gp_ent/pkg/ent_work"
 )
 
+// The SchoolFunc type is an adapter to allow the use of ordinary
+// function as School mutator.
+type SchoolFunc func(context.Context, *ent_work.SchoolMutation) (ent_work.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SchoolFunc) Mutate(ctx context.Context, m ent_work.Mutation) (ent_work.Value, error) {
+	if mv, ok := m.(*ent_work.SchoolMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent_work.SchoolMutation", m)
+}
+
 // The UserFunc type is an adapter to allow the use of ordinary
 // function as User mutator.
 type UserFunc func(context.Context, *ent_work.UserMutation) (ent_work.Value, error)

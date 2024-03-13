@@ -19,6 +19,8 @@ func (User) Fields() []ent.Field {
 			MaxLen(11),
 		field.String("nickname"),
 		field.String("password"),
+		field.String("school").Default(""),
+		field.Time("next_update_time").Optional(),
 	}
 }
 

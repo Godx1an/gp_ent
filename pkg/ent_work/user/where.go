@@ -94,6 +94,16 @@ func Password(v string) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldPassword, v))
 }
 
+// School applies equality check predicate on the "school" field. It's identical to SchoolEQ.
+func School(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldSchool, v))
+}
+
+// NextUpdateTime applies equality check predicate on the "next_update_time" field. It's identical to NextUpdateTimeEQ.
+func NextUpdateTime(v time.Time) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldNextUpdateTime, v))
+}
+
 // CreatedByEQ applies the EQ predicate on the "created_by" field.
 func CreatedByEQ(v int64) predicate.User {
 	return predicate.User(sql.FieldEQ(FieldCreatedBy, v))
@@ -487,6 +497,121 @@ func PasswordEqualFold(v string) predicate.User {
 // PasswordContainsFold applies the ContainsFold predicate on the "password" field.
 func PasswordContainsFold(v string) predicate.User {
 	return predicate.User(sql.FieldContainsFold(FieldPassword, v))
+}
+
+// SchoolEQ applies the EQ predicate on the "school" field.
+func SchoolEQ(v string) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldSchool, v))
+}
+
+// SchoolNEQ applies the NEQ predicate on the "school" field.
+func SchoolNEQ(v string) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldSchool, v))
+}
+
+// SchoolIn applies the In predicate on the "school" field.
+func SchoolIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldIn(FieldSchool, vs...))
+}
+
+// SchoolNotIn applies the NotIn predicate on the "school" field.
+func SchoolNotIn(vs ...string) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldSchool, vs...))
+}
+
+// SchoolGT applies the GT predicate on the "school" field.
+func SchoolGT(v string) predicate.User {
+	return predicate.User(sql.FieldGT(FieldSchool, v))
+}
+
+// SchoolGTE applies the GTE predicate on the "school" field.
+func SchoolGTE(v string) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldSchool, v))
+}
+
+// SchoolLT applies the LT predicate on the "school" field.
+func SchoolLT(v string) predicate.User {
+	return predicate.User(sql.FieldLT(FieldSchool, v))
+}
+
+// SchoolLTE applies the LTE predicate on the "school" field.
+func SchoolLTE(v string) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldSchool, v))
+}
+
+// SchoolContains applies the Contains predicate on the "school" field.
+func SchoolContains(v string) predicate.User {
+	return predicate.User(sql.FieldContains(FieldSchool, v))
+}
+
+// SchoolHasPrefix applies the HasPrefix predicate on the "school" field.
+func SchoolHasPrefix(v string) predicate.User {
+	return predicate.User(sql.FieldHasPrefix(FieldSchool, v))
+}
+
+// SchoolHasSuffix applies the HasSuffix predicate on the "school" field.
+func SchoolHasSuffix(v string) predicate.User {
+	return predicate.User(sql.FieldHasSuffix(FieldSchool, v))
+}
+
+// SchoolEqualFold applies the EqualFold predicate on the "school" field.
+func SchoolEqualFold(v string) predicate.User {
+	return predicate.User(sql.FieldEqualFold(FieldSchool, v))
+}
+
+// SchoolContainsFold applies the ContainsFold predicate on the "school" field.
+func SchoolContainsFold(v string) predicate.User {
+	return predicate.User(sql.FieldContainsFold(FieldSchool, v))
+}
+
+// NextUpdateTimeEQ applies the EQ predicate on the "next_update_time" field.
+func NextUpdateTimeEQ(v time.Time) predicate.User {
+	return predicate.User(sql.FieldEQ(FieldNextUpdateTime, v))
+}
+
+// NextUpdateTimeNEQ applies the NEQ predicate on the "next_update_time" field.
+func NextUpdateTimeNEQ(v time.Time) predicate.User {
+	return predicate.User(sql.FieldNEQ(FieldNextUpdateTime, v))
+}
+
+// NextUpdateTimeIn applies the In predicate on the "next_update_time" field.
+func NextUpdateTimeIn(vs ...time.Time) predicate.User {
+	return predicate.User(sql.FieldIn(FieldNextUpdateTime, vs...))
+}
+
+// NextUpdateTimeNotIn applies the NotIn predicate on the "next_update_time" field.
+func NextUpdateTimeNotIn(vs ...time.Time) predicate.User {
+	return predicate.User(sql.FieldNotIn(FieldNextUpdateTime, vs...))
+}
+
+// NextUpdateTimeGT applies the GT predicate on the "next_update_time" field.
+func NextUpdateTimeGT(v time.Time) predicate.User {
+	return predicate.User(sql.FieldGT(FieldNextUpdateTime, v))
+}
+
+// NextUpdateTimeGTE applies the GTE predicate on the "next_update_time" field.
+func NextUpdateTimeGTE(v time.Time) predicate.User {
+	return predicate.User(sql.FieldGTE(FieldNextUpdateTime, v))
+}
+
+// NextUpdateTimeLT applies the LT predicate on the "next_update_time" field.
+func NextUpdateTimeLT(v time.Time) predicate.User {
+	return predicate.User(sql.FieldLT(FieldNextUpdateTime, v))
+}
+
+// NextUpdateTimeLTE applies the LTE predicate on the "next_update_time" field.
+func NextUpdateTimeLTE(v time.Time) predicate.User {
+	return predicate.User(sql.FieldLTE(FieldNextUpdateTime, v))
+}
+
+// NextUpdateTimeIsNil applies the IsNil predicate on the "next_update_time" field.
+func NextUpdateTimeIsNil() predicate.User {
+	return predicate.User(sql.FieldIsNull(FieldNextUpdateTime))
+}
+
+// NextUpdateTimeNotNil applies the NotNil predicate on the "next_update_time" field.
+func NextUpdateTimeNotNil() predicate.User {
+	return predicate.User(sql.FieldNotNull(FieldNextUpdateTime))
 }
 
 // And groups predicates with the AND operator between them.
