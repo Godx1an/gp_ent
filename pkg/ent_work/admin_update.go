@@ -133,6 +133,20 @@ func (au *AdminUpdate) SetNillablePassword(s *string) *AdminUpdate {
 	return au
 }
 
+// SetSchool sets the "school" field.
+func (au *AdminUpdate) SetSchool(s string) *AdminUpdate {
+	au.mutation.SetSchool(s)
+	return au
+}
+
+// SetNillableSchool sets the "school" field if the given value is not nil.
+func (au *AdminUpdate) SetNillableSchool(s *string) *AdminUpdate {
+	if s != nil {
+		au.SetSchool(*s)
+	}
+	return au
+}
+
 // Mutation returns the AdminMutation object of the builder.
 func (au *AdminUpdate) Mutation() *AdminMutation {
 	return au.mutation
@@ -228,6 +242,9 @@ func (au *AdminUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := au.mutation.Password(); ok {
 		_spec.SetField(admin.FieldPassword, field.TypeString, value)
+	}
+	if value, ok := au.mutation.School(); ok {
+		_spec.SetField(admin.FieldSchool, field.TypeString, value)
 	}
 	_spec.AddModifiers(au.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, au.driver, _spec); err != nil {
@@ -351,6 +368,20 @@ func (auo *AdminUpdateOne) SetPassword(s string) *AdminUpdateOne {
 func (auo *AdminUpdateOne) SetNillablePassword(s *string) *AdminUpdateOne {
 	if s != nil {
 		auo.SetPassword(*s)
+	}
+	return auo
+}
+
+// SetSchool sets the "school" field.
+func (auo *AdminUpdateOne) SetSchool(s string) *AdminUpdateOne {
+	auo.mutation.SetSchool(s)
+	return auo
+}
+
+// SetNillableSchool sets the "school" field if the given value is not nil.
+func (auo *AdminUpdateOne) SetNillableSchool(s *string) *AdminUpdateOne {
+	if s != nil {
+		auo.SetSchool(*s)
 	}
 	return auo
 }
@@ -480,6 +511,9 @@ func (auo *AdminUpdateOne) sqlSave(ctx context.Context) (_node *Admin, err error
 	}
 	if value, ok := auo.mutation.Password(); ok {
 		_spec.SetField(admin.FieldPassword, field.TypeString, value)
+	}
+	if value, ok := auo.mutation.School(); ok {
+		_spec.SetField(admin.FieldSchool, field.TypeString, value)
 	}
 	_spec.AddModifiers(auo.modifiers...)
 	_node = &Admin{config: auo.config}

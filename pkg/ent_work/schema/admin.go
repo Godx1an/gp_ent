@@ -19,7 +19,7 @@ func (Admin) Fields() []ent.Field {
 			MaxLen(11),
 		field.String("nickname"),
 		field.String("password"),
-		field.String("school").Default("").Immutable(),
+		field.String("school").Default(""),
 	}
 }
 

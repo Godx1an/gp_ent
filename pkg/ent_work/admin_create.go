@@ -454,6 +454,18 @@ func (u *AdminUpsert) UpdatePassword() *AdminUpsert {
 	return u
 }
 
+// SetSchool sets the "school" field.
+func (u *AdminUpsert) SetSchool(v string) *AdminUpsert {
+	u.Set(admin.FieldSchool, v)
+	return u
+}
+
+// UpdateSchool sets the "school" field to the value that was provided on create.
+func (u *AdminUpsert) UpdateSchool() *AdminUpsert {
+	u.SetExcluded(admin.FieldSchool)
+	return u
+}
+
 // UpdateNewValues updates the mutable fields using the new values that were set on create except the ID field.
 // Using this option is equivalent to using:
 //
@@ -473,9 +485,6 @@ func (u *AdminUpsertOne) UpdateNewValues() *AdminUpsertOne {
 		}
 		if _, exists := u.create.mutation.CreatedAt(); exists {
 			s.SetIgnore(admin.FieldCreatedAt)
-		}
-		if _, exists := u.create.mutation.School(); exists {
-			s.SetIgnore(admin.FieldSchool)
 		}
 	}))
 	return u
@@ -617,6 +626,20 @@ func (u *AdminUpsertOne) SetPassword(v string) *AdminUpsertOne {
 func (u *AdminUpsertOne) UpdatePassword() *AdminUpsertOne {
 	return u.Update(func(s *AdminUpsert) {
 		s.UpdatePassword()
+	})
+}
+
+// SetSchool sets the "school" field.
+func (u *AdminUpsertOne) SetSchool(v string) *AdminUpsertOne {
+	return u.Update(func(s *AdminUpsert) {
+		s.SetSchool(v)
+	})
+}
+
+// UpdateSchool sets the "school" field to the value that was provided on create.
+func (u *AdminUpsertOne) UpdateSchool() *AdminUpsertOne {
+	return u.Update(func(s *AdminUpsert) {
+		s.UpdateSchool()
 	})
 }
 
@@ -805,9 +828,6 @@ func (u *AdminUpsertBulk) UpdateNewValues() *AdminUpsertBulk {
 			if _, exists := b.mutation.CreatedAt(); exists {
 				s.SetIgnore(admin.FieldCreatedAt)
 			}
-			if _, exists := b.mutation.School(); exists {
-				s.SetIgnore(admin.FieldSchool)
-			}
 		}
 	}))
 	return u
@@ -949,6 +969,20 @@ func (u *AdminUpsertBulk) SetPassword(v string) *AdminUpsertBulk {
 func (u *AdminUpsertBulk) UpdatePassword() *AdminUpsertBulk {
 	return u.Update(func(s *AdminUpsert) {
 		s.UpdatePassword()
+	})
+}
+
+// SetSchool sets the "school" field.
+func (u *AdminUpsertBulk) SetSchool(v string) *AdminUpsertBulk {
+	return u.Update(func(s *AdminUpsert) {
+		s.SetSchool(v)
+	})
+}
+
+// UpdateSchool sets the "school" field to the value that was provided on create.
+func (u *AdminUpsertBulk) UpdateSchool() *AdminUpsertBulk {
+	return u.Update(func(s *AdminUpsert) {
+		s.UpdateSchool()
 	})
 }
 
