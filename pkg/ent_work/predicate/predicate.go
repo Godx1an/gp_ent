@@ -9,8 +9,14 @@ import (
 // Admin is the predicate function for admin builders.
 type Admin func(*sql.Selector)
 
+// FitnessTestItem is the predicate function for fitnesstestitem builders.
+type FitnessTestItem func(*sql.Selector)
+
 // School is the predicate function for school builders.
 type School func(*sql.Selector)
+
+// SchoolFitnessTestItem is the predicate function for schoolfitnesstestitem builders.
+type SchoolFitnessTestItem func(*sql.Selector)
 
 // User is the predicate function for user builders.
 type User func(*sql.Selector)

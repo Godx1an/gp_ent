@@ -12,8 +12,10 @@ import (
 	"entgo.io/ent"
 	"entgo.io/ent/dialect/sql"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/admin"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/fitnesstestitem"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/predicate"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/school"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/schoolfitnesstestitem"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 )
 
@@ -26,9 +28,11 @@ const (
 	OpUpdateOne = ent.OpUpdateOne
 
 	// Node types.
-	TypeAdmin  = "Admin"
-	TypeSchool = "School"
-	TypeUser   = "User"
+	TypeAdmin                 = "Admin"
+	TypeFitnessTestItem       = "FitnessTestItem"
+	TypeSchool                = "School"
+	TypeSchoolFitnessTestItem = "SchoolFitnessTestItem"
+	TypeUser                  = "User"
 )
 
 // AdminMutation represents an operation that mutates the Admin nodes in the graph.
@@ -864,6 +868,677 @@ func (m *AdminMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown Admin edge %s", name)
 }
 
+// FitnessTestItemMutation represents an operation that mutates the FitnessTestItem nodes in the graph.
+type FitnessTestItemMutation struct {
+	config
+	op            Op
+	typ           string
+	id            *int64
+	created_by    *int64
+	addcreated_by *int64
+	updated_by    *int64
+	addupdated_by *int64
+	created_at    *time.Time
+	updated_at    *time.Time
+	deleted_at    *time.Time
+	item          *string
+	clearedFields map[string]struct{}
+	done          bool
+	oldValue      func(context.Context) (*FitnessTestItem, error)
+	predicates    []predicate.FitnessTestItem
+}
+
+var _ ent.Mutation = (*FitnessTestItemMutation)(nil)
+
+// fitnesstestitemOption allows management of the mutation configuration using functional options.
+type fitnesstestitemOption func(*FitnessTestItemMutation)
+
+// newFitnessTestItemMutation creates new mutation for the FitnessTestItem entity.
+func newFitnessTestItemMutation(c config, op Op, opts ...fitnesstestitemOption) *FitnessTestItemMutation {
+	m := &FitnessTestItemMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeFitnessTestItem,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withFitnessTestItemID sets the ID field of the mutation.
+func withFitnessTestItemID(id int64) fitnesstestitemOption {
+	return func(m *FitnessTestItemMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *FitnessTestItem
+		)
+		m.oldValue = func(ctx context.Context) (*FitnessTestItem, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().FitnessTestItem.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withFitnessTestItem sets the old FitnessTestItem of the mutation.
+func withFitnessTestItem(node *FitnessTestItem) fitnesstestitemOption {
+	return func(m *FitnessTestItemMutation) {
+		m.oldValue = func(context.Context) (*FitnessTestItem, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m FitnessTestItemMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m FitnessTestItemMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent_work: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of FitnessTestItem entities.
+func (m *FitnessTestItemMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *FitnessTestItemMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *FitnessTestItemMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().FitnessTestItem.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (m *FitnessTestItemMutation) SetCreatedBy(i int64) {
+	m.created_by = &i
+	m.addcreated_by = nil
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *FitnessTestItemMutation) CreatedBy() (r int64, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the FitnessTestItem entity.
+// If the FitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FitnessTestItemMutation) OldCreatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (m *FitnessTestItemMutation) AddCreatedBy(i int64) {
+	if m.addcreated_by != nil {
+		*m.addcreated_by += i
+	} else {
+		m.addcreated_by = &i
+	}
+}
+
+// AddedCreatedBy returns the value that was added to the "created_by" field in this mutation.
+func (m *FitnessTestItemMutation) AddedCreatedBy() (r int64, exists bool) {
+	v := m.addcreated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *FitnessTestItemMutation) ResetCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *FitnessTestItemMutation) SetUpdatedBy(i int64) {
+	m.updated_by = &i
+	m.addupdated_by = nil
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *FitnessTestItemMutation) UpdatedBy() (r int64, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the FitnessTestItem entity.
+// If the FitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FitnessTestItemMutation) OldUpdatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (m *FitnessTestItemMutation) AddUpdatedBy(i int64) {
+	if m.addupdated_by != nil {
+		*m.addupdated_by += i
+	} else {
+		m.addupdated_by = &i
+	}
+}
+
+// AddedUpdatedBy returns the value that was added to the "updated_by" field in this mutation.
+func (m *FitnessTestItemMutation) AddedUpdatedBy() (r int64, exists bool) {
+	v := m.addupdated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *FitnessTestItemMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *FitnessTestItemMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *FitnessTestItemMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the FitnessTestItem entity.
+// If the FitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FitnessTestItemMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *FitnessTestItemMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *FitnessTestItemMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *FitnessTestItemMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the FitnessTestItem entity.
+// If the FitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FitnessTestItemMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *FitnessTestItemMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (m *FitnessTestItemMutation) SetDeletedAt(t time.Time) {
+	m.deleted_at = &t
+}
+
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
+func (m *FitnessTestItemMutation) DeletedAt() (r time.Time, exists bool) {
+	v := m.deleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeletedAt returns the old "deleted_at" field's value of the FitnessTestItem entity.
+// If the FitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FitnessTestItemMutation) OldDeletedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeletedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
+	}
+	return oldValue.DeletedAt, nil
+}
+
+// ResetDeletedAt resets all changes to the "deleted_at" field.
+func (m *FitnessTestItemMutation) ResetDeletedAt() {
+	m.deleted_at = nil
+}
+
+// SetItem sets the "item" field.
+func (m *FitnessTestItemMutation) SetItem(s string) {
+	m.item = &s
+}
+
+// Item returns the value of the "item" field in the mutation.
+func (m *FitnessTestItemMutation) Item() (r string, exists bool) {
+	v := m.item
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldItem returns the old "item" field's value of the FitnessTestItem entity.
+// If the FitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *FitnessTestItemMutation) OldItem(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldItem is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldItem requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldItem: %w", err)
+	}
+	return oldValue.Item, nil
+}
+
+// ResetItem resets all changes to the "item" field.
+func (m *FitnessTestItemMutation) ResetItem() {
+	m.item = nil
+}
+
+// Where appends a list predicates to the FitnessTestItemMutation builder.
+func (m *FitnessTestItemMutation) Where(ps ...predicate.FitnessTestItem) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the FitnessTestItemMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *FitnessTestItemMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.FitnessTestItem, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *FitnessTestItemMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *FitnessTestItemMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (FitnessTestItem).
+func (m *FitnessTestItemMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *FitnessTestItemMutation) Fields() []string {
+	fields := make([]string, 0, 6)
+	if m.created_by != nil {
+		fields = append(fields, fitnesstestitem.FieldCreatedBy)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, fitnesstestitem.FieldUpdatedBy)
+	}
+	if m.created_at != nil {
+		fields = append(fields, fitnesstestitem.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, fitnesstestitem.FieldUpdatedAt)
+	}
+	if m.deleted_at != nil {
+		fields = append(fields, fitnesstestitem.FieldDeletedAt)
+	}
+	if m.item != nil {
+		fields = append(fields, fitnesstestitem.FieldItem)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *FitnessTestItemMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case fitnesstestitem.FieldCreatedBy:
+		return m.CreatedBy()
+	case fitnesstestitem.FieldUpdatedBy:
+		return m.UpdatedBy()
+	case fitnesstestitem.FieldCreatedAt:
+		return m.CreatedAt()
+	case fitnesstestitem.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case fitnesstestitem.FieldDeletedAt:
+		return m.DeletedAt()
+	case fitnesstestitem.FieldItem:
+		return m.Item()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *FitnessTestItemMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case fitnesstestitem.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case fitnesstestitem.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	case fitnesstestitem.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case fitnesstestitem.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case fitnesstestitem.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
+	case fitnesstestitem.FieldItem:
+		return m.OldItem(ctx)
+	}
+	return nil, fmt.Errorf("unknown FitnessTestItem field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *FitnessTestItemMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case fitnesstestitem.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case fitnesstestitem.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	case fitnesstestitem.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case fitnesstestitem.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case fitnesstestitem.FieldDeletedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeletedAt(v)
+		return nil
+	case fitnesstestitem.FieldItem:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetItem(v)
+		return nil
+	}
+	return fmt.Errorf("unknown FitnessTestItem field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *FitnessTestItemMutation) AddedFields() []string {
+	var fields []string
+	if m.addcreated_by != nil {
+		fields = append(fields, fitnesstestitem.FieldCreatedBy)
+	}
+	if m.addupdated_by != nil {
+		fields = append(fields, fitnesstestitem.FieldUpdatedBy)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *FitnessTestItemMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case fitnesstestitem.FieldCreatedBy:
+		return m.AddedCreatedBy()
+	case fitnesstestitem.FieldUpdatedBy:
+		return m.AddedUpdatedBy()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *FitnessTestItemMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case fitnesstestitem.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedBy(v)
+		return nil
+	case fitnesstestitem.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedBy(v)
+		return nil
+	}
+	return fmt.Errorf("unknown FitnessTestItem numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *FitnessTestItemMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *FitnessTestItemMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *FitnessTestItemMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown FitnessTestItem nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *FitnessTestItemMutation) ResetField(name string) error {
+	switch name {
+	case fitnesstestitem.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case fitnesstestitem.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	case fitnesstestitem.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case fitnesstestitem.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case fitnesstestitem.FieldDeletedAt:
+		m.ResetDeletedAt()
+		return nil
+	case fitnesstestitem.FieldItem:
+		m.ResetItem()
+		return nil
+	}
+	return fmt.Errorf("unknown FitnessTestItem field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *FitnessTestItemMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *FitnessTestItemMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *FitnessTestItemMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *FitnessTestItemMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *FitnessTestItemMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *FitnessTestItemMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *FitnessTestItemMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown FitnessTestItem unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *FitnessTestItemMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown FitnessTestItem edge %s", name)
+}
+
 // SchoolMutation represents an operation that mutates the School nodes in the graph.
 type SchoolMutation struct {
 	config
@@ -1533,6 +2208,971 @@ func (m *SchoolMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *SchoolMutation) ResetEdge(name string) error {
 	return fmt.Errorf("unknown School edge %s", name)
+}
+
+// SchoolFitnessTestItemMutation represents an operation that mutates the SchoolFitnessTestItem nodes in the graph.
+type SchoolFitnessTestItemMutation struct {
+	config
+	op                     Op
+	typ                    string
+	id                     *int64
+	created_by             *int64
+	addcreated_by          *int64
+	updated_by             *int64
+	addupdated_by          *int64
+	created_at             *time.Time
+	updated_at             *time.Time
+	deleted_at             *time.Time
+	max_participants       *int
+	addmax_participants    *int
+	avg_time_per_person    *int
+	addavg_time_per_person *int
+	school_id              *int64
+	addschool_id           *int64
+	item_id                *int64
+	additem_id             *int64
+	clearedFields          map[string]struct{}
+	done                   bool
+	oldValue               func(context.Context) (*SchoolFitnessTestItem, error)
+	predicates             []predicate.SchoolFitnessTestItem
+}
+
+var _ ent.Mutation = (*SchoolFitnessTestItemMutation)(nil)
+
+// schoolfitnesstestitemOption allows management of the mutation configuration using functional options.
+type schoolfitnesstestitemOption func(*SchoolFitnessTestItemMutation)
+
+// newSchoolFitnessTestItemMutation creates new mutation for the SchoolFitnessTestItem entity.
+func newSchoolFitnessTestItemMutation(c config, op Op, opts ...schoolfitnesstestitemOption) *SchoolFitnessTestItemMutation {
+	m := &SchoolFitnessTestItemMutation{
+		config:        c,
+		op:            op,
+		typ:           TypeSchoolFitnessTestItem,
+		clearedFields: make(map[string]struct{}),
+	}
+	for _, opt := range opts {
+		opt(m)
+	}
+	return m
+}
+
+// withSchoolFitnessTestItemID sets the ID field of the mutation.
+func withSchoolFitnessTestItemID(id int64) schoolfitnesstestitemOption {
+	return func(m *SchoolFitnessTestItemMutation) {
+		var (
+			err   error
+			once  sync.Once
+			value *SchoolFitnessTestItem
+		)
+		m.oldValue = func(ctx context.Context) (*SchoolFitnessTestItem, error) {
+			once.Do(func() {
+				if m.done {
+					err = errors.New("querying old values post mutation is not allowed")
+				} else {
+					value, err = m.Client().SchoolFitnessTestItem.Get(ctx, id)
+				}
+			})
+			return value, err
+		}
+		m.id = &id
+	}
+}
+
+// withSchoolFitnessTestItem sets the old SchoolFitnessTestItem of the mutation.
+func withSchoolFitnessTestItem(node *SchoolFitnessTestItem) schoolfitnesstestitemOption {
+	return func(m *SchoolFitnessTestItemMutation) {
+		m.oldValue = func(context.Context) (*SchoolFitnessTestItem, error) {
+			return node, nil
+		}
+		m.id = &node.ID
+	}
+}
+
+// Client returns a new `ent.Client` from the mutation. If the mutation was
+// executed in a transaction (ent.Tx), a transactional client is returned.
+func (m SchoolFitnessTestItemMutation) Client() *Client {
+	client := &Client{config: m.config}
+	client.init()
+	return client
+}
+
+// Tx returns an `ent.Tx` for mutations that were executed in transactions;
+// it returns an error otherwise.
+func (m SchoolFitnessTestItemMutation) Tx() (*Tx, error) {
+	if _, ok := m.driver.(*txDriver); !ok {
+		return nil, errors.New("ent_work: mutation is not running in a transaction")
+	}
+	tx := &Tx{config: m.config}
+	tx.init()
+	return tx, nil
+}
+
+// SetID sets the value of the id field. Note that this
+// operation is only accepted on creation of SchoolFitnessTestItem entities.
+func (m *SchoolFitnessTestItemMutation) SetID(id int64) {
+	m.id = &id
+}
+
+// ID returns the ID value in the mutation. Note that the ID is only available
+// if it was provided to the builder or after it was returned from the database.
+func (m *SchoolFitnessTestItemMutation) ID() (id int64, exists bool) {
+	if m.id == nil {
+		return
+	}
+	return *m.id, true
+}
+
+// IDs queries the database and returns the entity ids that match the mutation's predicate.
+// That means, if the mutation is applied within a transaction with an isolation level such
+// as sql.LevelSerializable, the returned ids match the ids of the rows that will be updated
+// or updated by the mutation.
+func (m *SchoolFitnessTestItemMutation) IDs(ctx context.Context) ([]int64, error) {
+	switch {
+	case m.op.Is(OpUpdateOne | OpDeleteOne):
+		id, exists := m.ID()
+		if exists {
+			return []int64{id}, nil
+		}
+		fallthrough
+	case m.op.Is(OpUpdate | OpDelete):
+		return m.Client().SchoolFitnessTestItem.Query().Where(m.predicates...).IDs(ctx)
+	default:
+		return nil, fmt.Errorf("IDs is not allowed on %s operations", m.op)
+	}
+}
+
+// SetCreatedBy sets the "created_by" field.
+func (m *SchoolFitnessTestItemMutation) SetCreatedBy(i int64) {
+	m.created_by = &i
+	m.addcreated_by = nil
+}
+
+// CreatedBy returns the value of the "created_by" field in the mutation.
+func (m *SchoolFitnessTestItemMutation) CreatedBy() (r int64, exists bool) {
+	v := m.created_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedBy returns the old "created_by" field's value of the SchoolFitnessTestItem entity.
+// If the SchoolFitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SchoolFitnessTestItemMutation) OldCreatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedBy: %w", err)
+	}
+	return oldValue.CreatedBy, nil
+}
+
+// AddCreatedBy adds i to the "created_by" field.
+func (m *SchoolFitnessTestItemMutation) AddCreatedBy(i int64) {
+	if m.addcreated_by != nil {
+		*m.addcreated_by += i
+	} else {
+		m.addcreated_by = &i
+	}
+}
+
+// AddedCreatedBy returns the value that was added to the "created_by" field in this mutation.
+func (m *SchoolFitnessTestItemMutation) AddedCreatedBy() (r int64, exists bool) {
+	v := m.addcreated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetCreatedBy resets all changes to the "created_by" field.
+func (m *SchoolFitnessTestItemMutation) ResetCreatedBy() {
+	m.created_by = nil
+	m.addcreated_by = nil
+}
+
+// SetUpdatedBy sets the "updated_by" field.
+func (m *SchoolFitnessTestItemMutation) SetUpdatedBy(i int64) {
+	m.updated_by = &i
+	m.addupdated_by = nil
+}
+
+// UpdatedBy returns the value of the "updated_by" field in the mutation.
+func (m *SchoolFitnessTestItemMutation) UpdatedBy() (r int64, exists bool) {
+	v := m.updated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedBy returns the old "updated_by" field's value of the SchoolFitnessTestItem entity.
+// If the SchoolFitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SchoolFitnessTestItemMutation) OldUpdatedBy(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedBy is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedBy requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedBy: %w", err)
+	}
+	return oldValue.UpdatedBy, nil
+}
+
+// AddUpdatedBy adds i to the "updated_by" field.
+func (m *SchoolFitnessTestItemMutation) AddUpdatedBy(i int64) {
+	if m.addupdated_by != nil {
+		*m.addupdated_by += i
+	} else {
+		m.addupdated_by = &i
+	}
+}
+
+// AddedUpdatedBy returns the value that was added to the "updated_by" field in this mutation.
+func (m *SchoolFitnessTestItemMutation) AddedUpdatedBy() (r int64, exists bool) {
+	v := m.addupdated_by
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetUpdatedBy resets all changes to the "updated_by" field.
+func (m *SchoolFitnessTestItemMutation) ResetUpdatedBy() {
+	m.updated_by = nil
+	m.addupdated_by = nil
+}
+
+// SetCreatedAt sets the "created_at" field.
+func (m *SchoolFitnessTestItemMutation) SetCreatedAt(t time.Time) {
+	m.created_at = &t
+}
+
+// CreatedAt returns the value of the "created_at" field in the mutation.
+func (m *SchoolFitnessTestItemMutation) CreatedAt() (r time.Time, exists bool) {
+	v := m.created_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCreatedAt returns the old "created_at" field's value of the SchoolFitnessTestItem entity.
+// If the SchoolFitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SchoolFitnessTestItemMutation) OldCreatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCreatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCreatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCreatedAt: %w", err)
+	}
+	return oldValue.CreatedAt, nil
+}
+
+// ResetCreatedAt resets all changes to the "created_at" field.
+func (m *SchoolFitnessTestItemMutation) ResetCreatedAt() {
+	m.created_at = nil
+}
+
+// SetUpdatedAt sets the "updated_at" field.
+func (m *SchoolFitnessTestItemMutation) SetUpdatedAt(t time.Time) {
+	m.updated_at = &t
+}
+
+// UpdatedAt returns the value of the "updated_at" field in the mutation.
+func (m *SchoolFitnessTestItemMutation) UpdatedAt() (r time.Time, exists bool) {
+	v := m.updated_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldUpdatedAt returns the old "updated_at" field's value of the SchoolFitnessTestItem entity.
+// If the SchoolFitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SchoolFitnessTestItemMutation) OldUpdatedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldUpdatedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldUpdatedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldUpdatedAt: %w", err)
+	}
+	return oldValue.UpdatedAt, nil
+}
+
+// ResetUpdatedAt resets all changes to the "updated_at" field.
+func (m *SchoolFitnessTestItemMutation) ResetUpdatedAt() {
+	m.updated_at = nil
+}
+
+// SetDeletedAt sets the "deleted_at" field.
+func (m *SchoolFitnessTestItemMutation) SetDeletedAt(t time.Time) {
+	m.deleted_at = &t
+}
+
+// DeletedAt returns the value of the "deleted_at" field in the mutation.
+func (m *SchoolFitnessTestItemMutation) DeletedAt() (r time.Time, exists bool) {
+	v := m.deleted_at
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDeletedAt returns the old "deleted_at" field's value of the SchoolFitnessTestItem entity.
+// If the SchoolFitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SchoolFitnessTestItemMutation) OldDeletedAt(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDeletedAt is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDeletedAt requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDeletedAt: %w", err)
+	}
+	return oldValue.DeletedAt, nil
+}
+
+// ResetDeletedAt resets all changes to the "deleted_at" field.
+func (m *SchoolFitnessTestItemMutation) ResetDeletedAt() {
+	m.deleted_at = nil
+}
+
+// SetMaxParticipants sets the "max_participants" field.
+func (m *SchoolFitnessTestItemMutation) SetMaxParticipants(i int) {
+	m.max_participants = &i
+	m.addmax_participants = nil
+}
+
+// MaxParticipants returns the value of the "max_participants" field in the mutation.
+func (m *SchoolFitnessTestItemMutation) MaxParticipants() (r int, exists bool) {
+	v := m.max_participants
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMaxParticipants returns the old "max_participants" field's value of the SchoolFitnessTestItem entity.
+// If the SchoolFitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SchoolFitnessTestItemMutation) OldMaxParticipants(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMaxParticipants is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMaxParticipants requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMaxParticipants: %w", err)
+	}
+	return oldValue.MaxParticipants, nil
+}
+
+// AddMaxParticipants adds i to the "max_participants" field.
+func (m *SchoolFitnessTestItemMutation) AddMaxParticipants(i int) {
+	if m.addmax_participants != nil {
+		*m.addmax_participants += i
+	} else {
+		m.addmax_participants = &i
+	}
+}
+
+// AddedMaxParticipants returns the value that was added to the "max_participants" field in this mutation.
+func (m *SchoolFitnessTestItemMutation) AddedMaxParticipants() (r int, exists bool) {
+	v := m.addmax_participants
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetMaxParticipants resets all changes to the "max_participants" field.
+func (m *SchoolFitnessTestItemMutation) ResetMaxParticipants() {
+	m.max_participants = nil
+	m.addmax_participants = nil
+}
+
+// SetAvgTimePerPerson sets the "avg_time_per_person" field.
+func (m *SchoolFitnessTestItemMutation) SetAvgTimePerPerson(i int) {
+	m.avg_time_per_person = &i
+	m.addavg_time_per_person = nil
+}
+
+// AvgTimePerPerson returns the value of the "avg_time_per_person" field in the mutation.
+func (m *SchoolFitnessTestItemMutation) AvgTimePerPerson() (r int, exists bool) {
+	v := m.avg_time_per_person
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldAvgTimePerPerson returns the old "avg_time_per_person" field's value of the SchoolFitnessTestItem entity.
+// If the SchoolFitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SchoolFitnessTestItemMutation) OldAvgTimePerPerson(ctx context.Context) (v int, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldAvgTimePerPerson is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldAvgTimePerPerson requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldAvgTimePerPerson: %w", err)
+	}
+	return oldValue.AvgTimePerPerson, nil
+}
+
+// AddAvgTimePerPerson adds i to the "avg_time_per_person" field.
+func (m *SchoolFitnessTestItemMutation) AddAvgTimePerPerson(i int) {
+	if m.addavg_time_per_person != nil {
+		*m.addavg_time_per_person += i
+	} else {
+		m.addavg_time_per_person = &i
+	}
+}
+
+// AddedAvgTimePerPerson returns the value that was added to the "avg_time_per_person" field in this mutation.
+func (m *SchoolFitnessTestItemMutation) AddedAvgTimePerPerson() (r int, exists bool) {
+	v := m.addavg_time_per_person
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetAvgTimePerPerson resets all changes to the "avg_time_per_person" field.
+func (m *SchoolFitnessTestItemMutation) ResetAvgTimePerPerson() {
+	m.avg_time_per_person = nil
+	m.addavg_time_per_person = nil
+}
+
+// SetSchoolID sets the "school_id" field.
+func (m *SchoolFitnessTestItemMutation) SetSchoolID(i int64) {
+	m.school_id = &i
+	m.addschool_id = nil
+}
+
+// SchoolID returns the value of the "school_id" field in the mutation.
+func (m *SchoolFitnessTestItemMutation) SchoolID() (r int64, exists bool) {
+	v := m.school_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSchoolID returns the old "school_id" field's value of the SchoolFitnessTestItem entity.
+// If the SchoolFitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SchoolFitnessTestItemMutation) OldSchoolID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSchoolID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSchoolID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSchoolID: %w", err)
+	}
+	return oldValue.SchoolID, nil
+}
+
+// AddSchoolID adds i to the "school_id" field.
+func (m *SchoolFitnessTestItemMutation) AddSchoolID(i int64) {
+	if m.addschool_id != nil {
+		*m.addschool_id += i
+	} else {
+		m.addschool_id = &i
+	}
+}
+
+// AddedSchoolID returns the value that was added to the "school_id" field in this mutation.
+func (m *SchoolFitnessTestItemMutation) AddedSchoolID() (r int64, exists bool) {
+	v := m.addschool_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetSchoolID resets all changes to the "school_id" field.
+func (m *SchoolFitnessTestItemMutation) ResetSchoolID() {
+	m.school_id = nil
+	m.addschool_id = nil
+}
+
+// SetItemID sets the "item_id" field.
+func (m *SchoolFitnessTestItemMutation) SetItemID(i int64) {
+	m.item_id = &i
+	m.additem_id = nil
+}
+
+// ItemID returns the value of the "item_id" field in the mutation.
+func (m *SchoolFitnessTestItemMutation) ItemID() (r int64, exists bool) {
+	v := m.item_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldItemID returns the old "item_id" field's value of the SchoolFitnessTestItem entity.
+// If the SchoolFitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SchoolFitnessTestItemMutation) OldItemID(ctx context.Context) (v int64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldItemID is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldItemID requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldItemID: %w", err)
+	}
+	return oldValue.ItemID, nil
+}
+
+// AddItemID adds i to the "item_id" field.
+func (m *SchoolFitnessTestItemMutation) AddItemID(i int64) {
+	if m.additem_id != nil {
+		*m.additem_id += i
+	} else {
+		m.additem_id = &i
+	}
+}
+
+// AddedItemID returns the value that was added to the "item_id" field in this mutation.
+func (m *SchoolFitnessTestItemMutation) AddedItemID() (r int64, exists bool) {
+	v := m.additem_id
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ResetItemID resets all changes to the "item_id" field.
+func (m *SchoolFitnessTestItemMutation) ResetItemID() {
+	m.item_id = nil
+	m.additem_id = nil
+}
+
+// Where appends a list predicates to the SchoolFitnessTestItemMutation builder.
+func (m *SchoolFitnessTestItemMutation) Where(ps ...predicate.SchoolFitnessTestItem) {
+	m.predicates = append(m.predicates, ps...)
+}
+
+// WhereP appends storage-level predicates to the SchoolFitnessTestItemMutation builder. Using this method,
+// users can use type-assertion to append predicates that do not depend on any generated package.
+func (m *SchoolFitnessTestItemMutation) WhereP(ps ...func(*sql.Selector)) {
+	p := make([]predicate.SchoolFitnessTestItem, len(ps))
+	for i := range ps {
+		p[i] = ps[i]
+	}
+	m.Where(p...)
+}
+
+// Op returns the operation name.
+func (m *SchoolFitnessTestItemMutation) Op() Op {
+	return m.op
+}
+
+// SetOp allows setting the mutation operation.
+func (m *SchoolFitnessTestItemMutation) SetOp(op Op) {
+	m.op = op
+}
+
+// Type returns the node type of this mutation (SchoolFitnessTestItem).
+func (m *SchoolFitnessTestItemMutation) Type() string {
+	return m.typ
+}
+
+// Fields returns all fields that were changed during this mutation. Note that in
+// order to get all numeric fields that were incremented/decremented, call
+// AddedFields().
+func (m *SchoolFitnessTestItemMutation) Fields() []string {
+	fields := make([]string, 0, 9)
+	if m.created_by != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldCreatedBy)
+	}
+	if m.updated_by != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldUpdatedBy)
+	}
+	if m.created_at != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldCreatedAt)
+	}
+	if m.updated_at != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldUpdatedAt)
+	}
+	if m.deleted_at != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldDeletedAt)
+	}
+	if m.max_participants != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldMaxParticipants)
+	}
+	if m.avg_time_per_person != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldAvgTimePerPerson)
+	}
+	if m.school_id != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldSchoolID)
+	}
+	if m.item_id != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldItemID)
+	}
+	return fields
+}
+
+// Field returns the value of a field with the given name. The second boolean
+// return value indicates that this field was not set, or was not defined in the
+// schema.
+func (m *SchoolFitnessTestItemMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case schoolfitnesstestitem.FieldCreatedBy:
+		return m.CreatedBy()
+	case schoolfitnesstestitem.FieldUpdatedBy:
+		return m.UpdatedBy()
+	case schoolfitnesstestitem.FieldCreatedAt:
+		return m.CreatedAt()
+	case schoolfitnesstestitem.FieldUpdatedAt:
+		return m.UpdatedAt()
+	case schoolfitnesstestitem.FieldDeletedAt:
+		return m.DeletedAt()
+	case schoolfitnesstestitem.FieldMaxParticipants:
+		return m.MaxParticipants()
+	case schoolfitnesstestitem.FieldAvgTimePerPerson:
+		return m.AvgTimePerPerson()
+	case schoolfitnesstestitem.FieldSchoolID:
+		return m.SchoolID()
+	case schoolfitnesstestitem.FieldItemID:
+		return m.ItemID()
+	}
+	return nil, false
+}
+
+// OldField returns the old value of the field from the database. An error is
+// returned if the mutation operation is not UpdateOne, or the query to the
+// database failed.
+func (m *SchoolFitnessTestItemMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case schoolfitnesstestitem.FieldCreatedBy:
+		return m.OldCreatedBy(ctx)
+	case schoolfitnesstestitem.FieldUpdatedBy:
+		return m.OldUpdatedBy(ctx)
+	case schoolfitnesstestitem.FieldCreatedAt:
+		return m.OldCreatedAt(ctx)
+	case schoolfitnesstestitem.FieldUpdatedAt:
+		return m.OldUpdatedAt(ctx)
+	case schoolfitnesstestitem.FieldDeletedAt:
+		return m.OldDeletedAt(ctx)
+	case schoolfitnesstestitem.FieldMaxParticipants:
+		return m.OldMaxParticipants(ctx)
+	case schoolfitnesstestitem.FieldAvgTimePerPerson:
+		return m.OldAvgTimePerPerson(ctx)
+	case schoolfitnesstestitem.FieldSchoolID:
+		return m.OldSchoolID(ctx)
+	case schoolfitnesstestitem.FieldItemID:
+		return m.OldItemID(ctx)
+	}
+	return nil, fmt.Errorf("unknown SchoolFitnessTestItem field %s", name)
+}
+
+// SetField sets the value of a field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SchoolFitnessTestItemMutation) SetField(name string, value ent.Value) error {
+	switch name {
+	case schoolfitnesstestitem.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedBy(v)
+		return nil
+	case schoolfitnesstestitem.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedBy(v)
+		return nil
+	case schoolfitnesstestitem.FieldCreatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCreatedAt(v)
+		return nil
+	case schoolfitnesstestitem.FieldUpdatedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetUpdatedAt(v)
+		return nil
+	case schoolfitnesstestitem.FieldDeletedAt:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDeletedAt(v)
+		return nil
+	case schoolfitnesstestitem.FieldMaxParticipants:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMaxParticipants(v)
+		return nil
+	case schoolfitnesstestitem.FieldAvgTimePerPerson:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetAvgTimePerPerson(v)
+		return nil
+	case schoolfitnesstestitem.FieldSchoolID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSchoolID(v)
+		return nil
+	case schoolfitnesstestitem.FieldItemID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetItemID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SchoolFitnessTestItem field %s", name)
+}
+
+// AddedFields returns all numeric fields that were incremented/decremented during
+// this mutation.
+func (m *SchoolFitnessTestItemMutation) AddedFields() []string {
+	var fields []string
+	if m.addcreated_by != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldCreatedBy)
+	}
+	if m.addupdated_by != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldUpdatedBy)
+	}
+	if m.addmax_participants != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldMaxParticipants)
+	}
+	if m.addavg_time_per_person != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldAvgTimePerPerson)
+	}
+	if m.addschool_id != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldSchoolID)
+	}
+	if m.additem_id != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldItemID)
+	}
+	return fields
+}
+
+// AddedField returns the numeric value that was incremented/decremented on a field
+// with the given name. The second boolean return value indicates that this field
+// was not set, or was not defined in the schema.
+func (m *SchoolFitnessTestItemMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case schoolfitnesstestitem.FieldCreatedBy:
+		return m.AddedCreatedBy()
+	case schoolfitnesstestitem.FieldUpdatedBy:
+		return m.AddedUpdatedBy()
+	case schoolfitnesstestitem.FieldMaxParticipants:
+		return m.AddedMaxParticipants()
+	case schoolfitnesstestitem.FieldAvgTimePerPerson:
+		return m.AddedAvgTimePerPerson()
+	case schoolfitnesstestitem.FieldSchoolID:
+		return m.AddedSchoolID()
+	case schoolfitnesstestitem.FieldItemID:
+		return m.AddedItemID()
+	}
+	return nil, false
+}
+
+// AddField adds the value to the field with the given name. It returns an error if
+// the field is not defined in the schema, or if the type mismatched the field
+// type.
+func (m *SchoolFitnessTestItemMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case schoolfitnesstestitem.FieldCreatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddCreatedBy(v)
+		return nil
+	case schoolfitnesstestitem.FieldUpdatedBy:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddUpdatedBy(v)
+		return nil
+	case schoolfitnesstestitem.FieldMaxParticipants:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddMaxParticipants(v)
+		return nil
+	case schoolfitnesstestitem.FieldAvgTimePerPerson:
+		v, ok := value.(int)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddAvgTimePerPerson(v)
+		return nil
+	case schoolfitnesstestitem.FieldSchoolID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddSchoolID(v)
+		return nil
+	case schoolfitnesstestitem.FieldItemID:
+		v, ok := value.(int64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddItemID(v)
+		return nil
+	}
+	return fmt.Errorf("unknown SchoolFitnessTestItem numeric field %s", name)
+}
+
+// ClearedFields returns all nullable fields that were cleared during this
+// mutation.
+func (m *SchoolFitnessTestItemMutation) ClearedFields() []string {
+	return nil
+}
+
+// FieldCleared returns a boolean indicating if a field with the given name was
+// cleared in this mutation.
+func (m *SchoolFitnessTestItemMutation) FieldCleared(name string) bool {
+	_, ok := m.clearedFields[name]
+	return ok
+}
+
+// ClearField clears the value of the field with the given name. It returns an
+// error if the field is not defined in the schema.
+func (m *SchoolFitnessTestItemMutation) ClearField(name string) error {
+	return fmt.Errorf("unknown SchoolFitnessTestItem nullable field %s", name)
+}
+
+// ResetField resets all changes in the mutation for the field with the given name.
+// It returns an error if the field is not defined in the schema.
+func (m *SchoolFitnessTestItemMutation) ResetField(name string) error {
+	switch name {
+	case schoolfitnesstestitem.FieldCreatedBy:
+		m.ResetCreatedBy()
+		return nil
+	case schoolfitnesstestitem.FieldUpdatedBy:
+		m.ResetUpdatedBy()
+		return nil
+	case schoolfitnesstestitem.FieldCreatedAt:
+		m.ResetCreatedAt()
+		return nil
+	case schoolfitnesstestitem.FieldUpdatedAt:
+		m.ResetUpdatedAt()
+		return nil
+	case schoolfitnesstestitem.FieldDeletedAt:
+		m.ResetDeletedAt()
+		return nil
+	case schoolfitnesstestitem.FieldMaxParticipants:
+		m.ResetMaxParticipants()
+		return nil
+	case schoolfitnesstestitem.FieldAvgTimePerPerson:
+		m.ResetAvgTimePerPerson()
+		return nil
+	case schoolfitnesstestitem.FieldSchoolID:
+		m.ResetSchoolID()
+		return nil
+	case schoolfitnesstestitem.FieldItemID:
+		m.ResetItemID()
+		return nil
+	}
+	return fmt.Errorf("unknown SchoolFitnessTestItem field %s", name)
+}
+
+// AddedEdges returns all edge names that were set/added in this mutation.
+func (m *SchoolFitnessTestItemMutation) AddedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// AddedIDs returns all IDs (to other nodes) that were added for the given edge
+// name in this mutation.
+func (m *SchoolFitnessTestItemMutation) AddedIDs(name string) []ent.Value {
+	return nil
+}
+
+// RemovedEdges returns all edge names that were removed in this mutation.
+func (m *SchoolFitnessTestItemMutation) RemovedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
+// the given name in this mutation.
+func (m *SchoolFitnessTestItemMutation) RemovedIDs(name string) []ent.Value {
+	return nil
+}
+
+// ClearedEdges returns all edge names that were cleared in this mutation.
+func (m *SchoolFitnessTestItemMutation) ClearedEdges() []string {
+	edges := make([]string, 0, 0)
+	return edges
+}
+
+// EdgeCleared returns a boolean which indicates if the edge with the given name
+// was cleared in this mutation.
+func (m *SchoolFitnessTestItemMutation) EdgeCleared(name string) bool {
+	return false
+}
+
+// ClearEdge clears the value of the edge with the given name. It returns an error
+// if that edge is not defined in the schema.
+func (m *SchoolFitnessTestItemMutation) ClearEdge(name string) error {
+	return fmt.Errorf("unknown SchoolFitnessTestItem unique edge %s", name)
+}
+
+// ResetEdge resets all changes to the edge with the given name in this mutation.
+// It returns an error if the edge is not defined in the schema.
+func (m *SchoolFitnessTestItemMutation) ResetEdge(name string) error {
+	return fmt.Errorf("unknown SchoolFitnessTestItem edge %s", name)
 }
 
 // UserMutation represents an operation that mutates the User nodes in the graph.

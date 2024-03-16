@@ -15,7 +15,9 @@ import (
 	"entgo.io/ent/dialect"
 	"entgo.io/ent/dialect/sql"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/admin"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/fitnesstestitem"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/school"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/schoolfitnesstestitem"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 )
 
@@ -26,8 +28,12 @@ type Client struct {
 	Schema *migrate.Schema
 	// Admin is the client for interacting with the Admin builders.
 	Admin *AdminClient
+	// FitnessTestItem is the client for interacting with the FitnessTestItem builders.
+	FitnessTestItem *FitnessTestItemClient
 	// School is the client for interacting with the School builders.
 	School *SchoolClient
+	// SchoolFitnessTestItem is the client for interacting with the SchoolFitnessTestItem builders.
+	SchoolFitnessTestItem *SchoolFitnessTestItemClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 }
@@ -42,7 +48,9 @@ func NewClient(opts ...Option) *Client {
 func (c *Client) init() {
 	c.Schema = migrate.NewSchema(c.driver)
 	c.Admin = NewAdminClient(c.config)
+	c.FitnessTestItem = NewFitnessTestItemClient(c.config)
 	c.School = NewSchoolClient(c.config)
+	c.SchoolFitnessTestItem = NewSchoolFitnessTestItemClient(c.config)
 	c.User = NewUserClient(c.config)
 }
 
@@ -134,11 +142,13 @@ func (c *Client) Tx(ctx context.Context) (*Tx, error) {
 	cfg := c.config
 	cfg.driver = tx
 	return &Tx{
-		ctx:    ctx,
-		config: cfg,
-		Admin:  NewAdminClient(cfg),
-		School: NewSchoolClient(cfg),
-		User:   NewUserClient(cfg),
+		ctx:                   ctx,
+		config:                cfg,
+		Admin:                 NewAdminClient(cfg),
+		FitnessTestItem:       NewFitnessTestItemClient(cfg),
+		School:                NewSchoolClient(cfg),
+		SchoolFitnessTestItem: NewSchoolFitnessTestItemClient(cfg),
+		User:                  NewUserClient(cfg),
 	}, nil
 }
 
@@ -156,11 +166,13 @@ func (c *Client) BeginTx(ctx context.Context, opts *sql.TxOptions) (*Tx, error) 
 	cfg := c.config
 	cfg.driver = &txDriver{tx: tx, drv: c.driver}
 	return &Tx{
-		ctx:    ctx,
-		config: cfg,
-		Admin:  NewAdminClient(cfg),
-		School: NewSchoolClient(cfg),
-		User:   NewUserClient(cfg),
+		ctx:                   ctx,
+		config:                cfg,
+		Admin:                 NewAdminClient(cfg),
+		FitnessTestItem:       NewFitnessTestItemClient(cfg),
+		School:                NewSchoolClient(cfg),
+		SchoolFitnessTestItem: NewSchoolFitnessTestItemClient(cfg),
+		User:                  NewUserClient(cfg),
 	}, nil
 }
 
@@ -190,7 +202,9 @@ func (c *Client) Close() error {
 // In order to add hooks to a specific client, call: `client.Node.Use(...)`.
 func (c *Client) Use(hooks ...Hook) {
 	c.Admin.Use(hooks...)
+	c.FitnessTestItem.Use(hooks...)
 	c.School.Use(hooks...)
+	c.SchoolFitnessTestItem.Use(hooks...)
 	c.User.Use(hooks...)
 }
 
@@ -198,7 +212,9 @@ func (c *Client) Use(hooks ...Hook) {
 // In order to add interceptors to a specific client, call: `client.Node.Intercept(...)`.
 func (c *Client) Intercept(interceptors ...Interceptor) {
 	c.Admin.Intercept(interceptors...)
+	c.FitnessTestItem.Intercept(interceptors...)
 	c.School.Intercept(interceptors...)
+	c.SchoolFitnessTestItem.Intercept(interceptors...)
 	c.User.Intercept(interceptors...)
 }
 
@@ -207,8 +223,12 @@ func (c *Client) Mutate(ctx context.Context, m Mutation) (Value, error) {
 	switch m := m.(type) {
 	case *AdminMutation:
 		return c.Admin.mutate(ctx, m)
+	case *FitnessTestItemMutation:
+		return c.FitnessTestItem.mutate(ctx, m)
 	case *SchoolMutation:
 		return c.School.mutate(ctx, m)
+	case *SchoolFitnessTestItemMutation:
+		return c.SchoolFitnessTestItem.mutate(ctx, m)
 	case *UserMutation:
 		return c.User.mutate(ctx, m)
 	default:
@@ -349,6 +369,139 @@ func (c *AdminClient) mutate(ctx context.Context, m *AdminMutation) (Value, erro
 	}
 }
 
+// FitnessTestItemClient is a client for the FitnessTestItem schema.
+type FitnessTestItemClient struct {
+	config
+}
+
+// NewFitnessTestItemClient returns a client for the FitnessTestItem from the given config.
+func NewFitnessTestItemClient(c config) *FitnessTestItemClient {
+	return &FitnessTestItemClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `fitnesstestitem.Hooks(f(g(h())))`.
+func (c *FitnessTestItemClient) Use(hooks ...Hook) {
+	c.hooks.FitnessTestItem = append(c.hooks.FitnessTestItem, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `fitnesstestitem.Intercept(f(g(h())))`.
+func (c *FitnessTestItemClient) Intercept(interceptors ...Interceptor) {
+	c.inters.FitnessTestItem = append(c.inters.FitnessTestItem, interceptors...)
+}
+
+// Create returns a builder for creating a FitnessTestItem entity.
+func (c *FitnessTestItemClient) Create() *FitnessTestItemCreate {
+	mutation := newFitnessTestItemMutation(c.config, OpCreate)
+	return &FitnessTestItemCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of FitnessTestItem entities.
+func (c *FitnessTestItemClient) CreateBulk(builders ...*FitnessTestItemCreate) *FitnessTestItemCreateBulk {
+	return &FitnessTestItemCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *FitnessTestItemClient) MapCreateBulk(slice any, setFunc func(*FitnessTestItemCreate, int)) *FitnessTestItemCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &FitnessTestItemCreateBulk{err: fmt.Errorf("calling to FitnessTestItemClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*FitnessTestItemCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &FitnessTestItemCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for FitnessTestItem.
+func (c *FitnessTestItemClient) Update() *FitnessTestItemUpdate {
+	mutation := newFitnessTestItemMutation(c.config, OpUpdate)
+	return &FitnessTestItemUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *FitnessTestItemClient) UpdateOne(fti *FitnessTestItem) *FitnessTestItemUpdateOne {
+	mutation := newFitnessTestItemMutation(c.config, OpUpdateOne, withFitnessTestItem(fti))
+	return &FitnessTestItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *FitnessTestItemClient) UpdateOneID(id int64) *FitnessTestItemUpdateOne {
+	mutation := newFitnessTestItemMutation(c.config, OpUpdateOne, withFitnessTestItemID(id))
+	return &FitnessTestItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for FitnessTestItem.
+func (c *FitnessTestItemClient) Delete() *FitnessTestItemDelete {
+	mutation := newFitnessTestItemMutation(c.config, OpDelete)
+	return &FitnessTestItemDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *FitnessTestItemClient) DeleteOne(fti *FitnessTestItem) *FitnessTestItemDeleteOne {
+	return c.DeleteOneID(fti.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *FitnessTestItemClient) DeleteOneID(id int64) *FitnessTestItemDeleteOne {
+	builder := c.Delete().Where(fitnesstestitem.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &FitnessTestItemDeleteOne{builder}
+}
+
+// Query returns a query builder for FitnessTestItem.
+func (c *FitnessTestItemClient) Query() *FitnessTestItemQuery {
+	return &FitnessTestItemQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeFitnessTestItem},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a FitnessTestItem entity by its id.
+func (c *FitnessTestItemClient) Get(ctx context.Context, id int64) (*FitnessTestItem, error) {
+	return c.Query().Where(fitnesstestitem.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *FitnessTestItemClient) GetX(ctx context.Context, id int64) *FitnessTestItem {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *FitnessTestItemClient) Hooks() []Hook {
+	return c.hooks.FitnessTestItem
+}
+
+// Interceptors returns the client interceptors.
+func (c *FitnessTestItemClient) Interceptors() []Interceptor {
+	return c.inters.FitnessTestItem
+}
+
+func (c *FitnessTestItemClient) mutate(ctx context.Context, m *FitnessTestItemMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&FitnessTestItemCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&FitnessTestItemUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&FitnessTestItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&FitnessTestItemDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent_work: unknown FitnessTestItem mutation op: %q", m.Op())
+	}
+}
+
 // SchoolClient is a client for the School schema.
 type SchoolClient struct {
 	config
@@ -479,6 +632,139 @@ func (c *SchoolClient) mutate(ctx context.Context, m *SchoolMutation) (Value, er
 		return (&SchoolDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
 	default:
 		return nil, fmt.Errorf("ent_work: unknown School mutation op: %q", m.Op())
+	}
+}
+
+// SchoolFitnessTestItemClient is a client for the SchoolFitnessTestItem schema.
+type SchoolFitnessTestItemClient struct {
+	config
+}
+
+// NewSchoolFitnessTestItemClient returns a client for the SchoolFitnessTestItem from the given config.
+func NewSchoolFitnessTestItemClient(c config) *SchoolFitnessTestItemClient {
+	return &SchoolFitnessTestItemClient{config: c}
+}
+
+// Use adds a list of mutation hooks to the hooks stack.
+// A call to `Use(f, g, h)` equals to `schoolfitnesstestitem.Hooks(f(g(h())))`.
+func (c *SchoolFitnessTestItemClient) Use(hooks ...Hook) {
+	c.hooks.SchoolFitnessTestItem = append(c.hooks.SchoolFitnessTestItem, hooks...)
+}
+
+// Intercept adds a list of query interceptors to the interceptors stack.
+// A call to `Intercept(f, g, h)` equals to `schoolfitnesstestitem.Intercept(f(g(h())))`.
+func (c *SchoolFitnessTestItemClient) Intercept(interceptors ...Interceptor) {
+	c.inters.SchoolFitnessTestItem = append(c.inters.SchoolFitnessTestItem, interceptors...)
+}
+
+// Create returns a builder for creating a SchoolFitnessTestItem entity.
+func (c *SchoolFitnessTestItemClient) Create() *SchoolFitnessTestItemCreate {
+	mutation := newSchoolFitnessTestItemMutation(c.config, OpCreate)
+	return &SchoolFitnessTestItemCreate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// CreateBulk returns a builder for creating a bulk of SchoolFitnessTestItem entities.
+func (c *SchoolFitnessTestItemClient) CreateBulk(builders ...*SchoolFitnessTestItemCreate) *SchoolFitnessTestItemCreateBulk {
+	return &SchoolFitnessTestItemCreateBulk{config: c.config, builders: builders}
+}
+
+// MapCreateBulk creates a bulk creation builder from the given slice. For each item in the slice, the function creates
+// a builder and applies setFunc on it.
+func (c *SchoolFitnessTestItemClient) MapCreateBulk(slice any, setFunc func(*SchoolFitnessTestItemCreate, int)) *SchoolFitnessTestItemCreateBulk {
+	rv := reflect.ValueOf(slice)
+	if rv.Kind() != reflect.Slice {
+		return &SchoolFitnessTestItemCreateBulk{err: fmt.Errorf("calling to SchoolFitnessTestItemClient.MapCreateBulk with wrong type %T, need slice", slice)}
+	}
+	builders := make([]*SchoolFitnessTestItemCreate, rv.Len())
+	for i := 0; i < rv.Len(); i++ {
+		builders[i] = c.Create()
+		setFunc(builders[i], i)
+	}
+	return &SchoolFitnessTestItemCreateBulk{config: c.config, builders: builders}
+}
+
+// Update returns an update builder for SchoolFitnessTestItem.
+func (c *SchoolFitnessTestItemClient) Update() *SchoolFitnessTestItemUpdate {
+	mutation := newSchoolFitnessTestItemMutation(c.config, OpUpdate)
+	return &SchoolFitnessTestItemUpdate{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOne returns an update builder for the given entity.
+func (c *SchoolFitnessTestItemClient) UpdateOne(sfti *SchoolFitnessTestItem) *SchoolFitnessTestItemUpdateOne {
+	mutation := newSchoolFitnessTestItemMutation(c.config, OpUpdateOne, withSchoolFitnessTestItem(sfti))
+	return &SchoolFitnessTestItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// UpdateOneID returns an update builder for the given id.
+func (c *SchoolFitnessTestItemClient) UpdateOneID(id int64) *SchoolFitnessTestItemUpdateOne {
+	mutation := newSchoolFitnessTestItemMutation(c.config, OpUpdateOne, withSchoolFitnessTestItemID(id))
+	return &SchoolFitnessTestItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// Delete returns a delete builder for SchoolFitnessTestItem.
+func (c *SchoolFitnessTestItemClient) Delete() *SchoolFitnessTestItemDelete {
+	mutation := newSchoolFitnessTestItemMutation(c.config, OpDelete)
+	return &SchoolFitnessTestItemDelete{config: c.config, hooks: c.Hooks(), mutation: mutation}
+}
+
+// DeleteOne returns a builder for deleting the given entity.
+func (c *SchoolFitnessTestItemClient) DeleteOne(sfti *SchoolFitnessTestItem) *SchoolFitnessTestItemDeleteOne {
+	return c.DeleteOneID(sfti.ID)
+}
+
+// DeleteOneID returns a builder for deleting the given entity by its id.
+func (c *SchoolFitnessTestItemClient) DeleteOneID(id int64) *SchoolFitnessTestItemDeleteOne {
+	builder := c.Delete().Where(schoolfitnesstestitem.ID(id))
+	builder.mutation.id = &id
+	builder.mutation.op = OpDeleteOne
+	return &SchoolFitnessTestItemDeleteOne{builder}
+}
+
+// Query returns a query builder for SchoolFitnessTestItem.
+func (c *SchoolFitnessTestItemClient) Query() *SchoolFitnessTestItemQuery {
+	return &SchoolFitnessTestItemQuery{
+		config: c.config,
+		ctx:    &QueryContext{Type: TypeSchoolFitnessTestItem},
+		inters: c.Interceptors(),
+	}
+}
+
+// Get returns a SchoolFitnessTestItem entity by its id.
+func (c *SchoolFitnessTestItemClient) Get(ctx context.Context, id int64) (*SchoolFitnessTestItem, error) {
+	return c.Query().Where(schoolfitnesstestitem.ID(id)).Only(ctx)
+}
+
+// GetX is like Get, but panics if an error occurs.
+func (c *SchoolFitnessTestItemClient) GetX(ctx context.Context, id int64) *SchoolFitnessTestItem {
+	obj, err := c.Get(ctx, id)
+	if err != nil {
+		panic(err)
+	}
+	return obj
+}
+
+// Hooks returns the client hooks.
+func (c *SchoolFitnessTestItemClient) Hooks() []Hook {
+	return c.hooks.SchoolFitnessTestItem
+}
+
+// Interceptors returns the client interceptors.
+func (c *SchoolFitnessTestItemClient) Interceptors() []Interceptor {
+	return c.inters.SchoolFitnessTestItem
+}
+
+func (c *SchoolFitnessTestItemClient) mutate(ctx context.Context, m *SchoolFitnessTestItemMutation) (Value, error) {
+	switch m.Op() {
+	case OpCreate:
+		return (&SchoolFitnessTestItemCreate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdate:
+		return (&SchoolFitnessTestItemUpdate{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpUpdateOne:
+		return (&SchoolFitnessTestItemUpdateOne{config: c.config, hooks: c.Hooks(), mutation: m}).Save(ctx)
+	case OpDelete, OpDeleteOne:
+		return (&SchoolFitnessTestItemDelete{config: c.config, hooks: c.Hooks(), mutation: m}).Exec(ctx)
+	default:
+		return nil, fmt.Errorf("ent_work: unknown SchoolFitnessTestItem mutation op: %q", m.Op())
 	}
 }
 
@@ -618,9 +904,9 @@ func (c *UserClient) mutate(ctx context.Context, m *UserMutation) (Value, error)
 // hooks and interceptors per client, for fast access.
 type (
 	hooks struct {
-		Admin, School, User []ent.Hook
+		Admin, FitnessTestItem, School, SchoolFitnessTestItem, User []ent.Hook
 	}
 	inters struct {
-		Admin, School, User []ent.Interceptor
+		Admin, FitnessTestItem, School, SchoolFitnessTestItem, User []ent.Interceptor
 	}
 )

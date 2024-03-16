@@ -5,7 +5,6 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// User holds the schema definition for the User entity.
 type School struct {
 	ent.Schema
 }

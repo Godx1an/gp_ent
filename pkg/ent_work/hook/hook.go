@@ -21,6 +21,18 @@ func (f AdminFunc) Mutate(ctx context.Context, m ent_work.Mutation) (ent_work.Va
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent_work.AdminMutation", m)
 }
 
+// The FitnessTestItemFunc type is an adapter to allow the use of ordinary
+// function as FitnessTestItem mutator.
+type FitnessTestItemFunc func(context.Context, *ent_work.FitnessTestItemMutation) (ent_work.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f FitnessTestItemFunc) Mutate(ctx context.Context, m ent_work.Mutation) (ent_work.Value, error) {
+	if mv, ok := m.(*ent_work.FitnessTestItemMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent_work.FitnessTestItemMutation", m)
+}
+
 // The SchoolFunc type is an adapter to allow the use of ordinary
 // function as School mutator.
 type SchoolFunc func(context.Context, *ent_work.SchoolMutation) (ent_work.Value, error)
@@ -31,6 +43,18 @@ func (f SchoolFunc) Mutate(ctx context.Context, m ent_work.Mutation) (ent_work.V
 		return f(ctx, mv)
 	}
 	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent_work.SchoolMutation", m)
+}
+
+// The SchoolFitnessTestItemFunc type is an adapter to allow the use of ordinary
+// function as SchoolFitnessTestItem mutator.
+type SchoolFitnessTestItemFunc func(context.Context, *ent_work.SchoolFitnessTestItemMutation) (ent_work.Value, error)
+
+// Mutate calls f(ctx, m).
+func (f SchoolFitnessTestItemFunc) Mutate(ctx context.Context, m ent_work.Mutation) (ent_work.Value, error) {
+	if mv, ok := m.(*ent_work.SchoolFitnessTestItemMutation); ok {
+		return f(ctx, mv)
+	}
+	return nil, fmt.Errorf("unexpected mutation type %T. expect *ent_work.SchoolFitnessTestItemMutation", m)
 }
 
 // The UserFunc type is an adapter to allow the use of ordinary

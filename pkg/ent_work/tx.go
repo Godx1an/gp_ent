@@ -14,8 +14,12 @@ type Tx struct {
 	config
 	// Admin is the client for interacting with the Admin builders.
 	Admin *AdminClient
+	// FitnessTestItem is the client for interacting with the FitnessTestItem builders.
+	FitnessTestItem *FitnessTestItemClient
 	// School is the client for interacting with the School builders.
 	School *SchoolClient
+	// SchoolFitnessTestItem is the client for interacting with the SchoolFitnessTestItem builders.
+	SchoolFitnessTestItem *SchoolFitnessTestItemClient
 	// User is the client for interacting with the User builders.
 	User *UserClient
 
@@ -150,7 +154,9 @@ func (tx *Tx) Client() *Client {
 
 func (tx *Tx) init() {
 	tx.Admin = NewAdminClient(tx.config)
+	tx.FitnessTestItem = NewFitnessTestItemClient(tx.config)
 	tx.School = NewSchoolClient(tx.config)
+	tx.SchoolFitnessTestItem = NewSchoolFitnessTestItemClient(tx.config)
 	tx.User = NewUserClient(tx.config)
 }
 

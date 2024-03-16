@@ -5,12 +5,10 @@ import (
 	"entgo.io/ent/schema/field"
 )
 
-// User holds the schema definition for the User entity.
 type Admin struct {
 	ent.Schema
 }
 
-// Fields of the User.
 func (Admin) Fields() []ent.Field {
 	return []ent.Field{
 		field.String("phone").
@@ -23,7 +21,6 @@ func (Admin) Fields() []ent.Field {
 	}
 }
 
-// Edges of the User.
 func (Admin) Edges() []ent.Edge {
 	return nil
 }

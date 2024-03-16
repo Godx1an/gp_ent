@@ -28,6 +28,22 @@ var (
 		Columns:    AdminsColumns,
 		PrimaryKey: []*schema.Column{AdminsColumns[0]},
 	}
+	// FitnessTestItemsColumns holds the columns for the "fitness_test_items" table.
+	FitnessTestItemsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Comment: "19 位雪花 ID"},
+		{Name: "created_by", Type: field.TypeInt64, Comment: "创建者 ID", Default: 0},
+		{Name: "updated_by", Type: field.TypeInt64, Comment: "更新者 ID", Default: 0},
+		{Name: "created_at", Type: field.TypeTime, Comment: "创建时刻，带时区"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时刻，带时区"},
+		{Name: "deleted_at", Type: field.TypeTime, Comment: "软删除时刻，带时区"},
+		{Name: "item", Type: field.TypeString, Unique: true},
+	}
+	// FitnessTestItemsTable holds the schema information for the "fitness_test_items" table.
+	FitnessTestItemsTable = &schema.Table{
+		Name:       "fitness_test_items",
+		Columns:    FitnessTestItemsColumns,
+		PrimaryKey: []*schema.Column{FitnessTestItemsColumns[0]},
+	}
 	// SchoolsColumns holds the columns for the "schools" table.
 	SchoolsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt64, Comment: "19 位雪花 ID"},
@@ -43,6 +59,25 @@ var (
 		Name:       "schools",
 		Columns:    SchoolsColumns,
 		PrimaryKey: []*schema.Column{SchoolsColumns[0]},
+	}
+	// SchoolFitnessTestItemsColumns holds the columns for the "school_fitness_test_items" table.
+	SchoolFitnessTestItemsColumns = []*schema.Column{
+		{Name: "id", Type: field.TypeInt64, Comment: "19 位雪花 ID"},
+		{Name: "created_by", Type: field.TypeInt64, Comment: "创建者 ID", Default: 0},
+		{Name: "updated_by", Type: field.TypeInt64, Comment: "更新者 ID", Default: 0},
+		{Name: "created_at", Type: field.TypeTime, Comment: "创建时刻，带时区"},
+		{Name: "updated_at", Type: field.TypeTime, Comment: "更新时刻，带时区"},
+		{Name: "deleted_at", Type: field.TypeTime, Comment: "软删除时刻，带时区"},
+		{Name: "max_participants", Type: field.TypeInt, Default: 0},
+		{Name: "avg_time_per_person", Type: field.TypeInt, Default: 0},
+		{Name: "school_id", Type: field.TypeInt64, Default: 0},
+		{Name: "item_id", Type: field.TypeInt64, Default: 0},
+	}
+	// SchoolFitnessTestItemsTable holds the schema information for the "school_fitness_test_items" table.
+	SchoolFitnessTestItemsTable = &schema.Table{
+		Name:       "school_fitness_test_items",
+		Columns:    SchoolFitnessTestItemsColumns,
+		PrimaryKey: []*schema.Column{SchoolFitnessTestItemsColumns[0]},
 	}
 	// UsersColumns holds the columns for the "users" table.
 	UsersColumns = []*schema.Column{
@@ -67,13 +102,17 @@ var (
 	// Tables holds all the tables in the schema.
 	Tables = []*schema.Table{
 		AdminsTable,
+		FitnessTestItemsTable,
 		SchoolsTable,
+		SchoolFitnessTestItemsTable,
 		UsersTable,
 	}
 )
 
 func init() {
 	AdminsTable.Annotation = &entsql.Annotation{}
+	FitnessTestItemsTable.Annotation = &entsql.Annotation{}
 	SchoolsTable.Annotation = &entsql.Annotation{}
+	SchoolFitnessTestItemsTable.Annotation = &entsql.Annotation{}
 	UsersTable.Annotation = &entsql.Annotation{}
 }

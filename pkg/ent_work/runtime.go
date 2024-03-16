@@ -6,8 +6,10 @@ import (
 	"time"
 
 	"github.com/Godx1an/gp_ent/pkg/ent_work/admin"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/fitnesstestitem"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/schema"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/school"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/schoolfitnesstestitem"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 )
 
@@ -68,6 +70,37 @@ func init() {
 	adminDescID := adminMixinFields0[0].Descriptor()
 	// admin.DefaultID holds the default value on creation for the id field.
 	admin.DefaultID = adminDescID.Default.(func() int64)
+	fitnesstestitemMixin := schema.FitnessTestItem{}.Mixin()
+	fitnesstestitemMixinFields0 := fitnesstestitemMixin[0].Fields()
+	_ = fitnesstestitemMixinFields0
+	fitnesstestitemFields := schema.FitnessTestItem{}.Fields()
+	_ = fitnesstestitemFields
+	// fitnesstestitemDescCreatedBy is the schema descriptor for created_by field.
+	fitnesstestitemDescCreatedBy := fitnesstestitemMixinFields0[1].Descriptor()
+	// fitnesstestitem.DefaultCreatedBy holds the default value on creation for the created_by field.
+	fitnesstestitem.DefaultCreatedBy = fitnesstestitemDescCreatedBy.Default.(int64)
+	// fitnesstestitemDescUpdatedBy is the schema descriptor for updated_by field.
+	fitnesstestitemDescUpdatedBy := fitnesstestitemMixinFields0[2].Descriptor()
+	// fitnesstestitem.DefaultUpdatedBy holds the default value on creation for the updated_by field.
+	fitnesstestitem.DefaultUpdatedBy = fitnesstestitemDescUpdatedBy.Default.(int64)
+	// fitnesstestitemDescCreatedAt is the schema descriptor for created_at field.
+	fitnesstestitemDescCreatedAt := fitnesstestitemMixinFields0[3].Descriptor()
+	// fitnesstestitem.DefaultCreatedAt holds the default value on creation for the created_at field.
+	fitnesstestitem.DefaultCreatedAt = fitnesstestitemDescCreatedAt.Default.(func() time.Time)
+	// fitnesstestitemDescUpdatedAt is the schema descriptor for updated_at field.
+	fitnesstestitemDescUpdatedAt := fitnesstestitemMixinFields0[4].Descriptor()
+	// fitnesstestitem.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	fitnesstestitem.DefaultUpdatedAt = fitnesstestitemDescUpdatedAt.Default.(func() time.Time)
+	// fitnesstestitem.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	fitnesstestitem.UpdateDefaultUpdatedAt = fitnesstestitemDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// fitnesstestitemDescDeletedAt is the schema descriptor for deleted_at field.
+	fitnesstestitemDescDeletedAt := fitnesstestitemMixinFields0[5].Descriptor()
+	// fitnesstestitem.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	fitnesstestitem.DefaultDeletedAt = fitnesstestitemDescDeletedAt.Default.(time.Time)
+	// fitnesstestitemDescID is the schema descriptor for id field.
+	fitnesstestitemDescID := fitnesstestitemMixinFields0[0].Descriptor()
+	// fitnesstestitem.DefaultID holds the default value on creation for the id field.
+	fitnesstestitem.DefaultID = fitnesstestitemDescID.Default.(func() int64)
 	schoolMixin := schema.School{}.Mixin()
 	schoolMixinFields0 := schoolMixin[0].Fields()
 	_ = schoolMixinFields0
@@ -99,6 +132,53 @@ func init() {
 	schoolDescID := schoolMixinFields0[0].Descriptor()
 	// school.DefaultID holds the default value on creation for the id field.
 	school.DefaultID = schoolDescID.Default.(func() int64)
+	schoolfitnesstestitemMixin := schema.SchoolFitnessTestItem{}.Mixin()
+	schoolfitnesstestitemMixinFields0 := schoolfitnesstestitemMixin[0].Fields()
+	_ = schoolfitnesstestitemMixinFields0
+	schoolfitnesstestitemFields := schema.SchoolFitnessTestItem{}.Fields()
+	_ = schoolfitnesstestitemFields
+	// schoolfitnesstestitemDescCreatedBy is the schema descriptor for created_by field.
+	schoolfitnesstestitemDescCreatedBy := schoolfitnesstestitemMixinFields0[1].Descriptor()
+	// schoolfitnesstestitem.DefaultCreatedBy holds the default value on creation for the created_by field.
+	schoolfitnesstestitem.DefaultCreatedBy = schoolfitnesstestitemDescCreatedBy.Default.(int64)
+	// schoolfitnesstestitemDescUpdatedBy is the schema descriptor for updated_by field.
+	schoolfitnesstestitemDescUpdatedBy := schoolfitnesstestitemMixinFields0[2].Descriptor()
+	// schoolfitnesstestitem.DefaultUpdatedBy holds the default value on creation for the updated_by field.
+	schoolfitnesstestitem.DefaultUpdatedBy = schoolfitnesstestitemDescUpdatedBy.Default.(int64)
+	// schoolfitnesstestitemDescCreatedAt is the schema descriptor for created_at field.
+	schoolfitnesstestitemDescCreatedAt := schoolfitnesstestitemMixinFields0[3].Descriptor()
+	// schoolfitnesstestitem.DefaultCreatedAt holds the default value on creation for the created_at field.
+	schoolfitnesstestitem.DefaultCreatedAt = schoolfitnesstestitemDescCreatedAt.Default.(func() time.Time)
+	// schoolfitnesstestitemDescUpdatedAt is the schema descriptor for updated_at field.
+	schoolfitnesstestitemDescUpdatedAt := schoolfitnesstestitemMixinFields0[4].Descriptor()
+	// schoolfitnesstestitem.DefaultUpdatedAt holds the default value on creation for the updated_at field.
+	schoolfitnesstestitem.DefaultUpdatedAt = schoolfitnesstestitemDescUpdatedAt.Default.(func() time.Time)
+	// schoolfitnesstestitem.UpdateDefaultUpdatedAt holds the default value on update for the updated_at field.
+	schoolfitnesstestitem.UpdateDefaultUpdatedAt = schoolfitnesstestitemDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// schoolfitnesstestitemDescDeletedAt is the schema descriptor for deleted_at field.
+	schoolfitnesstestitemDescDeletedAt := schoolfitnesstestitemMixinFields0[5].Descriptor()
+	// schoolfitnesstestitem.DefaultDeletedAt holds the default value on creation for the deleted_at field.
+	schoolfitnesstestitem.DefaultDeletedAt = schoolfitnesstestitemDescDeletedAt.Default.(time.Time)
+	// schoolfitnesstestitemDescMaxParticipants is the schema descriptor for max_participants field.
+	schoolfitnesstestitemDescMaxParticipants := schoolfitnesstestitemFields[0].Descriptor()
+	// schoolfitnesstestitem.DefaultMaxParticipants holds the default value on creation for the max_participants field.
+	schoolfitnesstestitem.DefaultMaxParticipants = schoolfitnesstestitemDescMaxParticipants.Default.(int)
+	// schoolfitnesstestitemDescAvgTimePerPerson is the schema descriptor for avg_time_per_person field.
+	schoolfitnesstestitemDescAvgTimePerPerson := schoolfitnesstestitemFields[1].Descriptor()
+	// schoolfitnesstestitem.DefaultAvgTimePerPerson holds the default value on creation for the avg_time_per_person field.
+	schoolfitnesstestitem.DefaultAvgTimePerPerson = schoolfitnesstestitemDescAvgTimePerPerson.Default.(int)
+	// schoolfitnesstestitemDescSchoolID is the schema descriptor for school_id field.
+	schoolfitnesstestitemDescSchoolID := schoolfitnesstestitemFields[2].Descriptor()
+	// schoolfitnesstestitem.DefaultSchoolID holds the default value on creation for the school_id field.
+	schoolfitnesstestitem.DefaultSchoolID = schoolfitnesstestitemDescSchoolID.Default.(int64)
+	// schoolfitnesstestitemDescItemID is the schema descriptor for item_id field.
+	schoolfitnesstestitemDescItemID := schoolfitnesstestitemFields[3].Descriptor()
+	// schoolfitnesstestitem.DefaultItemID holds the default value on creation for the item_id field.
+	schoolfitnesstestitem.DefaultItemID = schoolfitnesstestitemDescItemID.Default.(int64)
+	// schoolfitnesstestitemDescID is the schema descriptor for id field.
+	schoolfitnesstestitemDescID := schoolfitnesstestitemMixinFields0[0].Descriptor()
+	// schoolfitnesstestitem.DefaultID holds the default value on creation for the id field.
+	schoolfitnesstestitem.DefaultID = schoolfitnesstestitemDescID.Default.(func() int64)
 	userMixin := schema.User{}.Mixin()
 	userMixinFields0 := userMixin[0].Fields()
 	_ = userMixinFields0

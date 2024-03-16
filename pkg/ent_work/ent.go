@@ -13,7 +13,9 @@ import (
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/admin"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/fitnesstestitem"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/school"
+	"github.com/Godx1an/gp_ent/pkg/ent_work/schoolfitnesstestitem"
 	"github.com/Godx1an/gp_ent/pkg/ent_work/user"
 )
 
@@ -75,9 +77,11 @@ var (
 func checkColumn(table, column string) error {
 	initCheck.Do(func() {
 		columnCheck = sql.NewColumnCheck(map[string]func(string) bool{
-			admin.Table:  admin.ValidColumn,
-			school.Table: school.ValidColumn,
-			user.Table:   user.ValidColumn,
+			admin.Table:                 admin.ValidColumn,
+			fitnesstestitem.Table:       fitnesstestitem.ValidColumn,
+			school.Table:                school.ValidColumn,
+			schoolfitnesstestitem.Table: schoolfitnesstestitem.ValidColumn,
+			user.Table:                  user.ValidColumn,
 		})
 	})
 	return columnCheck(table, column)
