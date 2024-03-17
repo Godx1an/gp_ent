@@ -175,6 +175,14 @@ func init() {
 	schoolfitnesstestitemDescItemID := schoolfitnesstestitemFields[3].Descriptor()
 	// schoolfitnesstestitem.DefaultItemID holds the default value on creation for the item_id field.
 	schoolfitnesstestitem.DefaultItemID = schoolfitnesstestitemDescItemID.Default.(int64)
+	// schoolfitnesstestitemDescSchool is the schema descriptor for school field.
+	schoolfitnesstestitemDescSchool := schoolfitnesstestitemFields[4].Descriptor()
+	// schoolfitnesstestitem.DefaultSchool holds the default value on creation for the school field.
+	schoolfitnesstestitem.DefaultSchool = schoolfitnesstestitemDescSchool.Default.(string)
+	// schoolfitnesstestitemDescItem is the schema descriptor for item field.
+	schoolfitnesstestitemDescItem := schoolfitnesstestitemFields[5].Descriptor()
+	// schoolfitnesstestitem.DefaultItem holds the default value on creation for the item field.
+	schoolfitnesstestitem.DefaultItem = schoolfitnesstestitemDescItem.Default.(string)
 	// schoolfitnesstestitemDescID is the schema descriptor for id field.
 	schoolfitnesstestitemDescID := schoolfitnesstestitemMixinFields0[0].Descriptor()
 	// schoolfitnesstestitem.DefaultID holds the default value on creation for the id field.

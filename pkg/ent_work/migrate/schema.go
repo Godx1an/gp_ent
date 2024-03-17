@@ -72,6 +72,8 @@ var (
 		{Name: "avg_time_per_person", Type: field.TypeInt, Default: 0},
 		{Name: "school_id", Type: field.TypeInt64, Default: 0},
 		{Name: "item_id", Type: field.TypeInt64, Default: 0},
+		{Name: "school", Type: field.TypeString, Default: ""},
+		{Name: "item", Type: field.TypeString, Default: ""},
 	}
 	// SchoolFitnessTestItemsTable holds the schema information for the "school_fitness_test_items" table.
 	SchoolFitnessTestItemsTable = &schema.Table{

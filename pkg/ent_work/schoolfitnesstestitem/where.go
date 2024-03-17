@@ -99,6 +99,16 @@ func ItemID(v int64) predicate.SchoolFitnessTestItem {
 	return predicate.SchoolFitnessTestItem(sql.FieldEQ(FieldItemID, v))
 }
 
+// School applies equality check predicate on the "school" field. It's identical to SchoolEQ.
+func School(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldEQ(FieldSchool, v))
+}
+
+// Item applies equality check predicate on the "item" field. It's identical to ItemEQ.
+func Item(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldEQ(FieldItem, v))
+}
+
 // CreatedByEQ applies the EQ predicate on the "created_by" field.
 func CreatedByEQ(v int64) predicate.SchoolFitnessTestItem {
 	return predicate.SchoolFitnessTestItem(sql.FieldEQ(FieldCreatedBy, v))
@@ -457,6 +467,136 @@ func ItemIDLT(v int64) predicate.SchoolFitnessTestItem {
 // ItemIDLTE applies the LTE predicate on the "item_id" field.
 func ItemIDLTE(v int64) predicate.SchoolFitnessTestItem {
 	return predicate.SchoolFitnessTestItem(sql.FieldLTE(FieldItemID, v))
+}
+
+// SchoolEQ applies the EQ predicate on the "school" field.
+func SchoolEQ(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldEQ(FieldSchool, v))
+}
+
+// SchoolNEQ applies the NEQ predicate on the "school" field.
+func SchoolNEQ(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldNEQ(FieldSchool, v))
+}
+
+// SchoolIn applies the In predicate on the "school" field.
+func SchoolIn(vs ...string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldIn(FieldSchool, vs...))
+}
+
+// SchoolNotIn applies the NotIn predicate on the "school" field.
+func SchoolNotIn(vs ...string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldNotIn(FieldSchool, vs...))
+}
+
+// SchoolGT applies the GT predicate on the "school" field.
+func SchoolGT(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldGT(FieldSchool, v))
+}
+
+// SchoolGTE applies the GTE predicate on the "school" field.
+func SchoolGTE(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldGTE(FieldSchool, v))
+}
+
+// SchoolLT applies the LT predicate on the "school" field.
+func SchoolLT(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldLT(FieldSchool, v))
+}
+
+// SchoolLTE applies the LTE predicate on the "school" field.
+func SchoolLTE(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldLTE(FieldSchool, v))
+}
+
+// SchoolContains applies the Contains predicate on the "school" field.
+func SchoolContains(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldContains(FieldSchool, v))
+}
+
+// SchoolHasPrefix applies the HasPrefix predicate on the "school" field.
+func SchoolHasPrefix(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldHasPrefix(FieldSchool, v))
+}
+
+// SchoolHasSuffix applies the HasSuffix predicate on the "school" field.
+func SchoolHasSuffix(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldHasSuffix(FieldSchool, v))
+}
+
+// SchoolEqualFold applies the EqualFold predicate on the "school" field.
+func SchoolEqualFold(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldEqualFold(FieldSchool, v))
+}
+
+// SchoolContainsFold applies the ContainsFold predicate on the "school" field.
+func SchoolContainsFold(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldContainsFold(FieldSchool, v))
+}
+
+// ItemEQ applies the EQ predicate on the "item" field.
+func ItemEQ(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldEQ(FieldItem, v))
+}
+
+// ItemNEQ applies the NEQ predicate on the "item" field.
+func ItemNEQ(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldNEQ(FieldItem, v))
+}
+
+// ItemIn applies the In predicate on the "item" field.
+func ItemIn(vs ...string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldIn(FieldItem, vs...))
+}
+
+// ItemNotIn applies the NotIn predicate on the "item" field.
+func ItemNotIn(vs ...string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldNotIn(FieldItem, vs...))
+}
+
+// ItemGT applies the GT predicate on the "item" field.
+func ItemGT(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldGT(FieldItem, v))
+}
+
+// ItemGTE applies the GTE predicate on the "item" field.
+func ItemGTE(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldGTE(FieldItem, v))
+}
+
+// ItemLT applies the LT predicate on the "item" field.
+func ItemLT(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldLT(FieldItem, v))
+}
+
+// ItemLTE applies the LTE predicate on the "item" field.
+func ItemLTE(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldLTE(FieldItem, v))
+}
+
+// ItemContains applies the Contains predicate on the "item" field.
+func ItemContains(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldContains(FieldItem, v))
+}
+
+// ItemHasPrefix applies the HasPrefix predicate on the "item" field.
+func ItemHasPrefix(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldHasPrefix(FieldItem, v))
+}
+
+// ItemHasSuffix applies the HasSuffix predicate on the "item" field.
+func ItemHasSuffix(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldHasSuffix(FieldItem, v))
+}
+
+// ItemEqualFold applies the EqualFold predicate on the "item" field.
+func ItemEqualFold(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldEqualFold(FieldItem, v))
+}
+
+// ItemContainsFold applies the ContainsFold predicate on the "item" field.
+func ItemContainsFold(v string) predicate.SchoolFitnessTestItem {
+	return predicate.SchoolFitnessTestItem(sql.FieldContainsFold(FieldItem, v))
 }
 
 // And groups predicates with the AND operator between them.

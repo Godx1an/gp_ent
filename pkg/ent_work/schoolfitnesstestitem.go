@@ -35,7 +35,11 @@ type SchoolFitnessTestItem struct {
 	// SchoolID holds the value of the "school_id" field.
 	SchoolID int64 `json:"school_id,omitempty"`
 	// ItemID holds the value of the "item_id" field.
-	ItemID       int64 `json:"item_id,omitempty"`
+	ItemID int64 `json:"item_id,omitempty"`
+	// School holds the value of the "school" field.
+	School string `json:"school,omitempty"`
+	// Item holds the value of the "item" field.
+	Item         string `json:"item,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -46,6 +50,8 @@ func (*SchoolFitnessTestItem) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case schoolfitnesstestitem.FieldID, schoolfitnesstestitem.FieldCreatedBy, schoolfitnesstestitem.FieldUpdatedBy, schoolfitnesstestitem.FieldMaxParticipants, schoolfitnesstestitem.FieldAvgTimePerPerson, schoolfitnesstestitem.FieldSchoolID, schoolfitnesstestitem.FieldItemID:
 			values[i] = new(sql.NullInt64)
+		case schoolfitnesstestitem.FieldSchool, schoolfitnesstestitem.FieldItem:
+			values[i] = new(sql.NullString)
 		case schoolfitnesstestitem.FieldCreatedAt, schoolfitnesstestitem.FieldUpdatedAt, schoolfitnesstestitem.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
 		default:
@@ -123,6 +129,18 @@ func (sfti *SchoolFitnessTestItem) assignValues(columns []string, values []any) 
 			} else if value.Valid {
 				sfti.ItemID = value.Int64
 			}
+		case schoolfitnesstestitem.FieldSchool:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field school", values[i])
+			} else if value.Valid {
+				sfti.School = value.String
+			}
+		case schoolfitnesstestitem.FieldItem:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field item", values[i])
+			} else if value.Valid {
+				sfti.Item = value.String
+			}
 		default:
 			sfti.selectValues.Set(columns[i], values[i])
 		}
@@ -185,6 +203,12 @@ func (sfti *SchoolFitnessTestItem) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("item_id=")
 	builder.WriteString(fmt.Sprintf("%v", sfti.ItemID))
+	builder.WriteString(", ")
+	builder.WriteString("school=")
+	builder.WriteString(sfti.School)
+	builder.WriteString(", ")
+	builder.WriteString("item=")
+	builder.WriteString(sfti.Item)
 	builder.WriteByte(')')
 	return builder.String()
 }

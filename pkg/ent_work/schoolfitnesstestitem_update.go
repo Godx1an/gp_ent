@@ -175,6 +175,34 @@ func (sftiu *SchoolFitnessTestItemUpdate) AddItemID(i int64) *SchoolFitnessTestI
 	return sftiu
 }
 
+// SetSchool sets the "school" field.
+func (sftiu *SchoolFitnessTestItemUpdate) SetSchool(s string) *SchoolFitnessTestItemUpdate {
+	sftiu.mutation.SetSchool(s)
+	return sftiu
+}
+
+// SetNillableSchool sets the "school" field if the given value is not nil.
+func (sftiu *SchoolFitnessTestItemUpdate) SetNillableSchool(s *string) *SchoolFitnessTestItemUpdate {
+	if s != nil {
+		sftiu.SetSchool(*s)
+	}
+	return sftiu
+}
+
+// SetItem sets the "item" field.
+func (sftiu *SchoolFitnessTestItemUpdate) SetItem(s string) *SchoolFitnessTestItemUpdate {
+	sftiu.mutation.SetItem(s)
+	return sftiu
+}
+
+// SetNillableItem sets the "item" field if the given value is not nil.
+func (sftiu *SchoolFitnessTestItemUpdate) SetNillableItem(s *string) *SchoolFitnessTestItemUpdate {
+	if s != nil {
+		sftiu.SetItem(*s)
+	}
+	return sftiu
+}
+
 // Mutation returns the SchoolFitnessTestItemMutation object of the builder.
 func (sftiu *SchoolFitnessTestItemUpdate) Mutation() *SchoolFitnessTestItemMutation {
 	return sftiu.mutation
@@ -272,6 +300,12 @@ func (sftiu *SchoolFitnessTestItemUpdate) sqlSave(ctx context.Context) (n int, e
 	}
 	if value, ok := sftiu.mutation.AddedItemID(); ok {
 		_spec.AddField(schoolfitnesstestitem.FieldItemID, field.TypeInt64, value)
+	}
+	if value, ok := sftiu.mutation.School(); ok {
+		_spec.SetField(schoolfitnesstestitem.FieldSchool, field.TypeString, value)
+	}
+	if value, ok := sftiu.mutation.Item(); ok {
+		_spec.SetField(schoolfitnesstestitem.FieldItem, field.TypeString, value)
 	}
 	_spec.AddModifiers(sftiu.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, sftiu.driver, _spec); err != nil {
@@ -441,6 +475,34 @@ func (sftiuo *SchoolFitnessTestItemUpdateOne) AddItemID(i int64) *SchoolFitnessT
 	return sftiuo
 }
 
+// SetSchool sets the "school" field.
+func (sftiuo *SchoolFitnessTestItemUpdateOne) SetSchool(s string) *SchoolFitnessTestItemUpdateOne {
+	sftiuo.mutation.SetSchool(s)
+	return sftiuo
+}
+
+// SetNillableSchool sets the "school" field if the given value is not nil.
+func (sftiuo *SchoolFitnessTestItemUpdateOne) SetNillableSchool(s *string) *SchoolFitnessTestItemUpdateOne {
+	if s != nil {
+		sftiuo.SetSchool(*s)
+	}
+	return sftiuo
+}
+
+// SetItem sets the "item" field.
+func (sftiuo *SchoolFitnessTestItemUpdateOne) SetItem(s string) *SchoolFitnessTestItemUpdateOne {
+	sftiuo.mutation.SetItem(s)
+	return sftiuo
+}
+
+// SetNillableItem sets the "item" field if the given value is not nil.
+func (sftiuo *SchoolFitnessTestItemUpdateOne) SetNillableItem(s *string) *SchoolFitnessTestItemUpdateOne {
+	if s != nil {
+		sftiuo.SetItem(*s)
+	}
+	return sftiuo
+}
+
 // Mutation returns the SchoolFitnessTestItemMutation object of the builder.
 func (sftiuo *SchoolFitnessTestItemUpdateOne) Mutation() *SchoolFitnessTestItemMutation {
 	return sftiuo.mutation
@@ -568,6 +630,12 @@ func (sftiuo *SchoolFitnessTestItemUpdateOne) sqlSave(ctx context.Context) (_nod
 	}
 	if value, ok := sftiuo.mutation.AddedItemID(); ok {
 		_spec.AddField(schoolfitnesstestitem.FieldItemID, field.TypeInt64, value)
+	}
+	if value, ok := sftiuo.mutation.School(); ok {
+		_spec.SetField(schoolfitnesstestitem.FieldSchool, field.TypeString, value)
+	}
+	if value, ok := sftiuo.mutation.Item(); ok {
+		_spec.SetField(schoolfitnesstestitem.FieldItem, field.TypeString, value)
 	}
 	_spec.AddModifiers(sftiuo.modifiers...)
 	_node = &SchoolFitnessTestItem{config: sftiuo.config}

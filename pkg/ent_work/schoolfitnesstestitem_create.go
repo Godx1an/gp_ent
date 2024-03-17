@@ -148,6 +148,34 @@ func (sftic *SchoolFitnessTestItemCreate) SetNillableItemID(i *int64) *SchoolFit
 	return sftic
 }
 
+// SetSchool sets the "school" field.
+func (sftic *SchoolFitnessTestItemCreate) SetSchool(s string) *SchoolFitnessTestItemCreate {
+	sftic.mutation.SetSchool(s)
+	return sftic
+}
+
+// SetNillableSchool sets the "school" field if the given value is not nil.
+func (sftic *SchoolFitnessTestItemCreate) SetNillableSchool(s *string) *SchoolFitnessTestItemCreate {
+	if s != nil {
+		sftic.SetSchool(*s)
+	}
+	return sftic
+}
+
+// SetItem sets the "item" field.
+func (sftic *SchoolFitnessTestItemCreate) SetItem(s string) *SchoolFitnessTestItemCreate {
+	sftic.mutation.SetItem(s)
+	return sftic
+}
+
+// SetNillableItem sets the "item" field if the given value is not nil.
+func (sftic *SchoolFitnessTestItemCreate) SetNillableItem(s *string) *SchoolFitnessTestItemCreate {
+	if s != nil {
+		sftic.SetItem(*s)
+	}
+	return sftic
+}
+
 // SetID sets the "id" field.
 func (sftic *SchoolFitnessTestItemCreate) SetID(i int64) *SchoolFitnessTestItemCreate {
 	sftic.mutation.SetID(i)
@@ -233,6 +261,14 @@ func (sftic *SchoolFitnessTestItemCreate) defaults() {
 		v := schoolfitnesstestitem.DefaultItemID
 		sftic.mutation.SetItemID(v)
 	}
+	if _, ok := sftic.mutation.School(); !ok {
+		v := schoolfitnesstestitem.DefaultSchool
+		sftic.mutation.SetSchool(v)
+	}
+	if _, ok := sftic.mutation.Item(); !ok {
+		v := schoolfitnesstestitem.DefaultItem
+		sftic.mutation.SetItem(v)
+	}
 	if _, ok := sftic.mutation.ID(); !ok {
 		v := schoolfitnesstestitem.DefaultID()
 		sftic.mutation.SetID(v)
@@ -267,6 +303,12 @@ func (sftic *SchoolFitnessTestItemCreate) check() error {
 	}
 	if _, ok := sftic.mutation.ItemID(); !ok {
 		return &ValidationError{Name: "item_id", err: errors.New(`ent_work: missing required field "SchoolFitnessTestItem.item_id"`)}
+	}
+	if _, ok := sftic.mutation.School(); !ok {
+		return &ValidationError{Name: "school", err: errors.New(`ent_work: missing required field "SchoolFitnessTestItem.school"`)}
+	}
+	if _, ok := sftic.mutation.Item(); !ok {
+		return &ValidationError{Name: "item", err: errors.New(`ent_work: missing required field "SchoolFitnessTestItem.item"`)}
 	}
 	return nil
 }
@@ -336,6 +378,14 @@ func (sftic *SchoolFitnessTestItemCreate) createSpec() (*SchoolFitnessTestItem, 
 	if value, ok := sftic.mutation.ItemID(); ok {
 		_spec.SetField(schoolfitnesstestitem.FieldItemID, field.TypeInt64, value)
 		_node.ItemID = value
+	}
+	if value, ok := sftic.mutation.School(); ok {
+		_spec.SetField(schoolfitnesstestitem.FieldSchool, field.TypeString, value)
+		_node.School = value
+	}
+	if value, ok := sftic.mutation.Item(); ok {
+		_spec.SetField(schoolfitnesstestitem.FieldItem, field.TypeString, value)
+		_node.Item = value
 	}
 	return _node, _spec
 }
@@ -518,6 +568,30 @@ func (u *SchoolFitnessTestItemUpsert) UpdateItemID() *SchoolFitnessTestItemUpser
 // AddItemID adds v to the "item_id" field.
 func (u *SchoolFitnessTestItemUpsert) AddItemID(v int64) *SchoolFitnessTestItemUpsert {
 	u.Add(schoolfitnesstestitem.FieldItemID, v)
+	return u
+}
+
+// SetSchool sets the "school" field.
+func (u *SchoolFitnessTestItemUpsert) SetSchool(v string) *SchoolFitnessTestItemUpsert {
+	u.Set(schoolfitnesstestitem.FieldSchool, v)
+	return u
+}
+
+// UpdateSchool sets the "school" field to the value that was provided on create.
+func (u *SchoolFitnessTestItemUpsert) UpdateSchool() *SchoolFitnessTestItemUpsert {
+	u.SetExcluded(schoolfitnesstestitem.FieldSchool)
+	return u
+}
+
+// SetItem sets the "item" field.
+func (u *SchoolFitnessTestItemUpsert) SetItem(v string) *SchoolFitnessTestItemUpsert {
+	u.Set(schoolfitnesstestitem.FieldItem, v)
+	return u
+}
+
+// UpdateItem sets the "item" field to the value that was provided on create.
+func (u *SchoolFitnessTestItemUpsert) UpdateItem() *SchoolFitnessTestItemUpsert {
+	u.SetExcluded(schoolfitnesstestitem.FieldItem)
 	return u
 }
 
@@ -723,6 +797,34 @@ func (u *SchoolFitnessTestItemUpsertOne) AddItemID(v int64) *SchoolFitnessTestIt
 func (u *SchoolFitnessTestItemUpsertOne) UpdateItemID() *SchoolFitnessTestItemUpsertOne {
 	return u.Update(func(s *SchoolFitnessTestItemUpsert) {
 		s.UpdateItemID()
+	})
+}
+
+// SetSchool sets the "school" field.
+func (u *SchoolFitnessTestItemUpsertOne) SetSchool(v string) *SchoolFitnessTestItemUpsertOne {
+	return u.Update(func(s *SchoolFitnessTestItemUpsert) {
+		s.SetSchool(v)
+	})
+}
+
+// UpdateSchool sets the "school" field to the value that was provided on create.
+func (u *SchoolFitnessTestItemUpsertOne) UpdateSchool() *SchoolFitnessTestItemUpsertOne {
+	return u.Update(func(s *SchoolFitnessTestItemUpsert) {
+		s.UpdateSchool()
+	})
+}
+
+// SetItem sets the "item" field.
+func (u *SchoolFitnessTestItemUpsertOne) SetItem(v string) *SchoolFitnessTestItemUpsertOne {
+	return u.Update(func(s *SchoolFitnessTestItemUpsert) {
+		s.SetItem(v)
+	})
+}
+
+// UpdateItem sets the "item" field to the value that was provided on create.
+func (u *SchoolFitnessTestItemUpsertOne) UpdateItem() *SchoolFitnessTestItemUpsertOne {
+	return u.Update(func(s *SchoolFitnessTestItemUpsert) {
+		s.UpdateItem()
 	})
 }
 
@@ -1094,6 +1196,34 @@ func (u *SchoolFitnessTestItemUpsertBulk) AddItemID(v int64) *SchoolFitnessTestI
 func (u *SchoolFitnessTestItemUpsertBulk) UpdateItemID() *SchoolFitnessTestItemUpsertBulk {
 	return u.Update(func(s *SchoolFitnessTestItemUpsert) {
 		s.UpdateItemID()
+	})
+}
+
+// SetSchool sets the "school" field.
+func (u *SchoolFitnessTestItemUpsertBulk) SetSchool(v string) *SchoolFitnessTestItemUpsertBulk {
+	return u.Update(func(s *SchoolFitnessTestItemUpsert) {
+		s.SetSchool(v)
+	})
+}
+
+// UpdateSchool sets the "school" field to the value that was provided on create.
+func (u *SchoolFitnessTestItemUpsertBulk) UpdateSchool() *SchoolFitnessTestItemUpsertBulk {
+	return u.Update(func(s *SchoolFitnessTestItemUpsert) {
+		s.UpdateSchool()
+	})
+}
+
+// SetItem sets the "item" field.
+func (u *SchoolFitnessTestItemUpsertBulk) SetItem(v string) *SchoolFitnessTestItemUpsertBulk {
+	return u.Update(func(s *SchoolFitnessTestItemUpsert) {
+		s.SetItem(v)
+	})
+}
+
+// UpdateItem sets the "item" field to the value that was provided on create.
+func (u *SchoolFitnessTestItemUpsertBulk) UpdateItem() *SchoolFitnessTestItemUpsertBulk {
+	return u.Update(func(s *SchoolFitnessTestItemUpsert) {
+		s.UpdateItem()
 	})
 }
 

@@ -31,6 +31,10 @@ const (
 	FieldSchoolID = "school_id"
 	// FieldItemID holds the string denoting the item_id field in the database.
 	FieldItemID = "item_id"
+	// FieldSchool holds the string denoting the school field in the database.
+	FieldSchool = "school"
+	// FieldItem holds the string denoting the item field in the database.
+	FieldItem = "item"
 	// Table holds the table name of the schoolfitnesstestitem in the database.
 	Table = "school_fitness_test_items"
 )
@@ -47,6 +51,8 @@ var Columns = []string{
 	FieldAvgTimePerPerson,
 	FieldSchoolID,
 	FieldItemID,
+	FieldSchool,
+	FieldItem,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -80,6 +86,10 @@ var (
 	DefaultSchoolID int64
 	// DefaultItemID holds the default value on creation for the "item_id" field.
 	DefaultItemID int64
+	// DefaultSchool holds the default value on creation for the "school" field.
+	DefaultSchool string
+	// DefaultItem holds the default value on creation for the "item" field.
+	DefaultItem string
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() int64
 )
@@ -135,4 +145,14 @@ func BySchoolID(opts ...sql.OrderTermOption) OrderOption {
 // ByItemID orders the results by the item_id field.
 func ByItemID(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldItemID, opts...).ToFunc()
+}
+
+// BySchool orders the results by the school field.
+func BySchool(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldSchool, opts...).ToFunc()
+}
+
+// ByItem orders the results by the item field.
+func ByItem(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldItem, opts...).ToFunc()
 }

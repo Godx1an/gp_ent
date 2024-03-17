@@ -2231,6 +2231,8 @@ type SchoolFitnessTestItemMutation struct {
 	addschool_id           *int64
 	item_id                *int64
 	additem_id             *int64
+	school                 *string
+	item                   *string
 	clearedFields          map[string]struct{}
 	done                   bool
 	oldValue               func(context.Context) (*SchoolFitnessTestItem, error)
@@ -2785,6 +2787,78 @@ func (m *SchoolFitnessTestItemMutation) ResetItemID() {
 	m.additem_id = nil
 }
 
+// SetSchool sets the "school" field.
+func (m *SchoolFitnessTestItemMutation) SetSchool(s string) {
+	m.school = &s
+}
+
+// School returns the value of the "school" field in the mutation.
+func (m *SchoolFitnessTestItemMutation) School() (r string, exists bool) {
+	v := m.school
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSchool returns the old "school" field's value of the SchoolFitnessTestItem entity.
+// If the SchoolFitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SchoolFitnessTestItemMutation) OldSchool(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSchool is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSchool requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSchool: %w", err)
+	}
+	return oldValue.School, nil
+}
+
+// ResetSchool resets all changes to the "school" field.
+func (m *SchoolFitnessTestItemMutation) ResetSchool() {
+	m.school = nil
+}
+
+// SetItem sets the "item" field.
+func (m *SchoolFitnessTestItemMutation) SetItem(s string) {
+	m.item = &s
+}
+
+// Item returns the value of the "item" field in the mutation.
+func (m *SchoolFitnessTestItemMutation) Item() (r string, exists bool) {
+	v := m.item
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldItem returns the old "item" field's value of the SchoolFitnessTestItem entity.
+// If the SchoolFitnessTestItem object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *SchoolFitnessTestItemMutation) OldItem(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldItem is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldItem requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldItem: %w", err)
+	}
+	return oldValue.Item, nil
+}
+
+// ResetItem resets all changes to the "item" field.
+func (m *SchoolFitnessTestItemMutation) ResetItem() {
+	m.item = nil
+}
+
 // Where appends a list predicates to the SchoolFitnessTestItemMutation builder.
 func (m *SchoolFitnessTestItemMutation) Where(ps ...predicate.SchoolFitnessTestItem) {
 	m.predicates = append(m.predicates, ps...)
@@ -2819,7 +2893,7 @@ func (m *SchoolFitnessTestItemMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *SchoolFitnessTestItemMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 11)
 	if m.created_by != nil {
 		fields = append(fields, schoolfitnesstestitem.FieldCreatedBy)
 	}
@@ -2847,6 +2921,12 @@ func (m *SchoolFitnessTestItemMutation) Fields() []string {
 	if m.item_id != nil {
 		fields = append(fields, schoolfitnesstestitem.FieldItemID)
 	}
+	if m.school != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldSchool)
+	}
+	if m.item != nil {
+		fields = append(fields, schoolfitnesstestitem.FieldItem)
+	}
 	return fields
 }
 
@@ -2873,6 +2953,10 @@ func (m *SchoolFitnessTestItemMutation) Field(name string) (ent.Value, bool) {
 		return m.SchoolID()
 	case schoolfitnesstestitem.FieldItemID:
 		return m.ItemID()
+	case schoolfitnesstestitem.FieldSchool:
+		return m.School()
+	case schoolfitnesstestitem.FieldItem:
+		return m.Item()
 	}
 	return nil, false
 }
@@ -2900,6 +2984,10 @@ func (m *SchoolFitnessTestItemMutation) OldField(ctx context.Context, name strin
 		return m.OldSchoolID(ctx)
 	case schoolfitnesstestitem.FieldItemID:
 		return m.OldItemID(ctx)
+	case schoolfitnesstestitem.FieldSchool:
+		return m.OldSchool(ctx)
+	case schoolfitnesstestitem.FieldItem:
+		return m.OldItem(ctx)
 	}
 	return nil, fmt.Errorf("unknown SchoolFitnessTestItem field %s", name)
 }
@@ -2971,6 +3059,20 @@ func (m *SchoolFitnessTestItemMutation) SetField(name string, value ent.Value) e
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetItemID(v)
+		return nil
+	case schoolfitnesstestitem.FieldSchool:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSchool(v)
+		return nil
+	case schoolfitnesstestitem.FieldItem:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetItem(v)
 		return nil
 	}
 	return fmt.Errorf("unknown SchoolFitnessTestItem field %s", name)
@@ -3122,6 +3224,12 @@ func (m *SchoolFitnessTestItemMutation) ResetField(name string) error {
 		return nil
 	case schoolfitnesstestitem.FieldItemID:
 		m.ResetItemID()
+		return nil
+	case schoolfitnesstestitem.FieldSchool:
+		m.ResetSchool()
+		return nil
+	case schoolfitnesstestitem.FieldItem:
+		m.ResetItem()
 		return nil
 	}
 	return fmt.Errorf("unknown SchoolFitnessTestItem field %s", name)

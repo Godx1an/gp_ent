@@ -21,6 +21,10 @@ func (SchoolFitnessTestItem) Fields() []ent.Field {
 			Default(0),
 		field.Int64("item_id").
 			Default(0),
+		field.String("school").
+			Default(""),
+		field.String("item").
+			Default(""),
 	}
 }
 
