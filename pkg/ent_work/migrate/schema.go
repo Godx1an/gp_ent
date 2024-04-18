@@ -21,6 +21,7 @@ var (
 		{Name: "nickname", Type: field.TypeString},
 		{Name: "password", Type: field.TypeString},
 		{Name: "school", Type: field.TypeString, Default: ""},
+		{Name: "email", Type: field.TypeString, Default: ""},
 	}
 	// AdminsTable holds the schema information for the "admins" table.
 	AdminsTable = &schema.Table{
@@ -94,6 +95,7 @@ var (
 		{Name: "password", Type: field.TypeString},
 		{Name: "school", Type: field.TypeString, Default: ""},
 		{Name: "next_update_time", Type: field.TypeTime, Nullable: true},
+		{Name: "email", Type: field.TypeString, Default: ""},
 	}
 	// UsersTable holds the schema information for the "users" table.
 	UsersTable = &schema.Table{

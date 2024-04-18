@@ -18,6 +18,7 @@ func (Admin) Fields() []ent.Field {
 		field.String("nickname"),
 		field.String("password"),
 		field.String("school").Default(""),
+		field.String("email").Default(""),
 	}
 }
 

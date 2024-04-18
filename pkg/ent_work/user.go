@@ -38,7 +38,9 @@ type User struct {
 	School string `json:"school,omitempty"`
 	// NextUpdateTime holds the value of the "next_update_time" field.
 	NextUpdateTime time.Time `json:"next_update_time,omitempty"`
-	selectValues   sql.SelectValues
+	// Email holds the value of the "email" field.
+	Email        string `json:"email,omitempty"`
+	selectValues sql.SelectValues
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -48,7 +50,7 @@ func (*User) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case user.FieldID, user.FieldCreatedBy, user.FieldUpdatedBy:
 			values[i] = new(sql.NullInt64)
-		case user.FieldPhone, user.FieldNickname, user.FieldPassword, user.FieldSchool:
+		case user.FieldPhone, user.FieldNickname, user.FieldPassword, user.FieldSchool, user.FieldEmail:
 			values[i] = new(sql.NullString)
 		case user.FieldCreatedAt, user.FieldUpdatedAt, user.FieldDeletedAt, user.FieldNextUpdateTime:
 			values[i] = new(sql.NullTime)
@@ -133,6 +135,12 @@ func (u *User) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				u.NextUpdateTime = value.Time
 			}
+		case user.FieldEmail:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field email", values[i])
+			} else if value.Valid {
+				u.Email = value.String
+			}
 		default:
 			u.selectValues.Set(columns[i], values[i])
 		}
@@ -198,6 +206,9 @@ func (u *User) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("next_update_time=")
 	builder.WriteString(u.NextUpdateTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("email=")
+	builder.WriteString(u.Email)
 	builder.WriteByte(')')
 	return builder.String()
 }

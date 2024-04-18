@@ -66,6 +66,10 @@ func init() {
 	adminDescSchool := adminFields[3].Descriptor()
 	// admin.DefaultSchool holds the default value on creation for the school field.
 	admin.DefaultSchool = adminDescSchool.Default.(string)
+	// adminDescEmail is the schema descriptor for email field.
+	adminDescEmail := adminFields[4].Descriptor()
+	// admin.DefaultEmail holds the default value on creation for the email field.
+	admin.DefaultEmail = adminDescEmail.Default.(string)
 	// adminDescID is the schema descriptor for id field.
 	adminDescID := adminMixinFields0[0].Descriptor()
 	// admin.DefaultID holds the default value on creation for the id field.
@@ -236,6 +240,10 @@ func init() {
 	userDescSchool := userFields[3].Descriptor()
 	// user.DefaultSchool holds the default value on creation for the school field.
 	user.DefaultSchool = userDescSchool.Default.(string)
+	// userDescEmail is the schema descriptor for email field.
+	userDescEmail := userFields[5].Descriptor()
+	// user.DefaultEmail holds the default value on creation for the email field.
+	user.DefaultEmail = userDescEmail.Default.(string)
 	// userDescID is the schema descriptor for id field.
 	userDescID := userMixinFields0[0].Descriptor()
 	// user.DefaultID holds the default value on creation for the id field.

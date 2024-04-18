@@ -52,6 +52,7 @@ type AdminMutation struct {
 	nickname      *string
 	password      *string
 	school        *string
+	email         *string
 	clearedFields map[string]struct{}
 	done          bool
 	oldValue      func(context.Context) (*Admin, error)
@@ -526,6 +527,42 @@ func (m *AdminMutation) ResetSchool() {
 	m.school = nil
 }
 
+// SetEmail sets the "email" field.
+func (m *AdminMutation) SetEmail(s string) {
+	m.email = &s
+}
+
+// Email returns the value of the "email" field in the mutation.
+func (m *AdminMutation) Email() (r string, exists bool) {
+	v := m.email
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEmail returns the old "email" field's value of the Admin entity.
+// If the Admin object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *AdminMutation) OldEmail(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEmail is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEmail requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEmail: %w", err)
+	}
+	return oldValue.Email, nil
+}
+
+// ResetEmail resets all changes to the "email" field.
+func (m *AdminMutation) ResetEmail() {
+	m.email = nil
+}
+
 // Where appends a list predicates to the AdminMutation builder.
 func (m *AdminMutation) Where(ps ...predicate.Admin) {
 	m.predicates = append(m.predicates, ps...)
@@ -560,7 +597,7 @@ func (m *AdminMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *AdminMutation) Fields() []string {
-	fields := make([]string, 0, 9)
+	fields := make([]string, 0, 10)
 	if m.created_by != nil {
 		fields = append(fields, admin.FieldCreatedBy)
 	}
@@ -588,6 +625,9 @@ func (m *AdminMutation) Fields() []string {
 	if m.school != nil {
 		fields = append(fields, admin.FieldSchool)
 	}
+	if m.email != nil {
+		fields = append(fields, admin.FieldEmail)
+	}
 	return fields
 }
 
@@ -614,6 +654,8 @@ func (m *AdminMutation) Field(name string) (ent.Value, bool) {
 		return m.Password()
 	case admin.FieldSchool:
 		return m.School()
+	case admin.FieldEmail:
+		return m.Email()
 	}
 	return nil, false
 }
@@ -641,6 +683,8 @@ func (m *AdminMutation) OldField(ctx context.Context, name string) (ent.Value, e
 		return m.OldPassword(ctx)
 	case admin.FieldSchool:
 		return m.OldSchool(ctx)
+	case admin.FieldEmail:
+		return m.OldEmail(ctx)
 	}
 	return nil, fmt.Errorf("unknown Admin field %s", name)
 }
@@ -712,6 +756,13 @@ func (m *AdminMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetSchool(v)
+		return nil
+	case admin.FieldEmail:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEmail(v)
 		return nil
 	}
 	return fmt.Errorf("unknown Admin field %s", name)
@@ -815,6 +866,9 @@ func (m *AdminMutation) ResetField(name string) error {
 		return nil
 	case admin.FieldSchool:
 		m.ResetSchool()
+		return nil
+	case admin.FieldEmail:
+		m.ResetEmail()
 		return nil
 	}
 	return fmt.Errorf("unknown Admin field %s", name)
@@ -3301,6 +3355,7 @@ type UserMutation struct {
 	password         *string
 	school           *string
 	next_update_time *time.Time
+	email            *string
 	clearedFields    map[string]struct{}
 	done             bool
 	oldValue         func(context.Context) (*User, error)
@@ -3824,6 +3879,42 @@ func (m *UserMutation) ResetNextUpdateTime() {
 	delete(m.clearedFields, user.FieldNextUpdateTime)
 }
 
+// SetEmail sets the "email" field.
+func (m *UserMutation) SetEmail(s string) {
+	m.email = &s
+}
+
+// Email returns the value of the "email" field in the mutation.
+func (m *UserMutation) Email() (r string, exists bool) {
+	v := m.email
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEmail returns the old "email" field's value of the User entity.
+// If the User object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *UserMutation) OldEmail(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEmail is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEmail requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEmail: %w", err)
+	}
+	return oldValue.Email, nil
+}
+
+// ResetEmail resets all changes to the "email" field.
+func (m *UserMutation) ResetEmail() {
+	m.email = nil
+}
+
 // Where appends a list predicates to the UserMutation builder.
 func (m *UserMutation) Where(ps ...predicate.User) {
 	m.predicates = append(m.predicates, ps...)
@@ -3858,7 +3949,7 @@ func (m *UserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *UserMutation) Fields() []string {
-	fields := make([]string, 0, 10)
+	fields := make([]string, 0, 11)
 	if m.created_by != nil {
 		fields = append(fields, user.FieldCreatedBy)
 	}
@@ -3889,6 +3980,9 @@ func (m *UserMutation) Fields() []string {
 	if m.next_update_time != nil {
 		fields = append(fields, user.FieldNextUpdateTime)
 	}
+	if m.email != nil {
+		fields = append(fields, user.FieldEmail)
+	}
 	return fields
 }
 
@@ -3917,6 +4011,8 @@ func (m *UserMutation) Field(name string) (ent.Value, bool) {
 		return m.School()
 	case user.FieldNextUpdateTime:
 		return m.NextUpdateTime()
+	case user.FieldEmail:
+		return m.Email()
 	}
 	return nil, false
 }
@@ -3946,6 +4042,8 @@ func (m *UserMutation) OldField(ctx context.Context, name string) (ent.Value, er
 		return m.OldSchool(ctx)
 	case user.FieldNextUpdateTime:
 		return m.OldNextUpdateTime(ctx)
+	case user.FieldEmail:
+		return m.OldEmail(ctx)
 	}
 	return nil, fmt.Errorf("unknown User field %s", name)
 }
@@ -4024,6 +4122,13 @@ func (m *UserMutation) SetField(name string, value ent.Value) error {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
 		m.SetNextUpdateTime(v)
+		return nil
+	case user.FieldEmail:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEmail(v)
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)
@@ -4139,6 +4244,9 @@ func (m *UserMutation) ResetField(name string) error {
 		return nil
 	case user.FieldNextUpdateTime:
 		m.ResetNextUpdateTime()
+		return nil
+	case user.FieldEmail:
+		m.ResetEmail()
 		return nil
 	}
 	return fmt.Errorf("unknown User field %s", name)

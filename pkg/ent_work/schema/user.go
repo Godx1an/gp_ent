@@ -21,6 +21,7 @@ func (User) Fields() []ent.Field {
 		field.String("password"),
 		field.String("school").Default(""),
 		field.Time("next_update_time").Optional(),
+		field.String("email").Default(""),
 	}
 }
 

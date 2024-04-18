@@ -31,6 +31,8 @@ const (
 	FieldPassword = "password"
 	// FieldSchool holds the string denoting the school field in the database.
 	FieldSchool = "school"
+	// FieldEmail holds the string denoting the email field in the database.
+	FieldEmail = "email"
 	// Table holds the table name of the admin in the database.
 	Table = "admins"
 )
@@ -47,6 +49,7 @@ var Columns = []string{
 	FieldNickname,
 	FieldPassword,
 	FieldSchool,
+	FieldEmail,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -76,6 +79,8 @@ var (
 	PhoneValidator func(string) error
 	// DefaultSchool holds the default value on creation for the "school" field.
 	DefaultSchool string
+	// DefaultEmail holds the default value on creation for the "email" field.
+	DefaultEmail string
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() int64
 )
@@ -131,4 +136,9 @@ func ByPassword(opts ...sql.OrderTermOption) OrderOption {
 // BySchool orders the results by the school field.
 func BySchool(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldSchool, opts...).ToFunc()
+}
+
+// ByEmail orders the results by the email field.
+func ByEmail(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldEmail, opts...).ToFunc()
 }

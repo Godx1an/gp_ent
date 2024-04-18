@@ -124,6 +124,20 @@ func (ac *AdminCreate) SetNillableSchool(s *string) *AdminCreate {
 	return ac
 }
 
+// SetEmail sets the "email" field.
+func (ac *AdminCreate) SetEmail(s string) *AdminCreate {
+	ac.mutation.SetEmail(s)
+	return ac
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (ac *AdminCreate) SetNillableEmail(s *string) *AdminCreate {
+	if s != nil {
+		ac.SetEmail(*s)
+	}
+	return ac
+}
+
 // SetID sets the "id" field.
 func (ac *AdminCreate) SetID(i int64) *AdminCreate {
 	ac.mutation.SetID(i)
@@ -197,6 +211,10 @@ func (ac *AdminCreate) defaults() {
 		v := admin.DefaultSchool
 		ac.mutation.SetSchool(v)
 	}
+	if _, ok := ac.mutation.Email(); !ok {
+		v := admin.DefaultEmail
+		ac.mutation.SetEmail(v)
+	}
 	if _, ok := ac.mutation.ID(); !ok {
 		v := admin.DefaultID()
 		ac.mutation.SetID(v)
@@ -236,6 +254,9 @@ func (ac *AdminCreate) check() error {
 	}
 	if _, ok := ac.mutation.School(); !ok {
 		return &ValidationError{Name: "school", err: errors.New(`ent_work: missing required field "Admin.school"`)}
+	}
+	if _, ok := ac.mutation.Email(); !ok {
+		return &ValidationError{Name: "email", err: errors.New(`ent_work: missing required field "Admin.email"`)}
 	}
 	return nil
 }
@@ -305,6 +326,10 @@ func (ac *AdminCreate) createSpec() (*Admin, *sqlgraph.CreateSpec) {
 	if value, ok := ac.mutation.School(); ok {
 		_spec.SetField(admin.FieldSchool, field.TypeString, value)
 		_node.School = value
+	}
+	if value, ok := ac.mutation.Email(); ok {
+		_spec.SetField(admin.FieldEmail, field.TypeString, value)
+		_node.Email = value
 	}
 	return _node, _spec
 }
@@ -463,6 +488,18 @@ func (u *AdminUpsert) SetSchool(v string) *AdminUpsert {
 // UpdateSchool sets the "school" field to the value that was provided on create.
 func (u *AdminUpsert) UpdateSchool() *AdminUpsert {
 	u.SetExcluded(admin.FieldSchool)
+	return u
+}
+
+// SetEmail sets the "email" field.
+func (u *AdminUpsert) SetEmail(v string) *AdminUpsert {
+	u.Set(admin.FieldEmail, v)
+	return u
+}
+
+// UpdateEmail sets the "email" field to the value that was provided on create.
+func (u *AdminUpsert) UpdateEmail() *AdminUpsert {
+	u.SetExcluded(admin.FieldEmail)
 	return u
 }
 
@@ -640,6 +677,20 @@ func (u *AdminUpsertOne) SetSchool(v string) *AdminUpsertOne {
 func (u *AdminUpsertOne) UpdateSchool() *AdminUpsertOne {
 	return u.Update(func(s *AdminUpsert) {
 		s.UpdateSchool()
+	})
+}
+
+// SetEmail sets the "email" field.
+func (u *AdminUpsertOne) SetEmail(v string) *AdminUpsertOne {
+	return u.Update(func(s *AdminUpsert) {
+		s.SetEmail(v)
+	})
+}
+
+// UpdateEmail sets the "email" field to the value that was provided on create.
+func (u *AdminUpsertOne) UpdateEmail() *AdminUpsertOne {
+	return u.Update(func(s *AdminUpsert) {
+		s.UpdateEmail()
 	})
 }
 
@@ -983,6 +1034,20 @@ func (u *AdminUpsertBulk) SetSchool(v string) *AdminUpsertBulk {
 func (u *AdminUpsertBulk) UpdateSchool() *AdminUpsertBulk {
 	return u.Update(func(s *AdminUpsert) {
 		s.UpdateSchool()
+	})
+}
+
+// SetEmail sets the "email" field.
+func (u *AdminUpsertBulk) SetEmail(v string) *AdminUpsertBulk {
+	return u.Update(func(s *AdminUpsert) {
+		s.SetEmail(v)
+	})
+}
+
+// UpdateEmail sets the "email" field to the value that was provided on create.
+func (u *AdminUpsertBulk) UpdateEmail() *AdminUpsertBulk {
+	return u.Update(func(s *AdminUpsert) {
+		s.UpdateEmail()
 	})
 }
 

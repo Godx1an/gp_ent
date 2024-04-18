@@ -138,6 +138,20 @@ func (uc *UserCreate) SetNillableNextUpdateTime(t *time.Time) *UserCreate {
 	return uc
 }
 
+// SetEmail sets the "email" field.
+func (uc *UserCreate) SetEmail(s string) *UserCreate {
+	uc.mutation.SetEmail(s)
+	return uc
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (uc *UserCreate) SetNillableEmail(s *string) *UserCreate {
+	if s != nil {
+		uc.SetEmail(*s)
+	}
+	return uc
+}
+
 // SetID sets the "id" field.
 func (uc *UserCreate) SetID(i int64) *UserCreate {
 	uc.mutation.SetID(i)
@@ -211,6 +225,10 @@ func (uc *UserCreate) defaults() {
 		v := user.DefaultSchool
 		uc.mutation.SetSchool(v)
 	}
+	if _, ok := uc.mutation.Email(); !ok {
+		v := user.DefaultEmail
+		uc.mutation.SetEmail(v)
+	}
 	if _, ok := uc.mutation.ID(); !ok {
 		v := user.DefaultID()
 		uc.mutation.SetID(v)
@@ -250,6 +268,9 @@ func (uc *UserCreate) check() error {
 	}
 	if _, ok := uc.mutation.School(); !ok {
 		return &ValidationError{Name: "school", err: errors.New(`ent_work: missing required field "User.school"`)}
+	}
+	if _, ok := uc.mutation.Email(); !ok {
+		return &ValidationError{Name: "email", err: errors.New(`ent_work: missing required field "User.email"`)}
 	}
 	return nil
 }
@@ -323,6 +344,10 @@ func (uc *UserCreate) createSpec() (*User, *sqlgraph.CreateSpec) {
 	if value, ok := uc.mutation.NextUpdateTime(); ok {
 		_spec.SetField(user.FieldNextUpdateTime, field.TypeTime, value)
 		_node.NextUpdateTime = value
+	}
+	if value, ok := uc.mutation.Email(); ok {
+		_spec.SetField(user.FieldEmail, field.TypeString, value)
+		_node.Email = value
 	}
 	return _node, _spec
 }
@@ -499,6 +524,18 @@ func (u *UserUpsert) UpdateNextUpdateTime() *UserUpsert {
 // ClearNextUpdateTime clears the value of the "next_update_time" field.
 func (u *UserUpsert) ClearNextUpdateTime() *UserUpsert {
 	u.SetNull(user.FieldNextUpdateTime)
+	return u
+}
+
+// SetEmail sets the "email" field.
+func (u *UserUpsert) SetEmail(v string) *UserUpsert {
+	u.Set(user.FieldEmail, v)
+	return u
+}
+
+// UpdateEmail sets the "email" field to the value that was provided on create.
+func (u *UserUpsert) UpdateEmail() *UserUpsert {
+	u.SetExcluded(user.FieldEmail)
 	return u
 }
 
@@ -697,6 +734,20 @@ func (u *UserUpsertOne) UpdateNextUpdateTime() *UserUpsertOne {
 func (u *UserUpsertOne) ClearNextUpdateTime() *UserUpsertOne {
 	return u.Update(func(s *UserUpsert) {
 		s.ClearNextUpdateTime()
+	})
+}
+
+// SetEmail sets the "email" field.
+func (u *UserUpsertOne) SetEmail(v string) *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.SetEmail(v)
+	})
+}
+
+// UpdateEmail sets the "email" field to the value that was provided on create.
+func (u *UserUpsertOne) UpdateEmail() *UserUpsertOne {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateEmail()
 	})
 }
 
@@ -1061,6 +1112,20 @@ func (u *UserUpsertBulk) UpdateNextUpdateTime() *UserUpsertBulk {
 func (u *UserUpsertBulk) ClearNextUpdateTime() *UserUpsertBulk {
 	return u.Update(func(s *UserUpsert) {
 		s.ClearNextUpdateTime()
+	})
+}
+
+// SetEmail sets the "email" field.
+func (u *UserUpsertBulk) SetEmail(v string) *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.SetEmail(v)
+	})
+}
+
+// UpdateEmail sets the "email" field to the value that was provided on create.
+func (u *UserUpsertBulk) UpdateEmail() *UserUpsertBulk {
+	return u.Update(func(s *UserUpsert) {
+		s.UpdateEmail()
 	})
 }
 

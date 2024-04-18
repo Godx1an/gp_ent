@@ -147,6 +147,20 @@ func (au *AdminUpdate) SetNillableSchool(s *string) *AdminUpdate {
 	return au
 }
 
+// SetEmail sets the "email" field.
+func (au *AdminUpdate) SetEmail(s string) *AdminUpdate {
+	au.mutation.SetEmail(s)
+	return au
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (au *AdminUpdate) SetNillableEmail(s *string) *AdminUpdate {
+	if s != nil {
+		au.SetEmail(*s)
+	}
+	return au
+}
+
 // Mutation returns the AdminMutation object of the builder.
 func (au *AdminUpdate) Mutation() *AdminMutation {
 	return au.mutation
@@ -245,6 +259,9 @@ func (au *AdminUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	}
 	if value, ok := au.mutation.School(); ok {
 		_spec.SetField(admin.FieldSchool, field.TypeString, value)
+	}
+	if value, ok := au.mutation.Email(); ok {
+		_spec.SetField(admin.FieldEmail, field.TypeString, value)
 	}
 	_spec.AddModifiers(au.modifiers...)
 	if n, err = sqlgraph.UpdateNodes(ctx, au.driver, _spec); err != nil {
@@ -386,6 +403,20 @@ func (auo *AdminUpdateOne) SetNillableSchool(s *string) *AdminUpdateOne {
 	return auo
 }
 
+// SetEmail sets the "email" field.
+func (auo *AdminUpdateOne) SetEmail(s string) *AdminUpdateOne {
+	auo.mutation.SetEmail(s)
+	return auo
+}
+
+// SetNillableEmail sets the "email" field if the given value is not nil.
+func (auo *AdminUpdateOne) SetNillableEmail(s *string) *AdminUpdateOne {
+	if s != nil {
+		auo.SetEmail(*s)
+	}
+	return auo
+}
+
 // Mutation returns the AdminMutation object of the builder.
 func (auo *AdminUpdateOne) Mutation() *AdminMutation {
 	return auo.mutation
@@ -514,6 +545,9 @@ func (auo *AdminUpdateOne) sqlSave(ctx context.Context) (_node *Admin, err error
 	}
 	if value, ok := auo.mutation.School(); ok {
 		_spec.SetField(admin.FieldSchool, field.TypeString, value)
+	}
+	if value, ok := auo.mutation.Email(); ok {
+		_spec.SetField(admin.FieldEmail, field.TypeString, value)
 	}
 	_spec.AddModifiers(auo.modifiers...)
 	_node = &Admin{config: auo.config}

@@ -33,6 +33,8 @@ const (
 	FieldSchool = "school"
 	// FieldNextUpdateTime holds the string denoting the next_update_time field in the database.
 	FieldNextUpdateTime = "next_update_time"
+	// FieldEmail holds the string denoting the email field in the database.
+	FieldEmail = "email"
 	// Table holds the table name of the user in the database.
 	Table = "users"
 )
@@ -50,6 +52,7 @@ var Columns = []string{
 	FieldPassword,
 	FieldSchool,
 	FieldNextUpdateTime,
+	FieldEmail,
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -79,6 +82,8 @@ var (
 	PhoneValidator func(string) error
 	// DefaultSchool holds the default value on creation for the "school" field.
 	DefaultSchool string
+	// DefaultEmail holds the default value on creation for the "email" field.
+	DefaultEmail string
 	// DefaultID holds the default value on creation for the "id" field.
 	DefaultID func() int64
 )
@@ -139,4 +144,9 @@ func BySchool(opts ...sql.OrderTermOption) OrderOption {
 // ByNextUpdateTime orders the results by the next_update_time field.
 func ByNextUpdateTime(opts ...sql.OrderTermOption) OrderOption {
 	return sql.OrderByField(FieldNextUpdateTime, opts...).ToFunc()
+}
+
+// ByEmail orders the results by the email field.
+func ByEmail(opts ...sql.OrderTermOption) OrderOption {
+	return sql.OrderByField(FieldEmail, opts...).ToFunc()
 }

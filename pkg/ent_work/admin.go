@@ -35,7 +35,9 @@ type Admin struct {
 	// Password holds the value of the "password" field.
 	Password string `json:"password,omitempty"`
 	// School holds the value of the "school" field.
-	School       string `json:"school,omitempty"`
+	School string `json:"school,omitempty"`
+	// Email holds the value of the "email" field.
+	Email        string `json:"email,omitempty"`
 	selectValues sql.SelectValues
 }
 
@@ -46,7 +48,7 @@ func (*Admin) scanValues(columns []string) ([]any, error) {
 		switch columns[i] {
 		case admin.FieldID, admin.FieldCreatedBy, admin.FieldUpdatedBy:
 			values[i] = new(sql.NullInt64)
-		case admin.FieldPhone, admin.FieldNickname, admin.FieldPassword, admin.FieldSchool:
+		case admin.FieldPhone, admin.FieldNickname, admin.FieldPassword, admin.FieldSchool, admin.FieldEmail:
 			values[i] = new(sql.NullString)
 		case admin.FieldCreatedAt, admin.FieldUpdatedAt, admin.FieldDeletedAt:
 			values[i] = new(sql.NullTime)
@@ -125,6 +127,12 @@ func (a *Admin) assignValues(columns []string, values []any) error {
 			} else if value.Valid {
 				a.School = value.String
 			}
+		case admin.FieldEmail:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field email", values[i])
+			} else if value.Valid {
+				a.Email = value.String
+			}
 		default:
 			a.selectValues.Set(columns[i], values[i])
 		}
@@ -187,6 +195,9 @@ func (a *Admin) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("school=")
 	builder.WriteString(a.School)
+	builder.WriteString(", ")
+	builder.WriteString("email=")
+	builder.WriteString(a.Email)
 	builder.WriteByte(')')
 	return builder.String()
 }
